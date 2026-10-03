@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-fixed-variant":"#004e5c","surface-tint":"#d0bcff","on-secondary":"#003640","outline":"#958ea0","tertiary-fixed":"#6ffbbe","surface-container-highest":"#353437","tertiary-container":"#00a572","secondary":"#4cd7f6","on-background":"#e5e1e4","on-error-container":"#ffdad6","primary":"#d0bcff","inverse-on-surface":"#313032","surface-container-low":"#1c1b1d","on-surface":"#e5e1e4","on-primary-fixed-variant":"#5516be","on-tertiary-fixed":"#002113","primary-container":"#a078ff","error-container":"#93000a","on-primary-container":"#340080","surface-variant":"#353437","on-primary":"#3c0091","on-error":"#690005","surface-bright":"#39393b","surface":"#131315","background":"#131315","surface-dim":"#131315","inverse-surface":"#e5e1e4","tertiary":"#4edea3","surface-container":"#201f22","secondary-container":"#03b5d3","surface-container-high":"#2a2a2c","primary-fixed":"#e9ddff","on-tertiary-container":"#00311f","inverse-primary":"#6d3bd7","on-primary-fixed":"#23005c","primary-fixed-dim":"#d0bcff","tertiary-fixed-dim":"#4edea3","error":"#ffb4ab","surface-container-lowest":"#0e0e10","on-secondary-container":"#00424e","on-tertiary-fixed-variant":"#005236","secondary-fixed":"#acedff","on-surface-variant":"#cbc3d7","secondary-fixed-dim":"#4cd7f6","outline-variant":"#494454","on-secondary-fixed":"#001f26","on-tertiary":"#003824"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"margin-lg":"2rem","space-sm":"0.5rem","space-xs":"0.25rem","gutter":"1rem","space-md":"0.75rem","space-xl":"2rem","space-lg":"1.25rem","margin-md":"1.5rem","gutter-lg":"1.5rem","margin":"1rem"},fontFamily:{"label-md":["JetBrains Mono"],"code-md":["JetBrains Mono"],"label-sm":["JetBrains Mono"],"code-sm":["JetBrains Mono"],"headline-lg-mobile":["Geist"],"display":["Geist"],"headline-lg":["Geist"],"body-md":["Geist"],"body-sm":["Geist"],"body-lg":["Geist"],"headline-md":["Geist"],"headline-sm":["Geist"]},fontSize:{"label-md":["11px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"500"}],"code-md":["13px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"500"}],"code-sm":["11px",{"lineHeight":"16px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg-mobile":["22px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"600"}],"display":["36px",{"lineHeight":"44px","letterSpacing":"-0.03em","fontWeight":"600"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.025em","fontWeight":"600"}],"body-md":["13px",{"lineHeight":"20px","letterSpacing":"0em","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"18px","letterSpacing":"0.005em","fontWeight":"400"}],"body-lg":["15px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"500"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"500"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface select-none antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 h-12 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 flex items-center px-4 justify-between"><div class="flex items-center gap-space-md"><img alt="Agent Hive Brand Mark" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XPInVhy3rS6tZTmZQ0bOK1tlP43YVIOBsBEI7AAdNllZyBwwt3MR_d5CreLw8jfxCN9Jii2Uf5ncIjlbl-89Du3w2Q5eE83i1PcN0fFDDCCZ_OIn-PGv-55NX60uI-SUxGR3unRgp41DPtKpPoYfomGh9tglmAhloAPBOFnYB8R6ncvM6-1BtTEyk7luThlLb9VM7CbG13jpfJ3SEYS96l-G1XPythEwjSKanYtbbVSCdUEKaxJBlnTcV-"/><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Agent Hive</span><span class="font-label-sm text-label-sm bg-surface-container-high text-primary px-1.5 py-0.5 rounded border border-outline-variant/40 uppercase">v2.4 Pro</span></div><div class="h-4 w-px bg-outline-variant/30 mx-1"></div><div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-[16px] text-secondary">hub</span><span class="font-code-sm text-code-sm font-medium">Hyperion Labs / Main</span><span class="material-symbols-outlined text-[14px]">expand_more</span></div><div class="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant/20 font-label-sm text-label-sm text-on-surface-variant"><span class="material-symbols-outlined text-[13px] text-tertiary">commit</span><span>main: synced</span></div></div><div class="flex-1 max-w-lg mx-6"><button class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 text-on-surface-variant transition-all" type="button"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-outline">search</span><span class="font-body-sm text-body-sm text-outline">Search telemetry, agents, or issue command...</span></div><kbd class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/50 px-1.5 py-0.5 rounded">⌘K</kbd></button></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-surface-container-low border border-tertiary-container/30"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><span class="font-code-sm text-code-sm text-tertiary-fixed">6 Agents Active</span></div><button class="relative p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-secondary"></span></button><button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">graphic_eq</span></button><button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">settings</span></button><div class="h-4 w-px bg-outline-variant/30"></div><div class="flex items-center gap-2"><img alt="Aryan's Profile Avatar" class="w-7 h-7 rounded-full object-cover ring-1 ring-outline-variant/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAexHSh-z5s8OOw_cyGFlSAMTcijsKw3n0VYVtPS0ZlsaHp2eR3gTHWVezgnYTuXB0cEruOP_za0OHcIu6Cgcc5tmztecIKSmvGpC1Ov8CCZKQ1U8nW7Dx4nDVu8qkgZiJrAGn6tb8FwAlnhqp9aqwZdUGX4qYAxe91Ec9CXnLfUAyxbY9nWf0Feia6kRSW4bHYJtbwgGg9oGf-tJagv95LTtINDstip3HWkS1hFYMjLudnKvGkQL8GCw"/><span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer">arrow_drop_down</span></div></div></header><aside class="fixed left-0 top-12 bottom-0 w-56 bg-surface-container-lowest border-r border-outline-variant/30 z-40 flex flex-col justify-between pt-3 pb-3"><div class="flex flex-col gap-1 px-2"><div class="px-2.5 pb-2 text-outline font-label-sm text-label-sm uppercase tracking-wider">Workspace Nodes</div><nav class="flex flex-col gap-0.5" data-active-classes="bg-primary/10 text-primary font-medium border-l-2 border-primary shadow-[inset_0_0_12px_rgba(208,188,255,0.06)]"><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="home" href="#"><span class="font-body-sm text-body-sm">Home</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="agents" href="#"><span class="font-body-sm text-body-sm">Agents</span><span class="font-label-sm text-label-sm px-1.5 py-0.2 bg-primary/20 text-primary rounded">6</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="agent-profile" href="#"><span class="font-body-sm text-body-sm">Agent Profile</span><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="tasks" href="#"><span class="font-body-sm text-body-sm">Tasks</span><span class="font-label-sm text-label-sm px-1.5 py-0.2 bg-surface-container-high text-on-surface-variant rounded">14</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="terminal" href="#"><span class="font-body-sm text-body-sm">Terminal</span><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="activity" href="#"><span class="font-body-sm text-body-sm">Activity</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="files" href="#"><span class="font-body-sm text-body-sm">Files</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="memory" href="#"><span class="font-body-sm text-body-sm">Memory</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="automations" href="#"><span class="font-body-sm text-body-sm">Automations</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="analytics" href="#"><span class="font-body-sm text-body-sm">Analytics</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="font-body-sm text-body-sm">Settings</span></a></nav></div><div class="px-3 pt-3 border-t border-outline-variant/30 flex flex-col gap-2 bg-surface-container-lowest"><div class="flex items-center justify-between font-label-sm text-label-sm text-outline"><span class="uppercase tracking-wider">Node Cluster</span><span class="text-tertiary flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>ONLINE</span></div><div class="bg-surface-container-low p-2 rounded border border-outline-variant/30 flex flex-col gap-1.5"><div class="flex justify-between font-code-sm text-code-sm"><span class="text-on-surface-variant">GPU Load</span><span class="text-secondary font-medium">42%</span></div><div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-secondary w-[42%]"></div></div><div class="flex justify-between font-code-sm text-code-sm pt-0.5"><span class="text-on-surface-variant">VRAM</span><span class="text-on-surface font-medium">18.4 / 24 GB</span></div><div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-primary-container w-[76%]"></div></div></div><div class="flex items-center justify-between text-outline font-label-sm text-label-sm px-0.5"><span>Latency: 14ms</span><span>vLLM 0.6.3</span></div></div></aside><div class="pl-56"><main class="relative pt-12 min-h-screen bg-background w-full overflow-x-hidden"><div class="flex flex-col w-full">
+<!-- Subtle Ambient Glow Orbs -->
+<div class="relative w-full overflow-hidden px-4 md:px-8 py-6 max-w-[1720px] mx-auto">
+<div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-[128px] pointer-events-none"></div>
+<div class="absolute top-1/2 right-10 w-96 h-96 bg-secondary-container/10 rounded-full blur-[140px] pointer-events-none"></div>
+<div class="absolute -bottom-24 left-1/3 w-80 h-80 bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none"></div>
+<!-- Wizard Super-Container Modal Frame -->
+<div class="relative bg-surface-container-lowest/95 backdrop-blur-2xl rounded-2xl shadow-2xl overflow-hidden">
+<!-- Top Tactical Utility Strip -->
+<div class="bg-surface-container-low px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse shadow-sm"></div>
+<div class="flex items-center gap-2">
+<span class="font-code-md text-code-md text-primary font-medium tracking-tight">OPERATIVE_PROVISIONING_PIPELINE</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant uppercase">Enclave-4</span>
+</div>
+<span class="text-outline-variant/60 text-xs">•</span>
+<span class="font-label-sm text-label-sm text-outline">PROTOCOL: ISO-9042 SYNAPSE MATRIX</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface-variant">
+<span class="text-tertiary font-medium">Node:</span>
+<span>hyperion-mesh-01</span>
+</div>
+<button class="w-7 h-7 rounded flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Close Provisioning Session" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Main Two-Column Wizard Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 min-h-[820px]">
+<!-- LEFT COLUMN: Stepper + Step Views (approx 65%) -->
+<div class="lg:col-span-8 flex flex-col justify-between p-6 md:p-8 bg-surface-container-lowest">
+<div class="flex flex-col gap-6">
+<!-- Wizard Header & Interactive Stepper -->
+<div class="flex flex-col gap-4">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-semibold">Hiring Digital Teammate</span>
+<span class="font-label-sm text-label-sm text-outline">/</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium" id="step-telemetry-badge">Step 3 of 5 • Synthesizing Operative Profile</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">Autonomous Operative Onboarding</h1>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-tertiary text-[18px]">format_image_left</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Zero-Egress Sandboxed</span>
+</div>
+</div>
+<!-- Interactive Stepper Progress Nodes -->
+<nav aria-label="Wizard Steps" class="grid grid-cols-5 gap-2 pt-2">
+<button class="step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-surface-container-high text-on-surface" id="step-pill-1" onclick="goToStep(1)" type="button">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold">01. IDENTITY</span>
+<span class="step-check material-symbols-outlined text-[14px] text-tertiary">check_circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">Kite (Architect)</span>
+<div class="w-full h-0.5 rounded-full bg-tertiary"></div>
+</button>
+<button class="step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-surface-container-high text-on-surface" id="step-pill-2" onclick="goToStep(2)" type="button">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold">02. INTELLIGENCE</span>
+<span class="step-check material-symbols-outlined text-[14px] text-tertiary">check_circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant truncate">Ollama Local</span>
+<div class="w-full h-0.5 rounded-full bg-tertiary"></div>
+</button>
+<button class="step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-primary/10 text-primary" id="step-pill-3" onclick="goToStep(3)" type="button">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold">03. CAPABILITIES</span>
+<span class="step-check material-symbols-outlined text-[14px] text-primary animate-pulse">radio_button_checked</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary/80 truncate">6 Tools Enabled</span>
+<div class="w-full h-0.5 rounded-full bg-primary shadow-sm"></div>
+</button>
+<button class="step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-surface-container-low text-outline hover:text-on-surface" id="step-pill-4" onclick="goToStep(4)" type="button">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold">04. WORKSPACE</span>
+<span class="step-check material-symbols-outlined text-[14px] text-outline-variant">circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-outline truncate">Sandbox Mesh</span>
+<div class="w-full h-0.5 rounded-full bg-surface-container-highest"></div>
+</button>
+<button class="step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-surface-container-low text-outline hover:text-on-surface" id="step-pill-5" onclick="goToStep(5)" type="button">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold">05. DIRECTIVE</span>
+<span class="step-check material-symbols-outlined text-[14px] text-outline-variant">circle</span>
+</div>
+<span class="font-code-sm text-code-sm text-outline truncate">System Prompt</span>
+<div class="w-full h-0.5 rounded-full bg-surface-container-highest"></div>
+</button>
+</nav>
+</div>
+<!-- STEP CONTENT PANELS (Interactive tab-views) -->
+<div class="mt-2 min-h-[460px]">
+<!-- STEP 1: IDENTITY -->
+<section class="step-panel hidden flex-col gap-6" id="step-panel-1">
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Operative Identity &amp; Designation</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Designate the digital teammate's cognitive persona, alias, and operational role in your mesh.</p>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-1 rounded bg-surface-container-high text-primary font-mono">OP-ID #07</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface flex items-center justify-between">
+<span>Agent Alias / Name</span>
+<span class="font-code-sm text-code-sm text-secondary font-mono">REQUIRED</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">terminal</span>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-high outline-none transition-all placeholder:text-outline" id="input-agent-name" oninput="updateLivePreview()" placeholder="e.g. Kite, Aura, Sentinel" type="text" value="Kite"/>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface flex items-center justify-between">
+<span>Operational Role &amp; Tier</span>
+<span class="font-code-sm text-code-sm text-outline font-mono">L6 TIER</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">badge</span>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-high outline-none transition-all placeholder:text-outline" id="input-agent-role" oninput="updateLivePreview()" placeholder="e.g. Kernel Compiler, SRE Lead" type="text" value="Staff Systems Architect &amp; DevOps Lead"/>
+</div>
+</div>
+</div>
+<!-- Geometric Avatar Selector -->
+<div class="flex flex-col gap-3 pt-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface">Neural Operative Signature Avatar</label>
+<button class="flex items-center gap-1.5 font-code-sm text-code-sm text-primary hover:text-primary-fixed transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+<span>Generate Custom Vector Avatar</span>
+</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<!-- Avatar 1 (Selected) -->
+<div class="avatar-option cursor-pointer p-3 rounded-xl bg-surface-container flex flex-col items-center gap-2 group transition-all" onclick="selectAvatar(0)">
+<div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center relative overflow-hidden shadow-inner">
+<svg class="w-10 h-10 text-primary transition-transform group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<polygon points="12 2 2 7 12 12 22 7 12 2" stroke-linecap="round" stroke-linejoin="round"></polygon>
+<polyline points="2 17 12 22 22 17" stroke-linecap="round" stroke-linejoin="round"></polyline>
+<polyline points="2 12 12 17 22 12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+</svg>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface font-medium">Lattice Prism</span>
+<span class="font-label-sm text-label-sm text-primary uppercase">Active</span>
+</div>
+<!-- Avatar 2 -->
+<div class="avatar-option cursor-pointer p-3 rounded-xl bg-surface-container-lowest flex flex-col items-center gap-2 group transition-all hover:bg-surface-container" onclick="selectAvatar(1)">
+<div class="w-14 h-14 rounded-full bg-secondary/10 flex items-center justify-center relative overflow-hidden">
+<svg class="w-10 h-10 text-secondary transition-transform group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<circle cx="12" cy="12" r="5"></circle>
+<line x1="12" x2="12" y1="3" y2="7"></line>
+<line x1="12" x2="12" y1="17" y2="21"></line>
+</svg>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">Orbital Gyro</span>
+<span class="font-label-sm text-label-sm text-outline uppercase">Select</span>
+</div>
+<!-- Avatar 3 -->
+<div class="avatar-option cursor-pointer p-3 rounded-xl bg-surface-container-lowest flex flex-col items-center gap-2 group transition-all hover:bg-surface-container" onclick="selectAvatar(2)">
+<div class="w-14 h-14 rounded-full bg-tertiary/10 flex items-center justify-center relative overflow-hidden">
+<svg class="w-10 h-10 text-tertiary transition-transform group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<path d="M12 2L2 19h20L12 2z"></path>
+<circle cx="12" cy="13" r="2.5"></circle>
+</svg>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">Delta Core</span>
+<span class="font-label-sm text-label-sm text-outline uppercase">Select</span>
+</div>
+<!-- Avatar 4 -->
+<div class="avatar-option cursor-pointer p-3 rounded-xl bg-surface-container-lowest flex flex-col items-center gap-2 group transition-all hover:bg-surface-container" onclick="selectAvatar(3)">
+<div class="w-14 h-14 rounded-full bg-primary-container/20 flex items-center justify-center relative overflow-hidden">
+<svg class="w-10 h-10 text-primary-fixed transition-transform group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<polygon points="12 2 19 8.5 19 15.5 12 22 5 15.5 5 8.5 12 2"></polygon>
+</svg>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant font-medium">Hex Lattice</span>
+<span class="font-label-sm text-label-sm text-outline uppercase">Select</span>
+</div>
+</div>
+</div>
+<!-- Bio / Description -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Teammate Synopsis &amp; Specialty</label>
+<textarea class="w-full p-3 bg-surface-container rounded-lg text-on-surface font-body-md text-body-md focus:bg-surface-container-high outline-none transition-all placeholder:text-outline" id="input-agent-bio" placeholder="Brief high-throughput role mission statement..." rows="3">Autonomous kernel-level compiler and multi-repo orchestration specialist with zero-downtime canary rollout heuristics.</textarea>
+</div>
+</div>
+</section>
+<!-- STEP 2: INTELLIGENCE & REASONING ENGINE -->
+<section class="step-panel hidden flex-col gap-6" id="step-panel-2">
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Intelligence &amp; Reasoning Substrate</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Select the underlying inference engine, context pipeline, and cognitive temperature.</p>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-1 rounded bg-tertiary-container/30 text-tertiary font-mono">RTX 4090 ACTIVE</span>
+</div>
+<!-- Provider Grid Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<!-- Provider 1 (Selected) -->
+<div class="provider-card cursor-pointer p-4 rounded-xl bg-surface-container flex flex-col gap-3 relative overflow-hidden transition-all shadow-md" onclick="selectProvider('Ollama Local (RTX 4090)')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">memory</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Ollama Local</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">DeepSeek R1 Distill 32B on dedicated GPU enclave. Zero cloud telemetry egress.</p>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-secondary font-mono">0.00ms latency</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface">Local Enclave</span>
+</div>
+</div>
+<!-- Provider 2 -->
+<div class="provider-card cursor-pointer p-4 rounded-xl bg-surface-container-lowest flex flex-col gap-3 relative overflow-hidden transition-all hover:bg-surface-container" onclick="selectProvider('Gemini 2.5 Pro')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[22px]">blur_on</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Gemini Pro</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">v2.5</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Google DeepMind multimodal reasoning engine with 1M native context depth.</p>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-outline font-mono">Fast Cloud API</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-outline">DeepMind</span>
+</div>
+</div>
+<!-- Provider 3 -->
+<div class="provider-card cursor-pointer p-4 rounded-xl bg-surface-container-lowest flex flex-col gap-3 relative overflow-hidden transition-all hover:bg-surface-container" onclick="selectProvider('Claude 3.5 Sonnet')">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[22px]">smart_toy</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Claude Sonnet</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">v3.5</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Anthropic state-of-the-art coding benchmark intelligence with fine artifact control.</p>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-outline font-mono">180 t/s</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-outline">Anthropic</span>
+</div>
+</div>
+</div>
+<!-- Model Parameters Tuning Sliders & Selectors -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface">Reasoning Effort Spectrum</label>
+<span class="font-code-sm text-code-sm text-primary font-mono">Deep Analytical</span>
+</div>
+<div class="grid grid-cols-4 gap-1 p-1 bg-surface-container rounded-lg">
+<button class="py-1.5 text-center font-code-sm text-code-sm text-outline hover:text-on-surface rounded" type="button">Low</button>
+<button class="py-1.5 text-center font-code-sm text-code-sm text-outline hover:text-on-surface rounded" type="button">Balanced</button>
+<button class="py-1.5 text-center font-code-sm text-code-sm bg-primary text-on-primary font-medium rounded shadow-sm" type="button">Deep</button>
+<button class="py-1.5 text-center font-code-sm text-code-sm text-outline hover:text-on-surface rounded" type="button">Exhaustive</button>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface">Context Buffer Window</label>
+<span class="font-code-sm text-code-sm text-secondary font-mono">128,000 tokens</span>
+</div>
+<div class="grid grid-cols-4 gap-1 p-1 bg-surface-container rounded-lg">
+<button class="py-1.5 text-center font-code-sm text-code-sm text-outline hover:text-on-surface rounded" type="button">32k</button>
+<button class="py-1.5 text-center font-code-sm text-code-sm text-outline hover:text-on-surface rounded" type="button">64k</button>
+<button class="py-1.5 text-center font-code-sm text-code-sm bg-secondary text-on-secondary font-medium rounded shadow-sm" type="button">128k</button>
+<button class="py-1.5 text-center font-code-sm text-code-sm text-outline hover:text-on-surface rounded" type="button">1M</button>
+</div>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface">Cognitive Temperature (Determinism vs Synthesis)</label>
+<span class="font-code-sm text-code-sm text-tertiary font-mono" id="temp-display">0.25 (Deterministic Code Architecture)</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-code-sm text-code-sm text-outline">0.0</span>
+<input class="w-full accent-primary bg-surface-container h-1.5 rounded-lg cursor-pointer" max="100" min="0" oninput="updateTemperature(this.value)" type="range" value="25"/>
+<span class="font-code-sm text-code-sm text-outline">1.0</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- STEP 3: CAPABILITIES & TOOL MATRIX (Initially Active in preview for rich visual impact) -->
+<section class="step-panel flex flex-col gap-6" id="step-panel-3">
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-6">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Capability Chips &amp; Tool Matrix</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Authorize low-level host capabilities and synthetic tools for Kite's execution loop.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-outline">MATRIX HEALTH:</span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-tertiary-container/30 text-tertiary font-mono">NOMINAL</span>
+</div>
+</div>
+<!-- Tool Selection Matrix Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+<!-- Tool 1 (Coding - Selected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container flex items-center justify-between group transition-all" onclick="toggleTool(this, 'Coding')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">code</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Coding</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">AST &amp; Refactor</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] check-icon">check_box</span>
+</div>
+<!-- Tool 2 (Terminal - Selected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container flex items-center justify-between group transition-all" onclick="toggleTool(this, 'Terminal')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Terminal</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">PTY Bash Shell</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px] check-icon">check_box</span>
+</div>
+<!-- Tool 3 (Git - Selected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container flex items-center justify-between group transition-all" onclick="toggleTool(this, 'Git')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[18px]">commit</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Git Ops</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">Branch &amp; Rebase</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-tertiary text-[20px] check-icon">check_box</span>
+</div>
+<!-- Tool 4 (File Access - Selected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container flex items-center justify-between group transition-all" onclick="toggleTool(this, 'File Access')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">File Access</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">Sandboxed I/O</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] check-icon">check_box</span>
+</div>
+<!-- Tool 5 (Testing - Selected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container flex items-center justify-between group transition-all" onclick="toggleTool(this, 'Testing')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">bug_report</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Testing</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">Pytest / Jest</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px] check-icon">check_box</span>
+</div>
+<!-- Tool 6 (Browser - Selected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container flex items-center justify-between group transition-all" onclick="toggleTool(this, 'Browser')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">globe</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Headless Web</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">Playwright DOM</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] check-icon">check_box</span>
+</div>
+<!-- Tool 7 (Research - Optional Unselected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container-lowest flex items-center justify-between group transition-all hover:bg-surface-container" onclick="toggleTool(this, 'Research')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">travel_explore</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-outline">Deep Research</div>
+<div class="font-code-sm text-code-sm text-outline">Arxiv &amp; Docs</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px] check-icon">check_box_outline_blank</span>
+</div>
+<!-- Tool 8 (Design - Optional Unselected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container-lowest flex items-center justify-between group transition-all hover:bg-surface-container" onclick="toggleTool(this, 'Design')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">palette</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-outline">Design Tokens</div>
+<div class="font-code-sm text-code-sm text-outline">Tailwind &amp; Figma</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px] check-icon">check_box_outline_blank</span>
+</div>
+<!-- Tool 9 (Web Access - Optional Unselected) -->
+<div class="tool-chip cursor-pointer p-3.5 rounded-xl bg-surface-container-lowest flex items-center justify-between group transition-all hover:bg-surface-container" onclick="toggleTool(this, 'Egress Access')">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-[18px]">wifi</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-outline">External Egress</div>
+<div class="font-code-sm text-code-sm text-outline">Unrestricted HTTP</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px] check-icon">check_box_outline_blank</span>
+</div>
+</div>
+<!-- Tool Telemetry Note -->
+<div class="p-3 bg-surface-container rounded-lg flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">lock</span>
+                      All activated capabilities run inside transient seccomp-bpf Linux namespaces.
+                    </span>
+<span class="font-label-sm text-label-sm text-outline font-mono">ENCLAVE_PIDS: MAX 32</span>
+</div>
+</div>
+</section>
+<!-- STEP 4: WORKSPACE & ENCLAVE ISOLATION -->
+<section class="step-panel hidden flex-col gap-6" id="step-panel-4">
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Workspace Mounting &amp; Memory Isolation</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Map filesystems, dedicated vector memory, and inter-agent communication channels.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Working Directory Root</label>
+<div class="p-2.5 bg-surface-container rounded-lg font-code-sm text-code-sm text-secondary flex items-center justify-between">
+<span class="truncate font-mono">/hyperion-core/distributed-mesh</span>
+<span class="material-symbols-outlined text-outline text-[16px] cursor-pointer">folder</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Episodic Vector Memory Enclave</label>
+<div class="p-2.5 bg-surface-container rounded-lg font-code-sm text-code-sm text-tertiary flex items-center justify-between">
+<span class="truncate font-mono">Qdrant Local IPC (8 GB Cache)</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary/20 text-tertiary">PERSISTENT</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Swarm Inter-Agent IPC Channel</label>
+<div class="p-2.5 bg-surface-container rounded-lg font-code-sm text-code-sm text-primary flex items-center justify-between">
+<span class="truncate font-mono">@kite (Hyperion Swarm IPC Bus)</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-primary/20 text-primary">BROADCAST</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface">Sandbox Security Policy</label>
+<div class="p-2.5 bg-surface-container rounded-lg font-code-sm text-code-sm text-on-surface flex items-center justify-between">
+<span class="truncate font-mono">Enclave Tier 3 (Airgapped Read/Write)</span>
+<span class="material-symbols-outlined text-tertiary text-[16px]">verified_user</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-[24px]">hub</span>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Autonomous Delegations</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Allow Kite to recruit sibling sub-agents for parallel unit testing.</div>
+</div>
+</div>
+<div class="w-10 h-6 bg-primary rounded-full p-1 flex items-center justify-end cursor-pointer">
+<div class="w-4 h-4 rounded-full bg-on-primary"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- STEP 5: PERSONALITY & SYSTEM DIRECTIVE -->
+<section class="step-panel hidden flex-col gap-6" id="step-panel-5">
+<div class="bg-surface-container-low p-6 rounded-xl flex flex-col gap-5">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">System Directive &amp; Operational Constitution</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Define core deterministic guidelines, code style rules, and safety boundaries.</p>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="px-2.5 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors" onclick="setPreset('Security')" type="button">Paranoid Security</button>
+<button class="px-2.5 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors" onclick="setPreset('Velocity')" type="button">High-Velocity</button>
+<button class="px-2.5 py-1 rounded bg-primary/20 text-primary font-code-sm text-code-sm font-medium" onclick="setPreset('Architect')" type="button">Reflective Architect</button>
+</div>
+</div>
+<div class="relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-inner">
+<div class="bg-surface-container px-4 py-2 flex items-center justify-between font-code-sm text-code-sm text-outline">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-tertiary">code</span>
+                        system_directive.xml
+                      </span>
+<span>UTF-8 • STRICT REASONING FORMAT</span>
+</div>
+<textarea class="w-full p-4 bg-transparent text-primary font-code-sm text-code-sm outline-none resize-none leading-relaxed" id="system-directive-editor" rows="7" spellcheck="false">&lt;role&gt;
+You are Kite, an autonomous distributed systems architect operating inside the Hyperion Mesh.
+Your mandate is zero-downtime micro-optimizations, kernel-level tracing, and multi-repo consistency.
+&lt;/role&gt;
+
+&lt;operational_heuristics&gt;
+- Never output unchecked terminal commands.
+- Verify AST invariants before committing code refactors.
+- Coordinate with sibling worker nodes via IPC broadcast channel @kite.
+&lt;/operational_heuristics&gt;</textarea>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                      Constitutional prompt token consumption: 84 tokens
+                    </span>
+<span class="text-outline">Max Context Overhead: 0.06%</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Actions Bar -->
+<div class="pt-4 bg-surface-container-lowest flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-body-md text-body-md transition-all flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[16px]">bookmark</span>
+<span>Save Draft</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-body-md text-body-md transition-all flex items-center gap-1.5" id="btn-prev-step" onclick="prevStep()" type="button">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+<span>Previous</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-body-md text-body-md transition-all flex items-center gap-1.5" id="btn-next-step" onclick="nextStep()" type="button">
+<span>Next Step</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+<!-- Bring Online CTA -->
+<button class="relative group px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-semibold transition-all shadow-lg flex items-center gap-2" onclick="bringAgentOnline()" type="button">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:rotate-12">bolt</span>
+<span id="cta-label">Bring Agent Online</span>
+<kbd class="font-code-sm text-code-sm bg-on-primary/20 text-on-primary px-1.5 py-0.5 rounded ml-1">⌘↵</kbd>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: LIVE DIGITAL EMPLOYEE PREVIEW CARD (approx 35%) -->
+<div class="lg:col-span-4 bg-surface-container-low p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
+<!-- Subtle Glow in Preview -->
+<div class="absolute -top-16 -right-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col gap-6 relative z-10">
+<!-- Header of Preview -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">LIVE OPERATIVE SYNTHESIS</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+</div>
+<span class="font-code-sm text-code-sm text-tertiary px-2 py-0.5 rounded bg-tertiary/10 font-mono">READY</span>
+</div>
+<!-- Central Holographic Card View -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center text-center gap-4 relative overflow-hidden shadow-xl">
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-tertiary"></div>
+<!-- Animated Avatar Frame -->
+<div class="relative mt-2">
+<div class="w-24 h-24 rounded-2xl bg-surface-container-high flex items-center justify-center relative overflow-hidden shadow-inner">
+<svg class="w-14 h-14 text-primary transition-all duration-300" fill="none" id="live-preview-svg" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24">
+<polygon points="12 2 2 7 12 12 22 7 12 2" stroke-linecap="round" stroke-linejoin="round"></polygon>
+<polyline points="2 17 12 22 22 17" stroke-linecap="round" stroke-linejoin="round"></polyline>
+<polyline points="2 12 12 17 22 12" stroke-linecap="round" stroke-linejoin="round"></polyline>
+</svg>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent pointer-events-none"></div>
+</div>
+<div class="absolute -bottom-2 -right-2 px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-mono flex items-center gap-1 shadow">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+<span>ONLINE</span>
+</div>
+</div>
+<!-- Operative Identity Callout -->
+<div class="flex flex-col gap-1 w-full">
+<div class="flex items-center justify-center gap-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface tracking-tight font-semibold" id="live-agent-name">Kite</h3>
+<span class="font-code-sm text-code-sm text-outline font-mono">OP-07</span>
+</div>
+<div class="font-body-md text-body-md text-secondary font-medium" id="live-agent-role">Staff Systems Architect &amp; DevOps Lead</div>
+</div>
+<!-- Intelligence Pipeline Chip -->
+<div class="w-full p-2.5 rounded-xl bg-surface-container flex items-center justify-between text-left">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">psychology</span>
+<div class="flex flex-col">
+<span class="font-code-sm text-code-sm text-on-surface font-medium truncate" id="live-agent-provider">Ollama Local (RTX 4090)</span>
+<span class="font-label-sm text-label-sm text-outline truncate">DeepSeek-R1 • 128k ctx • temp 0.25</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">tune</span>
+</div>
+<!-- Live Capabilities Badge Row -->
+<div class="w-full flex flex-col gap-2 text-left">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline">
+<span>ARMED CAPABILITIES</span>
+<span class="text-primary font-mono" id="live-tool-count">6 ACTIVE</span>
+</div>
+<div class="flex flex-wrap gap-1.5" id="live-tool-icons">
+<span class="px-2 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Coding
+                  </span>
+<span class="px-2 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Terminal
+                  </span>
+<span class="px-2 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>Git Ops
+                  </span>
+<span class="px-2 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>File I/O
+                  </span>
+<span class="px-2 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Testing
+                  </span>
+<span class="px-2 py-1 rounded bg-surface-container font-code-sm text-code-sm text-on-surface flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Headless
+                  </span>
+</div>
+</div>
+<!-- Operational Readiness Score Meter -->
+<div class="w-full flex flex-col gap-2 pt-2">
+<div class="flex items-center justify-between font-code-sm text-code-sm">
+<span class="text-on-surface-variant">Cognitive Readiness</span>
+<span class="text-tertiary font-semibold font-mono">94% Nominal</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[94%] rounded-full shadow-sm"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline">
+<span>Footprint: 5.2 GB VRAM</span>
+<span>Est. Cost: $0.00/hr</span>
+</div>
+</div>
+<!-- First Greeting Monospace Bubble -->
+<div class="w-full p-3 rounded-xl bg-surface-container text-left flex flex-col gap-1.5">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline">
+<span>INITIAL SYNTHESIZED GREETING</span>
+<span class="material-symbols-outlined text-[14px] text-tertiary">sms</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface leading-snug font-mono">
+                  “Ready to initialize. Swarm mesh connected. Awaiting initial task delegation.”
+                </p>
+</div>
+</div>
+<!-- Enclave Specs Quick Summary -->
+<div class="p-3 bg-surface-container-lowest rounded-xl flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+                Sandbox Enclave Tier 3 Active
+              </span>
+<span class="font-mono text-tertiary">AIRGAPPED</span>
+</div>
+</div>
+<!-- Bottom Footer Telemetry inside Right Panel -->
+<div class="pt-4 flex items-center justify-between text-outline font-label-sm text-label-sm">
+<span>SYNAPSE VER 2.4-PRO</span>
+<span>HYPERION CLUSTER SYNC</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  let currentStep = 3;
+  const totalSteps = 5;
+
+  const stepMeta = [
+    { title: "Identity", subtitle: "Operative Alias & Role Profile" },
+    { title: "Intelligence", subtitle: "Reasoning Substrate & Temperature" },
+    { title: "Capabilities", subtitle: "Synthesizing Tool Matrix & Perms" },
+    { title: "Workspace", subtitle: "Filesystem Mounting & IPC Bus" },
+    { title: "Directive", subtitle: "System Prompt & Guidelines" }
+  ];
+
+  function goToStep(stepIndex) {
+    if (stepIndex < 1 || stepIndex > totalSteps) return;
+    currentStep = stepIndex;
+
+    // Toggle panels
+    for (let i = 1; i <= totalSteps; i++) {
+      const panel = document.getElementById(`step-panel-${i}`);
+      const pill = document.getElementById(`step-pill-${i}`);
+      if (!panel || !pill) continue;
+
+      if (i === currentStep) {
+        panel.classList.remove('hidden');
+        panel.classList.add('flex');
+        pill.className = "step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-primary/10 text-primary";
+      } else if (i < currentStep) {
+        panel.classList.add('hidden');
+        panel.classList.remove('flex');
+        pill.className = "step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-surface-container-high text-on-surface";
+      } else {
+        panel.classList.add('hidden');
+        panel.classList.remove('flex');
+        pill.className = "step-nav-pill flex flex-col gap-1.5 p-2.5 rounded-lg text-left transition-all bg-surface-container-low text-outline hover:text-on-surface";
+      }
+    }
+
+    // Update Header Telemetry
+    const badge = document.getElementById('step-telemetry-badge');
+    if (badge) {
+      badge.textContent = `Step ${currentStep} of ${totalSteps} • ${stepMeta[currentStep - 1].subtitle}`;
+    }
+
+    // Prev Button State
+    const btnPrev = document.getElementById('btn-prev-step');
+    if (btnPrev) {
+      btnPrev.style.visibility = (currentStep === 1) ? 'hidden' : 'visible';
+    }
+
+    // Next Button State
+    const btnNext = document.getElementById('btn-next-step');
+    if (btnNext) {
+      if (currentStep === totalSteps) {
+        btnNext.classList.add('opacity-40', 'pointer-events-none');
+      } else {
+        btnNext.classList.remove('opacity-40', 'pointer-events-none');
+      }
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < totalSteps) goToStep(currentStep + 1);
+  }
+
+  function prevStep() {
+    if (currentStep > 1) goToStep(currentStep - 1);
+  }
+
+  function updateLivePreview() {
+    const nameInput = document.getElementById('input-agent-name');
+    const roleInput = document.getElementById('input-agent-role');
+    const liveName = document.getElementById('live-agent-name');
+    const liveRole = document.getElementById('live-agent-role');
+
+    if (nameInput && liveName) {
+      liveName.textContent = nameInput.value.trim() || 'Kite';
+    }
+    if (roleInput && liveRole) {
+      liveRole.textContent = roleInput.value.trim() || 'Systems Architect';
+    }
+  }
+
+  function selectProvider(providerName) {
+    const liveProvider = document.getElementById('live-agent-provider');
+    if (liveProvider) {
+      liveProvider.textContent = providerName;
+    }
+  }
+
+  function updateTemperature(val) {
+    const tempDisplay = document.getElementById('temp-display');
+    const normalized = (val / 100).toFixed(2);
+    if (tempDisplay) {
+      let desc = "Balanced Reasoning";
+      if (normalized < 0.3) desc = "Deterministic Code Architecture";
+      else if (normalized > 0.7) desc = "Creative Hypothesis Mode";
+      tempDisplay.textContent = `${normalized} (${desc})`;
+    }
+  }
+
+  function toggleTool(element, toolName) {
+    const icon = element.querySelector('.check-icon');
+    const isChecked = icon.textContent.includes('check_box') && !icon.textContent.includes('outline');
+
+    if (isChecked) {
+      icon.textContent = 'check_box_outline_blank';
+      icon.classList.remove('text-primary', 'text-secondary', 'text-tertiary');
+      icon.classList.add('text-outline');
+      element.classList.remove('bg-surface-container');
+      element.classList.add('bg-surface-container-lowest');
+    } else {
+      icon.textContent = 'check_box';
+      icon.classList.add('text-primary');
+      icon.classList.remove('text-outline');
+      element.classList.add('bg-surface-container');
+      element.classList.remove('bg-surface-container-lowest');
+    }
+    updateLiveToolCount();
+  }
+
+  function updateLiveToolCount() {
+    const chips = document.querySelectorAll('.tool-chip .check-icon');
+    let active = 0;
+    chips.forEach(c => {
+      if (c.textContent.trim() === 'check_box') active++;
+    });
+    const counter = document.getElementById('live-tool-count');
+    if (counter) {
+      counter.textContent = `${active} ACTIVE`;
+    }
+  }
+
+  const avatarSvgs = [
+    `<polygon points="12 2 2 7 12 12 22 7 12 2" stroke-linecap="round" stroke-linejoin="round"></polygon><polyline points="2 17 12 22 22 17" stroke-linecap="round" stroke-linejoin="round"></polyline><polyline points="2 12 12 17 22 12" stroke-linecap="round" stroke-linejoin="round"></polyline>`,
+    `<circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="3" x2="12" y2="7"></line><line x1="12" y1="17" x2="12" y2="21"></line>`,
+    `<path d="M12 2L2 19h20L12 2z"></path><circle cx="12" cy="13" r="2.5"></circle>`,
+    `<polygon points="12 2 19 8.5 19 15.5 12 22 5 15.5 5 8.5 12 2"></polygon>`
+  ];
+
+  function selectAvatar(index) {
+    const previewSvg = document.getElementById('live-preview-svg');
+    if (previewSvg && avatarSvgs[index]) {
+      previewSvg.innerHTML = avatarSvgs[index];
+    }
+    const options = document.querySelectorAll('.avatar-option');
+    options.forEach((opt, idx) => {
+      const badge = opt.querySelector('span:last-child');
+      if (idx === index) {
+        opt.classList.add('bg-surface-container');
+        opt.classList.remove('bg-surface-container-lowest');
+        if (badge) {
+          badge.textContent = 'Active';
+          badge.className = 'font-label-sm text-label-sm text-primary uppercase';
+        }
+      } else {
+        opt.classList.remove('bg-surface-container');
+        opt.classList.add('bg-surface-container-lowest');
+        if (badge) {
+          badge.textContent = 'Select';
+          badge.className = 'font-label-sm text-label-sm text-outline uppercase';
+        }
+      }
+    });
+  }
+
+  function setPreset(type) {
+    const editor = document.getElementById('system-directive-editor');
+    if (!editor) return;
+
+    if (type === 'Security') {
+      editor.value = `<role>\nYou are Kite, an autonomous security auditor and hardening operative.\nStrict zero-trust verification applies to every execution step.\n</role>\n\n<operational_heuristics>\n- Disallow any unauthenticated network egress.\n- Sanitize all AST mutations against taint-analysis rules.\n</operational_heuristics>`;
+    } else if (type === 'Velocity') {
+      editor.value = `<role>\nYou are Kite, a rapid prototyping and continuous build operative.\nPrioritize rapid test-driven iteration and micro-benchmarking.\n</role>\n\n<operational_heuristics>\n- Execute parallel pytest runners across 8 threads.\n- Push automatic ephemeral staging branches for each patch.\n</operational_heuristics>`;
+    } else {
+      editor.value = `<role>\nYou are Kite, an autonomous distributed systems architect operating inside the Hyperion Mesh.\nYour mandate is zero-downtime micro-optimizations, kernel-level tracing, and multi-repo consistency.\n</role>\n\n<operational_heuristics>\n- Never output unchecked terminal commands.\n- Verify AST invariants before committing code refactors.\n- Coordinate with sibling worker nodes via IPC broadcast channel @kite.\n</operational_heuristics>`;
+    }
+  }
+
+  function bringAgentOnline() {
+    const ctaLabel = document.getElementById('cta-label');
+    if (ctaLabel) {
+      ctaLabel.textContent = "Agent Provisioned & Online!";
+      setTimeout(() => {
+        ctaLabel.textContent = "Bring Agent Online";
+      }, 3500);
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      bringAgentOnline();
+    }
+  });
+
+  // Initialize view
+  goToStep(3);
+</script></main></div></body></html>

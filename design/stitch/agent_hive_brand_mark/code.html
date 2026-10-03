@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" fill="none">
+  <defs>
+    <linearGradient id="hiveGlow" x1="10" y1="10" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="50%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="innerHex" x1="30" y1="30" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Outer glowing hexagon network -->
+  <polygon points="60,8 102,32 102,80 60,104 18,80 18,32" stroke="url(#hiveGlow)" stroke-width="2.5" fill="#111116" filter="url(#softGlow)"/>
+  <!-- Inner geometric hive node nexus -->
+  <polygon points="60,26 88,42 88,74 60,90 32,74 32,42" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" fill="#18181F"/>
+  <!-- Central core pulse node -->
+  <polygon points="60,40 76,49 76,67 60,76 44,67 44,49" fill="url(#innerHex)"/>
+  <!-- Neural interconnect points -->
+  <circle cx="60" cy="8" r="3.5" fill="#8B5CF6"/>
+  <circle cx="102" cy="32" r="3" fill="#6366F1"/>
+  <circle cx="102" cy="80" r="3.5" fill="#06B6D4"/>
+  <circle cx="60" cy="104" r="3" fill="#06B6D4"/>
+  <circle cx="18" cy="80" r="3" fill="#6366F1"/>
+  <circle cx="18" cy="32" r="3.5" fill="#8B5CF6"/>
+  <circle cx="60" cy="58" r="4.5" fill="#FFFFFF"/>
+</svg>

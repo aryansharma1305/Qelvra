@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary-fixed-variant":"#004e5c","surface-tint":"#d0bcff","on-secondary":"#003640","outline":"#958ea0","tertiary-fixed":"#6ffbbe","surface-container-highest":"#353437","tertiary-container":"#00a572","secondary":"#4cd7f6","on-background":"#e5e1e4","on-error-container":"#ffdad6","primary":"#d0bcff","inverse-on-surface":"#313032","surface-container-low":"#1c1b1d","on-surface":"#e5e1e4","on-primary-fixed-variant":"#5516be","on-tertiary-fixed":"#002113","primary-container":"#a078ff","error-container":"#93000a","on-primary-container":"#340080","surface-variant":"#353437","on-primary":"#3c0091","on-error":"#690005","surface-bright":"#39393b","surface":"#131315","background":"#131315","surface-dim":"#131315","inverse-surface":"#e5e1e4","tertiary":"#4edea3","surface-container":"#201f22","secondary-container":"#03b5d3","surface-container-high":"#2a2a2c","primary-fixed":"#e9ddff","on-tertiary-container":"#00311f","inverse-primary":"#6d3bd7","on-primary-fixed":"#23005c","primary-fixed-dim":"#d0bcff","tertiary-fixed-dim":"#4edea3","error":"#ffb4ab","surface-container-lowest":"#0e0e10","on-secondary-container":"#00424e","on-tertiary-fixed-variant":"#005236","secondary-fixed":"#acedff","on-surface-variant":"#cbc3d7","secondary-fixed-dim":"#4cd7f6","outline-variant":"#494454","on-secondary-fixed":"#001f26","on-tertiary":"#003824"},borderRadius:{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},spacing:{"margin-lg":"2rem","space-sm":"0.5rem","space-xs":"0.25rem","gutter":"1rem","space-md":"0.75rem","space-xl":"2rem","space-lg":"1.25rem","margin-md":"1.5rem","gutter-lg":"1.5rem","margin":"1rem"},fontFamily:{"label-md":["JetBrains Mono"],"code-md":["JetBrains Mono"],"label-sm":["JetBrains Mono"],"code-sm":["JetBrains Mono"],"headline-lg-mobile":["Geist"],"display":["Geist"],"headline-lg":["Geist"],"body-md":["Geist"],"body-sm":["Geist"],"body-lg":["Geist"],"headline-md":["Geist"],"headline-sm":["Geist"]},fontSize:{"label-md":["11px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"500"}],"code-md":["13px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"400"}],"label-sm":["10px",{"lineHeight":"14px","letterSpacing":"0.06em","fontWeight":"500"}],"code-sm":["11px",{"lineHeight":"16px","letterSpacing":"0em","fontWeight":"400"}],"headline-lg-mobile":["22px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"600"}],"display":["36px",{"lineHeight":"44px","letterSpacing":"-0.03em","fontWeight":"600"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.025em","fontWeight":"600"}],"body-md":["13px",{"lineHeight":"20px","letterSpacing":"0em","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"18px","letterSpacing":"0.005em","fontWeight":"400"}],"body-lg":["15px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"400"}],"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.02em","fontWeight":"500"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"500"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface select-none antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 h-12 z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 flex items-center px-4 justify-between"><div class="flex items-center gap-space-md"><img alt="Agent Hive Brand Mark" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XPInVhy3rS6tZTmZQ0bOK1tlP43YVIOBsBEI7AAdNllZyBwwt3MR_d5CreLw8jfxCN9Jii2Uf5ncIjlbl-89Du3w2Q5eE83i1PcN0fFDDCCZ_OIn-PGv-55NX60uI-SUxGR3unRgp41DPtKpPoYfomGh9tglmAhloAPBOFnYB8R6ncvM6-1BtTEyk7luThlLb9VM7CbG13jpfJ3SEYS96l-G1XPythEwjSKanYtbbVSCdUEKaxJBlnTcV-"/><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">Agent Hive</span><span class="font-label-sm text-label-sm bg-surface-container-high text-primary px-1.5 py-0.5 rounded border border-outline-variant/40 uppercase">v2.4 Pro</span></div><div class="h-4 w-px bg-outline-variant/30 mx-1"></div><div class="flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface cursor-pointer"><span class="material-symbols-outlined text-[16px] text-secondary">hub</span><span class="font-code-sm text-code-sm font-medium">Hyperion Labs / Main</span><span class="material-symbols-outlined text-[14px]">expand_more</span></div><div class="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant/20 font-label-sm text-label-sm text-on-surface-variant"><span class="material-symbols-outlined text-[13px] text-tertiary">commit</span><span>main: synced</span></div></div><div class="flex-1 max-w-lg mx-6"><button class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/40 hover:border-primary/50 text-on-surface-variant transition-all" type="button"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-outline">search</span><span class="font-body-sm text-body-sm text-outline">Search telemetry, agents, or issue command...</span></div><kbd class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/50 px-1.5 py-0.5 rounded">⌘K</kbd></button></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-surface-container-low border border-tertiary-container/30"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><span class="font-code-sm text-code-sm text-tertiary-fixed">6 Agents Active</span></div><button class="relative p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">notifications</span><span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-secondary"></span></button><button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">graphic_eq</span></button><button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">settings</span></button><div class="h-4 w-px bg-outline-variant/30"></div><div class="flex items-center gap-2"><img alt="Aryan's Profile Avatar" class="w-7 h-7 rounded-full object-cover ring-1 ring-outline-variant/40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAexHSh-z5s8OOw_cyGFlSAMTcijsKw3n0VYVtPS0ZlsaHp2eR3gTHWVezgnYTuXB0cEruOP_za0OHcIu6Cgcc5tmztecIKSmvGpC1Ov8CCZKQ1U8nW7Dx4nDVu8qkgZiJrAGn6tb8FwAlnhqp9aqwZdUGX4qYAxe91Ec9CXnLfUAyxbY9nWf0Feia6kRSW4bHYJtbwgGg9oGf-tJagv95LTtINDstip3HWkS1hFYMjLudnKvGkQL8GCw"/><span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer">arrow_drop_down</span></div></div></header><aside class="fixed left-0 top-12 bottom-0 w-56 bg-surface-container-lowest border-r border-outline-variant/30 z-40 flex flex-col justify-between pt-3 pb-3"><div class="flex flex-col gap-1 px-2"><div class="px-2.5 pb-2 text-outline font-label-sm text-label-sm uppercase tracking-wider">Workspace Nodes</div><nav class="flex flex-col gap-0.5" data-active-classes="bg-primary/10 text-primary font-medium border-l-2 border-primary shadow-[inset_0_0_12px_rgba(208,188,255,0.06)]"><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="home" href="#"><span class="font-body-sm text-body-sm">Home</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="agents" href="#"><span class="font-body-sm text-body-sm">Agents</span><span class="font-label-sm text-label-sm px-1.5 py-0.2 bg-primary/20 text-primary rounded">6</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="agent-profile" href="#"><span class="font-body-sm text-body-sm">Agent Profile</span><span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="tasks" href="#"><span class="font-body-sm text-body-sm">Tasks</span><span class="font-label-sm text-label-sm px-1.5 py-0.2 bg-surface-container-high text-on-surface-variant rounded">14</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="terminal" href="#"><span class="font-body-sm text-body-sm">Terminal</span><span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="activity" href="#"><span class="font-body-sm text-body-sm">Activity</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="files" href="#"><span class="font-body-sm text-body-sm">Files</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="memory" href="#"><span class="font-body-sm text-body-sm">Memory</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="automations" href="#"><span class="font-body-sm text-body-sm">Automations</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="analytics" href="#"><span class="font-body-sm text-body-sm">Analytics</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-r text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="font-body-sm text-body-sm">Settings</span></a></nav></div><div class="px-3 pt-3 border-t border-outline-variant/30 flex flex-col gap-2 bg-surface-container-lowest"><div class="flex items-center justify-between font-label-sm text-label-sm text-outline"><span class="uppercase tracking-wider">Node Cluster</span><span class="text-tertiary flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>ONLINE</span></div><div class="bg-surface-container-low p-2 rounded border border-outline-variant/30 flex flex-col gap-1.5"><div class="flex justify-between font-code-sm text-code-sm"><span class="text-on-surface-variant">GPU Load</span><span class="text-secondary font-medium">42%</span></div><div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-secondary w-[42%]"></div></div><div class="flex justify-between font-code-sm text-code-sm pt-0.5"><span class="text-on-surface-variant">VRAM</span><span class="text-on-surface font-medium">18.4 / 24 GB</span></div><div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-primary-container w-[76%]"></div></div></div><div class="flex items-center justify-between text-outline font-label-sm text-label-sm px-0.5"><span>Latency: 14ms</span><span>vLLM 0.6.3</span></div></div></aside><div class="pl-56"><main class="relative pt-12 min-h-screen bg-background w-full overflow-x-hidden"><div class="flex flex-col w-full text-on-surface">
+<div class="w-full flex flex-col gap-3 p-4 lg:p-6 bg-surface-container-lowest">
+<!-- SUB-HEADER / TERMINAL BREADCRUMB & CONTROLS -->
+<div class="flex flex-wrap items-center justify-between gap-3 bg-surface-container-low px-4 py-2.5 rounded-lg shadow-sm">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 text-outline font-label-sm text-label-sm">
+<span>Workspace</span>
+<span class="text-outline-variant">/</span>
+<span>Terminal</span>
+<span class="text-outline-variant">/</span>
+<span class="text-secondary font-code-sm text-code-sm font-medium">Swarm Console</span>
+</div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-tertiary">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+<span>6 PTY Sessions Active</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<!-- Layout toggle segmented control -->
+<div class="flex items-center p-0.5 rounded bg-surface-container-lowest">
+<button class="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-all" id="btn-single-view" type="button">
+            Single
+          </button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high text-primary font-label-sm text-label-sm shadow-sm flex items-center gap-1 transition-all" id="btn-split-view" type="button">
+<span class="material-symbols-outlined text-[13px]">view_column</span>
+            Split View (Dual)
+          </button>
+<button class="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-all" type="button">
+            Grid (4x)
+          </button>
+</div>
+<div class="h-4 w-px bg-surface-container-highest"></div>
+<!-- Quick actions -->
+<div class="flex items-center gap-1">
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors" title="Pause session execution" type="button">
+<span class="material-symbols-outlined text-[14px]">pause</span>
+<span>Pause All</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-error font-label-sm text-label-sm transition-colors" title="Send SIGTERM to active swarms" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+<span>Kill</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors" id="btn-clear-buffer" title="Clear terminal screen" type="button">
+<span class="material-symbols-outlined text-[14px]">backspace</span>
+<span>Clear (⌘K)</span>
+</button>
+<button class="p-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-on-surface transition-colors" title="Pop out into separate window" type="button">
+<span class="material-symbols-outlined text-[15px]">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+<!-- HORIZONTAL AGENT TABS BAR -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 select-none">
+<!-- Active Tab: Nova -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-high shadow-md cursor-pointer group">
+<div class="w-5 h-5 rounded-md bg-primary/20 flex items-center justify-center text-primary font-label-sm text-label-sm font-semibold">
+          N
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-medium text-on-surface">Nova</span>
+<span class="font-label-sm text-label-sm px-1 rounded bg-primary/10 text-primary">Frontend</span>
+</div>
+<div class="flex items-center gap-2 font-code-sm text-code-sm text-outline">
+<span class="flex items-center gap-1 text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+              38% CPU
+            </span>
+<span>•</span>
+<span>PID: 89412</span>
+</div>
+</div>
+<button class="ml-1 text-outline-variant group-hover:text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<!-- Tab 2: Scout (QA / E2E) -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors group">
+<div class="w-5 h-5 rounded-md bg-secondary/20 flex items-center justify-center text-secondary font-label-sm text-label-sm font-semibold">
+          S
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-body-md text-body-md font-medium text-on-surface-variant">Scout</span>
+<span class="font-label-sm text-label-sm px-1 rounded bg-secondary/10 text-secondary">QA / E2E</span>
+</div>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Testing • PID: 89422</span>
+</div>
+</div>
+<button class="ml-1 text-outline-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<!-- Tab 3: Michael -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors group">
+<div class="w-5 h-5 rounded-md bg-primary-container/20 flex items-center justify-center text-primary-fixed font-label-sm text-label-sm font-semibold">
+          M
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-body-md text-body-md text-on-surface-variant">Michael</span>
+<span class="font-label-sm text-label-sm px-1 rounded bg-surface-container-highest text-outline">Orchestrator</span>
+</div>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>Thinking • 42ms</span>
+</div>
+</div>
+<button class="ml-1 text-outline-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<!-- Tab 4: Atlas -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors group">
+<div class="w-5 h-5 rounded-md bg-surface-container-highest flex items-center justify-center text-outline font-label-sm text-label-sm font-semibold">
+          A
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-body-md text-body-md text-on-surface-variant">Atlas</span>
+<span class="font-label-sm text-label-sm px-1 rounded bg-surface-container-highest text-outline">Backend</span>
+</div>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Redis Stream</span>
+</div>
+</div>
+<button class="ml-1 text-outline-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<!-- Tab 5: Pixel -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors group">
+<div class="w-5 h-5 rounded-md bg-surface-container-highest flex items-center justify-center text-outline font-label-sm text-label-sm font-semibold">
+          P
+        </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-body-md text-body-md text-on-surface-variant">Pixel</span>
+<span class="font-label-sm text-label-sm px-1 rounded bg-surface-container-highest text-outline">Design System</span>
+</div>
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Reviewing tokens</span>
+</div>
+</div>
+<button class="ml-1 text-outline-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<!-- New Session Button -->
+<button class="flex items-center gap-1 px-3 py-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>New Agent Session</span>
+</button>
+</div>
+<!-- FLOATING TELEMETRY STRIP -->
+<div class="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex items-center gap-3 min-w-0">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary/10 text-primary font-label-sm text-label-sm uppercase">
+<span class="material-symbols-outlined text-[13px]">bolt</span>
+<span>Task in Flight</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface truncate">
+          #TSK-8924 • Refactoring component hierarchy &amp; fluid navigation tokens
+        </span>
+</div>
+<div class="flex items-center gap-4">
+<!-- Elapsed counter -->
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
+<span class="material-symbols-outlined text-[14px] text-secondary">schedule</span>
+<span class="text-on-surface" id="elapsed-counter">18m 42s</span>
+</div>
+<div class="h-3.5 w-px bg-surface-container-highest"></div>
+<!-- LLM Engine -->
+<div class="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
+<span class="material-symbols-outlined text-[14px] text-primary">memory</span>
+<span class="text-on-surface">Gemini 2.5 Pro (RTX 4090 vLLM)</span>
+</div>
+<div class="h-3.5 w-px bg-surface-container-highest"></div>
+<!-- Context window progress gauge -->
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-outline">Context:</span>
+<div class="w-24 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 43%;"></div>
+</div>
+<span class="font-code-sm text-code-sm text-secondary">55.2k / 128k (43%)</span>
+</div>
+<div class="h-3.5 w-px bg-surface-container-highest"></div>
+<!-- Zero egress enclave badge -->
+<div class="flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[12px]">verified_user</span>
+<span>Zero-Egress Enclave</span>
+</div>
+</div>
+</div>
+<!-- MAIN WORKSPACE GRID: DUAL SPLIT TERMINALS + TELEMETRY INSPECTOR -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-3 items-start">
+<!-- LEFT & CENTER PANE: SPLIT TERMINALS (8 COLS) -->
+<div class="xl:col-span-8 flex flex-col gap-3" id="terminals-container">
+<!-- DUAL SPLIT TERMINAL WORKSPACE -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+<!-- PANE 1: NOVA (FRONTEND) -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest shadow-xl overflow-hidden min-h-[460px]">
+<!-- Terminal Title Bar -->
+<div class="flex items-center justify-between px-3.5 py-2 bg-surface-container-low select-none">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-error/70"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary/50"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary/70"></span>
+</div>
+<div class="flex items-center gap-1.5 pl-2 font-code-sm text-code-sm text-outline truncate">
+<span class="text-primary font-medium">nova</span>
+<span class="text-outline-variant">@</span>
+<span>hyperion-01:~/frontend-v2</span>
+</div>
+</div>
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-outline">
+<span class="text-tertiary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                  PTY /dev/pts/4
+                </span>
+<span>120x36</span>
+</div>
+</div>
+<!-- Terminal Output Logs -->
+<div class="p-3.5 font-code-sm text-code-sm leading-relaxed overflow-y-auto max-h-[410px] space-y-1.5 text-on-surface-variant bg-surface-container-lowest/80" id="nova-terminal-body">
+<div class="text-outline">$ cd /hyperion-core/frontend-v2 &amp;&amp; pnpm run dev --turbo</div>
+<div class="text-primary font-medium">&gt; hyperion-frontend@2.4.0 dev</div>
+<div class="text-secondary">&gt; vite --host 0.0.0.0 --port 3000 --strictPort</div>
+<div class="text-outline pt-1">[vite] Pre-bundling dependencies:</div>
+<div class="text-on-surface pl-3">@floating-ui/react, framer-motion, lucide-react, tailwind-merge</div>
+<div class="text-tertiary flex items-center gap-1 font-medium">
+<span>✓</span> Ready in 284ms.
+              </div>
+<div class="flex items-center gap-2 text-outline">
+<span class="text-secondary font-medium">➜</span>
+<span>Local:</span>
+<span class="text-primary underline">http://localhost:3000/</span>
+</div>
+<div class="flex items-center gap-2 text-outline">
+<span class="text-secondary font-medium">➜</span>
+<span>Network:</span>
+<span class="text-on-surface">http://192.168.1.140:3000/</span>
+</div>
+<div class="text-tertiary">✓ Swarm IPC socket connected on port 8088 (latency: 1.2ms)</div>
+<div class="text-tertiary">✓ Dashboard navigation tree mounted (48 nodes, 6 virtual lists)</div>
+<div class="p-2 rounded bg-surface-container-low text-primary flex items-start gap-2 my-2">
+<span class="material-symbols-outlined text-[15px] text-primary mt-0.5">smart_toy</span>
+<div>
+<div class="font-medium text-primary">Nova (Autonomous Agent):</div>
+<div class="text-on-surface">Inspecting /src/components/NavigationRail.tsx for AST mutations...</div>
+</div>
+</div>
+<div class="text-outline">$ ast-grep --pattern 'const $X = styled(...)' --rewrite 'const $X = tw.div(...)'</div>
+<div class="text-tertiary">✓ Replaced 14 instances in SidebarNav.tsx with zero type errors</div>
+<div class="text-outline">$ git diff --stat</div>
+<div class="pl-2 space-y-0.5 text-outline">
+<div class="text-on-surface">src/components/NavigationRail.tsx | <span class="text-tertiary">64 ++++++++++++++++++</span></div>
+<div class="text-on-surface">src/styles/tokens.json            | <span class="text-tertiary">12 +++</span><span class="text-error">-</span></div>
+<div class="text-on-surface">src/hooks/useKeyCommand.ts        | <span class="text-tertiary">38 +++++++++++</span></div>
+<div class="text-outline-variant">3 files changed, 114 insertions(+), 19 deletions(-)</div>
+</div>
+<div class="text-secondary">Nova: Compiling Tailwind safelist directives and running WebKit attestation...</div>
+<div class="text-outline">Nova: All tests passing on Chromium headless. Waiting on Scout for Safari 17.2 compositor check.</div>
+<div class="flex items-center gap-1 text-primary pt-1 font-medium">
+<span>nova-agent:~/frontend-v2$</span>
+<span class="w-2 h-4 bg-primary inline-block animate-pulse"></span>
+</div>
+</div>
+</div>
+<!-- PANE 2: SCOUT (QA / E2E TESTER) -->
+<div class="flex flex-col rounded-xl bg-surface-container-lowest shadow-xl overflow-hidden min-h-[460px]" id="scout-split-pane">
+<!-- Terminal Title Bar -->
+<div class="flex items-center justify-between px-3.5 py-2 bg-surface-container-low select-none">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+</div>
+<div class="flex items-center gap-1.5 pl-2 font-code-sm text-code-sm text-outline truncate">
+<span class="text-secondary font-medium">scout</span>
+<span class="text-outline-variant">@</span>
+<span>hyperion-01:~/e2e-tests</span>
+</div>
+</div>
+<div class="flex items-center gap-2 font-label-sm text-label-sm text-secondary">
+<span class="px-1.5 py-0.5 rounded bg-secondary/10">Coupled Session</span>
+</div>
+</div>
+<!-- Scout Logs -->
+<div class="p-3.5 font-code-sm text-code-sm leading-relaxed overflow-y-auto max-h-[410px] space-y-1.5 text-on-surface-variant bg-surface-container-lowest/80">
+<div class="text-outline">$ npx playwright test --project=webkit --headed=false</div>
+<div class="text-outline">Running 186 tests using 4 workers</div>
+<div class="text-tertiary flex items-center gap-1.5">
+<span>✓</span>
+<span class="text-outline">[webkit]</span>
+<span>› auth/passkey.spec.ts:42:5 › biometric WebAuthn prompt</span>
+<span class="text-outline-variant">(1.2s)</span>
+</div>
+<div class="text-tertiary flex items-center gap-1.5">
+<span>✓</span>
+<span class="text-outline">[webkit]</span>
+<span>› nav/sidebar.spec.ts:18:3 › keyboard navigation ⌘K, ⌘1-9</span>
+<span class="text-outline-variant">(840ms)</span>
+</div>
+<div class="p-2 rounded bg-surface-container-low text-secondary flex items-start gap-2 my-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary mt-0.5">warning</span>
+<div>
+<div class="font-medium text-secondary">Compositor Warning Detected:</div>
+<div class="text-on-surface-variant font-code-sm text-code-sm">
+                    nav/glass-blur.spec.ts:74:5 › backdrop-filter Safari 17.2 compositing glitch
+                  </div>
+<div class="text-outline text-label-sm font-label-sm pt-0.5">└─ Retrying fixture with hardware rasterization flag...</div>
+</div>
+</div>
+<div class="text-secondary">Scout: Detected sub-pixel blur artifact on Safari 17.2; reporting trace telemetry to Nova agent.</div>
+<div class="text-outline">$ git commit -m "fix(qa): log WebKit compositor regression fixture #104"</div>
+<div class="text-tertiary">✓ Created commit 4b189cc on branch qa/webkit-matrix</div>
+<div class="text-outline">Scout: Monitoring port 3000 HMR re-render latency...</div>
+<div class="flex items-center gap-1 text-secondary pt-1 font-medium">
+<span>scout-agent:~/e2e-tests$</span>
+<span class="w-2 h-4 bg-secondary inline-block animate-pulse"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- TERMINAL INTERVENTION / COMMAND PROMPT BAR -->
+<div class="flex flex-col gap-2 p-3 rounded-xl bg-surface-container-low shadow-lg">
+<div class="flex items-center justify-between text-outline font-label-sm text-label-sm px-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary">terminal</span>
+<span>Human Command &amp; Steering Intervention</span>
+</div>
+<div class="flex items-center gap-3">
+<span>Target: <strong class="text-primary font-medium">Nova (Frontend)</strong></span>
+<span class="text-outline-variant">|</span>
+<kbd class="px-1.5 py-0.2 rounded bg-surface-container text-outline">ESC to abort</kbd>
+</div>
+</div>
+<form class="flex items-center gap-2" id="terminal-command-form">
+<div class="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-lowest focus-within:ring-1 focus-within:ring-primary transition-all">
+<span class="font-code-sm text-code-sm text-primary font-semibold select-none">nova-agent:~$</span>
+<input class="w-full bg-transparent font-code-sm text-code-sm text-on-surface placeholder:text-outline focus:outline-none" id="terminal-input" placeholder="Type prompt, bash command, or ⌘K to pause and guide Nova..." type="text"/>
+</div>
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm font-medium hover:bg-primary-container transition-all shadow-md active:scale-95" type="submit">
+<span>Execute</span>
+<span class="material-symbols-outlined text-[16px]">subdirectory_arrow_left</span>
+</button>
+</form>
+<div class="flex items-center justify-between px-1 pt-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-outline">Quick prompts:</span>
+<button class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors" onclick="document.getElementById('terminal-input').value='Revert last AST modification';" type="button">
+                Revert last AST
+              </button>
+<button class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors" onclick="document.getElementById('terminal-input').value='Run bundle analyzer and report chunk weights';" type="button">
+                Analyze chunks
+              </button>
+<button class="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors" onclick="document.getElementById('terminal-input').value='Apply hardware-accelerated will-change: transform to glass blur';" type="button">
+                Fix WebKit blur
+              </button>
+</div>
+<div class="flex items-center gap-2 font-code-sm text-code-sm text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Autonomous Mode: Enabled</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: COLLAPSIBLE TELEMETRY & LIVE AGENT CONTEXT (4 COLS) -->
+<div class="xl:col-span-4 flex flex-col gap-3">
+<!-- AGENT PROFILE & LIVE STATUS CARD -->
+<div class="p-4 rounded-xl bg-surface-container-low shadow-md flex flex-col gap-3.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img alt="Nova Agent Avatar" class="w-10 h-10 rounded-lg object-cover ring-1 ring-primary/40 shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1X-gWG5cUbKyle7KnRgx_mkiMuaciOj5eaeAdDtCQcZTO2yPdEKkYqtC8FXSHDgB23mVYCI9OUkl68S37NZJC3fxl10nLlrPxpjLTz_V-L8II-_qCh3LgKCcu2kM36rpyGRLclGx7Zb96yIJSJz7YVT8drIbe2kpNdBuj_eZW_u2EpE5-znK7c9jFQo4wDPj5M_mkPe97fYtPDcofRNnTZ9dv-bgeVbC7XPE8lm55x58Wc24RD6t9ZrE4o"/>
+<span class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-secondary ring-2 ring-surface-container-low flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-on-secondary"></span>
+</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">Nova</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.2 rounded bg-primary/20 text-primary">OP-01</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Principal Frontend Autonomous Agent</span>
+</div>
+</div>
+<button class="p-1 rounded hover:bg-surface-container-high text-outline hover:text-on-surface transition-colors" title="Toggle telemetry panel" type="button">
+<span class="material-symbols-outlined text-[18px]">dock_to_right</span>
+</button>
+</div>
+<!-- Current Task Progress -->
+<div class="p-3 rounded-lg bg-surface-container-lowest flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-outline uppercase tracking-wider">Active Mission</span>
+<span class="text-primary font-medium">72% Completed</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium leading-snug">
+              Redesign dashboard navigation hierarchy &amp; inject live telemetry overlay
+            </p>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden mt-1">
+<div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full" style="width: 72%;"></div>
+</div>
+<div class="flex justify-between items-center font-code-sm text-code-sm text-outline pt-1">
+<span>Phase: AST Mutation</span>
+<span>ETA: ~4m 10s</span>
+</div>
+</div>
+<!-- Recent Autonomous Actions -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline uppercase tracking-wider">
+<span>Recent Tool Actions</span>
+<span class="text-tertiary">3 Verified</span>
+</div>
+<div class="space-y-1.5 font-code-sm text-code-sm">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-tertiary">check_circle</span>
+<span class="text-on-surface">ast_grep.refactor</span>
+</div>
+<span class="text-outline">1m ago</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-secondary">edit_note</span>
+<span class="text-on-surface">file_system.write</span>
+</div>
+<span class="text-outline">3m ago</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary">commit</span>
+<span class="text-on-surface">git.commit_push</span>
+</div>
+<span class="text-outline">8m ago</span>
+</div>
+</div>
+</div>
+<!-- Files Touched & Staged -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline uppercase tracking-wider">
+<span>Files Touched (3)</span>
+<span class="text-secondary font-mono">+114 / -19</span>
+</div>
+<div class="space-y-1 font-code-sm text-code-sm">
+<div class="flex items-center justify-between px-2 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-[14px] text-primary">description</span>
+<span class="truncate text-on-surface">NavigationRail.tsx</span>
+</div>
+<span class="text-tertiary text-label-sm font-label-sm">+64 -18</span>
+</div>
+<div class="flex items-center justify-between px-2 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-[14px] text-secondary">data_object</span>
+<span class="truncate text-on-surface">tokens.json</span>
+</div>
+<span class="text-secondary text-label-sm font-label-sm">+12 -4</span>
+</div>
+<div class="flex items-center justify-between px-2 py-1.5 rounded bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-1.5 truncate">
+<span class="material-symbols-outlined text-[14px] text-tertiary">javascript</span>
+<span class="truncate text-on-surface">useKeyCommand.ts</span>
+</div>
+<span class="text-tertiary text-label-sm font-label-sm">+38 -0</span>
+</div>
+</div>
+</div>
+<!-- Inter-Agent Swarm Bus Logs -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline uppercase tracking-wider">
+<span>Inter-Agent IPC Feed</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest space-y-2 font-code-sm text-code-sm">
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-label-sm font-label-sm">
+<span class="text-primary font-semibold">Michael (Orchestrator)</span>
+<span class="text-outline">10:41:02</span>
+</div>
+<p class="text-on-surface-variant text-body-sm font-body-sm">
+                  @Nova, ensure glowing status rings use hardware CSS transforms for 60fps budget.
+                </p>
+</div>
+<div class="h-px bg-surface-container-high"></div>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-label-sm font-label-sm">
+<span class="text-secondary font-semibold">Nova (Frontend)</span>
+<span class="text-outline">10:41:18</span>
+</div>
+<p class="text-on-surface-variant text-body-sm font-body-sm">
+                  Applied <code class="text-primary">will-change: transform</code>. Tested at 60fps on local headless.
+                </p>
+</div>
+<div class="h-px bg-surface-container-high"></div>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5 text-label-sm font-label-sm">
+<span class="text-tertiary font-semibold">Scout (QA Lead)</span>
+<span class="text-outline">10:42:04</span>
+</div>
+<p class="text-on-surface-variant text-body-sm font-body-sm">
+                  @Nova, sub-pixel blur glitch detected on Safari WebKit &gt; 20px blur radius. Patch queued.
+                </p>
+</div>
+</div>
+</div>
+<!-- Hardware & Compute Telemetry -->
+<div class="p-3 rounded-lg bg-surface-container-lowest flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm text-outline">
+<span class="uppercase">Node Hardware Telemetry</span>
+<span class="text-tertiary font-code-sm text-code-sm">CUDA 12.4</span>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1 font-code-sm text-code-sm">
+<div class="p-2 rounded bg-surface-container flex flex-col gap-1">
+<span class="text-outline font-label-sm text-label-sm">GPU Accelerator</span>
+<span class="text-on-surface font-semibold">RTX 4090</span>
+<span class="text-secondary text-label-sm font-label-sm">38% Load • 46°C</span>
+</div>
+<div class="p-2 rounded bg-surface-container flex flex-col gap-1">
+<span class="text-outline font-label-sm text-label-sm">VRAM Allocation</span>
+<span class="text-on-surface font-semibold">4.8 / 24 GB</span>
+<span class="text-tertiary text-label-sm font-label-sm">$0.00 Local Compute</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Elapsed live timer
+  let seconds = 1122;
+  const timerElem = document.getElementById('elapsed-counter');
+  if (timerElem) {
+    setInterval(() => {
+      seconds++;
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      timerElem.textContent = `${m}m ${s < 10 ? '0' : ''}${s}s`;
+    }, 1000);
+  }
+
+  // Interactive Terminal Form Submission
+  const termForm = document.getElementById('terminal-command-form');
+  const termInput = document.getElementById('terminal-input');
+  const novaBody = document.getElementById('nova-terminal-body');
+
+  if (termForm && termInput && novaBody) {
+    termForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = termInput.value.trim();
+      if (!val) return;
+
+      const userCmd = document.createElement('div');
+      userCmd.className = 'text-primary font-medium pt-1';
+      userCmd.textContent = `nova-agent:~$ ${val}`;
+      novaBody.appendChild(userCmd);
+
+      const resp = document.createElement('div');
+      resp.className = 'text-tertiary flex items-center gap-1.5';
+      resp.innerHTML = `<span>✓</span><span>Dispatched command to Nova agent worker [PID: 89412]</span>`;
+      novaBody.appendChild(resp);
+
+      termInput.value = '';
+      novaBody.scrollTop = novaBody.scrollHeight;
+    });
+  }
+
+  // Clear Terminal Button
+  const clearBtn = document.getElementById('btn-clear-buffer');
+  if (clearBtn && novaBody) {
+    clearBtn.addEventListener('click', () => {
+      novaBody.innerHTML = `
+        <div class="text-outline">Screen cleared. Swarm socket connected on port 8088.</div>
+        <div class="flex items-center gap-1 text-primary pt-1 font-medium">
+          <span>nova-agent:~/frontend-v2$</span>
+          <span class="w-2 h-4 bg-primary inline-block animate-pulse"></span>
+        </div>
+      `;
+    });
+  }
+
+  // View switchers
+  const splitBtn = document.getElementById('btn-split-view');
+  const singleBtn = document.getElementById('btn-single-view');
+  const scoutPane = document.getElementById('scout-split-pane');
+
+  if (singleBtn && splitBtn && scoutPane) {
+    singleBtn.addEventListener('click', () => {
+      scoutPane.classList.add('hidden');
+      singleBtn.classList.add('bg-surface-container-high', 'text-primary');
+      splitBtn.classList.remove('bg-surface-container-high', 'text-primary');
+      splitBtn.classList.add('text-outline');
+    });
+
+    splitBtn.addEventListener('click', () => {
+      scoutPane.classList.remove('hidden');
+      splitBtn.classList.add('bg-surface-container-high', 'text-primary');
+      splitBtn.classList.remove('text-outline');
+      singleBtn.classList.remove('bg-surface-container-high', 'text-primary');
+      singleBtn.classList.add('text-outline');
+    });
+  }
+</script></main></div></body></html>

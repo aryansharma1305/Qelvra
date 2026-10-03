@@ -1,0 +1,66 @@
+import { resolve } from "node:path";
+import { z } from "zod";
+
+const LOOPBACK_HOSTS = new Set(["127.0.0.1", "::1", "localhost"]);
+
+const EnvSchema = z.object({
+  HOST: z.string().trim().min(1).default("127.0.0.1"),
+  PORT: z.coerce.number().int().min(1).max(65_535).default(3001),
+  /** Comma-separated list of browser origins allowed by CORS. */
+  WEB_ORIGIN: z
+    .string()
+    .default("http://127.0.0.1:5173")
+    .transform((value) =>
+      value
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean),
+    )
+    .pipe(z.array(z.url({ protocol: /^https?$/ })).min(1)),
+  /** Directory scratch PTY sessions may start in (and below). Defaults to the server's cwd. */
+  WORKSPACE_ROOT: z.string().trim().min(1).optional(),
+  /** Directory for server-owned state (agents.json and agent workspaces). Defaults to ./.qelvra. */
+  DATA_DIR: z.string().trim().min(1).optional(),
+  LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
+  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+});
+
+export interface ServerConfig {
+  host: string;
+  port: number;
+  webOrigins: readonly string[];
+  workspaceRoot: string;
+  dataDir: string;
+  logLevel: z.infer<typeof EnvSchema>["LOG_LEVEL"];
+  isProduction: boolean;
+}
+
+export class ConfigError extends Error {
+  override name = "ConfigError";
+}
+
+/** Parses configuration from environment variables; throws ConfigError on invalid input. */
+export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
+  const parsed = EnvSchema.safeParse(env);
+  if (!parsed.success) {
+    const details = parsed.error.issues
+      .map((issue) => `${issue.path.join(".") || "env"}: ${issue.message}`)
+      .join("; ");
+    throw new ConfigError(`Invalid server configuration: ${details}`);
+  }
+  const { HOST, PORT, WEB_ORIGIN, WORKSPACE_ROOT, DATA_DIR, LOG_LEVEL, NODE_ENV } = parsed.data;
+  return {
+    host: HOST,
+    port: PORT,
+    // Origins are compared exactly by CORS, so normalise away trailing slashes.
+    webOrigins: WEB_ORIGIN.map((origin) => new URL(origin).origin),
+    workspaceRoot: resolve(WORKSPACE_ROOT ?? process.cwd()),
+    dataDir: resolve(DATA_DIR ?? ".qelvra"),
+    logLevel: LOG_LEVEL,
+    isProduction: NODE_ENV === "production",
+  };
+}
+
+export function isLoopbackHost(host: string): boolean {
+  return LOOPBACK_HOSTS.has(host);
+}

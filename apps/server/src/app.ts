@@ -1,0 +1,109 @@
+import Fastify, { type FastifyInstance } from "fastify";
+import type { ServerConfig } from "./config/env.js";
+import { AgentWorkspaceManager } from "./workspaces/agent-workspace-manager.js";
+import { join } from "node:path";
+import { AgentRegistry, AgentRuntimeManager } from "./agents/index.js";
+import { registerCors } from "./plugins/cors.js";
+import { registerErrorHandling } from "./plugins/errors.js";
+import { PtyManager } from "./pty/index.js";
+import { registerAgentRoutes } from "./routes/agents.js";
+import { registerHealthRoutes } from "./routes/health.js";
+import { SERVER_VERSION } from "./version.js";
+import { registerTerminalGateway } from "./websocket/terminal-gateway.js";
+
+declare module "fastify" {
+  interface FastifyInstance {
+    /** Owns all PTY processes; terminated when the app closes. */
+    pty: PtyManager;
+    /** Known agents and their server-owned lifecycle state. */
+    agents: AgentRegistry;
+    /** Agents' live shells (one PTY per running agent). */
+    runtime: AgentRuntimeManager;
+    workspaces: AgentWorkspaceManager;
+  }
+}
+
+export interface CreateAppOptions {
+  /** Defaults to a logger at config.logLevel; pass false in tests. */
+  logger?: boolean;
+  /** Inject a manager (tests) admitting temporary cwd roots; otherwise roots come from config. */
+  ptyManager?: PtyManager;
+  /** Inject a registry (tests); otherwise <dataDir>/agents.json is opened. */
+  agentRegistry?: AgentRegistry;
+}
+
+/** Builds the Fastify app without listening, so it can be exercised with app.inject(). */
+export async function createApp(
+  config: ServerConfig,
+  options: CreateAppOptions = {},
+): Promise<FastifyInstance> {
+  const app = Fastify({
+    logger: options.logger === false ? false : { level: config.logLevel },
+  });
+
+  const agentRegistry =
+    options.agentRegistry ??
+    (await AgentRegistry.open({
+      file: join(config.dataDir, "agents.json"),
+      logger: app.log.child({ component: "agents" }),
+    }));
+  app.decorate("agents", agentRegistry);
+
+  const workspaces = await AgentWorkspaceManager.open(
+    config.dataDir,
+    app.log.child({ component: "workspaces" }),
+  );
+  // Fail closed on migration errors; preserve metadata and never auto-start processes.
+  for (const agent of agentRegistry.list()) {
+    try {
+      await workspaces.ensureWorkspace(agent);
+    } catch (error) {
+      app.log.error(
+        { agentId: agent.id, err: error },
+        "Agent workspace migration failed; refusing startup",
+      );
+      throw error;
+    }
+  }
+  app.decorate("workspaces", workspaces);
+
+  const ptyManager =
+    options.ptyManager ??
+    new PtyManager({
+      workspaceRoot: config.workspaceRoot,
+      additionalWorkspaceRoots: [workspaces.agentsRoot],
+      logger: app.log.child({ component: "pty" }),
+    });
+  app.decorate("pty", ptyManager);
+
+  const runtime = new AgentRuntimeManager({
+    registry: agentRegistry,
+    workspaces,
+    pty: ptyManager,
+    logger: app.log.child({ component: "agent-runtime" }),
+  });
+  app.decorate("runtime", runtime);
+
+  // Runs on app.close(), which the signal handlers in index.ts call. Agents first, so
+  // their stops are recorded as "stopped"; then every PTY left (scratch terminals, and
+  // anything an agent stop could not finish) through the same process-tree cleanup.
+  app.addHook("onClose", async () => {
+    try {
+      await runtime.stopAll();
+    } finally {
+      await ptyManager.terminateAll();
+    }
+  });
+
+  registerErrorHandling(app);
+  await registerCors(app, config.webOrigins);
+  registerHealthRoutes(app, SERVER_VERSION);
+  registerAgentRoutes(app, agentRegistry, runtime);
+  await registerTerminalGateway(app, {
+    pty: ptyManager,
+    runtime,
+    allowedOrigins: config.webOrigins,
+  });
+
+  return app;
+}

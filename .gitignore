@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+.DS_Store
+
+# Server state (agents.json); per machine, never committed
+.qelvra/
+.qelvra-*/
