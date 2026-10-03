@@ -57,7 +57,7 @@ test("header shortcuts navigate", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: /Your autonomous AI swarm is active/ }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Agent Hive Brand Mark" }).click();
+  await page.getByRole("link", { name: "Qelvra Brand Mark" }).click();
   await expect(page).toHaveURL("/");
 });
 

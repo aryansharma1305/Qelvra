@@ -17,13 +17,13 @@ export function AppHeader() {
       <div className="flex items-center gap-space-md">
         <img
           {...homeLink}
-          alt="Agent Hive Brand Mark"
+          alt="Qelvra Brand Mark"
           className="h-6 w-auto object-contain"
           src="/stitch/brand-mark.png"
         />
         <div className="flex items-center gap-space-xs">
           <span className="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">
-            Agent Hive
+            Qelvra
           </span>
           <span className="font-label-sm text-label-sm bg-surface-container-high text-primary px-1.5 py-0.5 rounded border border-outline-variant/40 uppercase">
             v2.4 Pro

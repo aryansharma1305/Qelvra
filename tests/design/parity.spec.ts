@@ -194,6 +194,8 @@ function staticDesignFile(screen: string, outDir: string): string {
     "family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900",
     "family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600",
   );
+  // User-approved product rename; compare the same Qelvra copy without altering exports.
+  html = html.replaceAll("Agent Hive", "Qelvra");
   for (const [from, to] of DESIGN_COPY_EDITS[screen] ?? []) html = html.replaceAll(from, to);
   fs.mkdirSync(outDir, { recursive: true });
   const file = path.join(outDir, `${screen}.html`);

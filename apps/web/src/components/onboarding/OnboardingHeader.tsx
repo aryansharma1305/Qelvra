@@ -13,15 +13,13 @@ export function OnboardingHeader() {
       <div className="h-16 w-full px-gutter-lg flex items-center justify-between">
         <div className="flex items-center gap-space-md">
           <img
-            alt={
-              "Brand logo. - Primary color: #8b5cf6\n- Font: geist\n- Mode: dark\n- Roundness: rounded-sm\n"
-            }
+            alt="Qelvra Brand Mark"
             className="h-8 w-auto object-contain"
             src="/stitch/brand-mark.png"
           />
           <div className="flex items-center gap-space-xs">
             <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight">
-              Agent Hive
+              Qelvra
             </span>
             <span className="px-space-xs py-0.5 rounded bg-surface-container text-secondary font-label-sm text-label-sm uppercase tracking-wider">
               Setup

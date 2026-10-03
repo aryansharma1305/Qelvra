@@ -182,7 +182,7 @@ export function ReadyStep() {
                 <span className="material-symbols-outlined text-[20px] transition-transform group-hover:rotate-45">
                   rocket_launch
                 </span>
-                <span>Enter Agent Hive</span>
+                <span>Enter Qelvra</span>
                 <kbd className="hidden md:inline-flex items-center ml-space-xs px-2 py-0.5 rounded bg-on-primary-container/20 text-on-primary-container font-code-sm text-code-sm">
                   ⏎
                 </kbd>

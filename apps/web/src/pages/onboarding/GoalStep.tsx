@@ -37,8 +37,8 @@ export function GoalStep() {
                 What will your agents build first?
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-                Select an operational archetype. Agent Hive calibrates autonomy protocols, toolkits,
-                and agent archetypes accordingly.
+                Select an operational archetype. Qelvra calibrates autonomy protocols, toolkits, and
+                agent archetypes accordingly.
               </p>
             </div>
             <div className="flex items-center gap-space-md p-space-sm rounded-lg bg-surface-container-low shadow-sm">
