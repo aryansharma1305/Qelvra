@@ -8,7 +8,8 @@ export type MailboxErrorCode =
   | "MAILBOX_MESSAGE_TOO_LARGE"
   | "MAILBOX_DUPLICATE_MESSAGE"
   | "MAILBOX_INVALID_RECIPIENT"
-  | "MAILBOX_UNSAFE_ENTRY";
+  | "MAILBOX_UNSAFE_ENTRY"
+  | "MAILBOX_DESTINATION_CONFLICT";
 
 /** Transport-independent failures; never put filesystem paths in the message. */
 export class MailboxError extends Error {

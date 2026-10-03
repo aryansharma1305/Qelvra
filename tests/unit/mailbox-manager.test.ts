@@ -371,4 +371,54 @@ describe("MailboxManager", () => {
     });
     expect(await fs.readdir(boxPath())).toEqual([]);
   });
+  it("publishes inbox messages idempotently with the exact original envelope", async () => {
+    const message = await mailbox.writeOutboxMessage("nova", input);
+    expect(await mailbox.deliverInboxMessage("atlas", message)).toBe("created");
+    expect(await mailbox.deliverInboxMessage("atlas", message)).toBe("existing");
+    expect(await mailbox.readMessage("atlas", "inbox", message.id)).toEqual(message);
+    await expect(mailbox.deliverInboxMessage("nova", message)).rejects.toMatchObject({
+      code: "MAILBOX_INVALID_MESSAGE",
+    });
+    await registry.delete("atlas");
+    await expect(mailbox.deliverInboxMessage("atlas", message)).rejects.toMatchObject({
+      code: "MAILBOX_INVALID_RECIPIENT",
+    });
+  });
+  it("maps corrupt or symlinked destination collisions without overwriting", async () => {
+    const message = await mailbox.writeOutboxMessage("nova", input);
+    const final = join(boxPath("atlas", "inbox"), `${message.id}.json`);
+    await fs.writeFile(final, "{broken");
+    await expect(mailbox.deliverInboxMessage("atlas", message)).rejects.toMatchObject({
+      code: "MAILBOX_DESTINATION_CONFLICT",
+    });
+    expect(await fs.readFile(final, "utf8")).toBe("{broken");
+    await fs.unlink(final);
+    await fs.symlink(join(dir, "agents.json"), final);
+    const before = await fs.readFile(join(dir, "agents.json"), "utf8");
+    await expect(mailbox.deliverInboxMessage("atlas", message)).rejects.toMatchObject({
+      code: "MAILBOX_DESTINATION_CONFLICT",
+    });
+    expect(await fs.readFile(join(dir, "agents.json"), "utf8")).toBe(before);
+  });
+  it("retains source after destination durability failure and recovers the complete inbox copy", async () => {
+    const message = await mailbox.writeOutboxMessage("nova", input);
+    const original = fs.open;
+    const inboxDirectory = await workspaces.getMailboxPath("atlas", "inbox");
+    const opening = vi.spyOn(fs, "open").mockImplementation(async (...args) => {
+      if (String(args[0]) === inboxDirectory) throw new Error("directory sync unavailable");
+      return original(...args);
+    });
+    await expect(mailbox.deliverInboxMessage("atlas", message)).rejects.toMatchObject({
+      code: "MAILBOX_WRITE_FAILED",
+    });
+    expect(await mailbox.readMessage("nova", "outbox", message.id)).toEqual(message);
+    expect(await mailbox.readMessage("atlas", "inbox", message.id)).toEqual(message);
+    await expect(mailbox.deliverInboxMessage("atlas", message)).rejects.toMatchObject({
+      code: "MAILBOX_WRITE_FAILED",
+    });
+    opening.mockRestore();
+    expect(await mailbox.deliverInboxMessage("atlas", message)).toBe("existing");
+    expect(await mailbox.acknowledgeMessage("nova", "outbox", message.id, message)).toBe(true);
+    expect(await fs.readdir(boxPath())).toEqual([]);
+  });
 });

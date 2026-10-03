@@ -10,7 +10,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "postinstall": "node scripts/fix-node-pty.mjs",
     "pty:smoke": "tsx scripts/pty-smoke.ts",
-    "mailbox:smoke": "tsx scripts/mailbox-smoke.ts"
+    "mailbox:smoke": "tsx scripts/mailbox-smoke.ts",
+    "router:smoke": "tsx scripts/router-smoke.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
@@ -21,6 +22,7 @@
     "@fastify/cors": "^11.3.0",
     "@fastify/websocket": "^11.3.1",
     "@qelvra/shared": "^0.0.0",
+    "chokidar": "^4.0.3",
     "fastify": "^5.12.5",
     "node-pty": "^1.1.0",
     "zod": "^4.6.5"

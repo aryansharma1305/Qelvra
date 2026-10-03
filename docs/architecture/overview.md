@@ -31,9 +31,10 @@ registry.
 API responses follow the contracts in `packages/shared/src/api.ts`; errors always use
 `{ "error": { "code", "message" } }` (ADR 0003).
 
-`createApp()` owns the registry, workspace manager, mailbox manager, agent runtime manager and one
+`createApp()` owns the registry, workspace manager, mailbox manager, message router, agent runtime manager and one
 `PtyManager` (`app.pty`). On startup it ensures existing agents' workspaces without
-starting them. On shutdown it stops agent runtimes, then all remaining PTY sessions.
+starting them. Fastify readiness starts the router before listening. On shutdown it
+stops/drains routing, then agent runtimes and all remaining PTY sessions.
 
 ```text
 Agent routes → AgentRuntimeManager.create → AgentRegistry → DATA_DIR/agents.json
@@ -64,3 +65,24 @@ AgentWorkspaceManager ──────────▶ MailboxManager (app.mail
 The internal mailbox depends only on registry lookup and workspace paths. It requires
 no running agent, exposes no browser endpoints, and never routes messages. See
 [ADR 0009](../adr/0009-mailbox-layer.md) for the V1 message contract and filesystem limits.
+
+```text
+Agent A (or internal server code)
+  ↓
+MailboxManager.writeOutboxMessage
+  ↓
+Agent A/outbox ── chokidar + startup scan ──▶ MessageRouter
+                                                ↓
+                                MailboxManager.deliverInboxMessage
+                                                ↓
+                                        Agent B/inbox
+                                                ↓
+                                  explicit source acknowledgement
+
+MessageRouter → MailboxManager + AgentWorkspaceManager + AgentRegistry
+MessageRouter has no AgentRuntimeManager/PtyManager dependency.
+```
+
+Delivery preserves the envelope, recovers matching existing destinations, quarantines
+permanent failures and bounds transient retries. A stopped agent can receive messages.
+See [ADR 0010](../adr/0010-message-router.md) for lifecycle, recovery and limits.

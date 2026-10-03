@@ -26,6 +26,8 @@ async function setup() {
       ).statusCode,
     ).toBe(201);
   }
+  // PR 9 composition checks deliberately exercise the mailbox while routing is offline.
+  await app.router.stop();
   return { server: app, config };
 }
 describe("internal mailbox composition", () => {

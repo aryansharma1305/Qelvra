@@ -1,3 +1,4 @@
+import { MessageRouter } from "./router/index.js";
 import { MailboxManager } from "./mailbox/index.js";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { ServerConfig } from "./config/env.js";
@@ -22,6 +23,7 @@ declare module "fastify" {
     runtime: AgentRuntimeManager;
     workspaces: AgentWorkspaceManager;
     mailbox: MailboxManager;
+    router: MessageRouter;
   }
 }
 
@@ -70,6 +72,20 @@ export async function createApp(
   app.decorate("workspaces", workspaces);
   app.decorate("mailbox", new MailboxManager({ workspaces, registry: agentRegistry }));
 
+  const router = new MessageRouter({
+    registry: agentRegistry,
+    workspaces,
+    mailbox: app.mailbox,
+    logger: app.log.child({ component: "message-router" }),
+    onFatal: () => {
+      void app.close().catch(() => {
+        app.log.error({ errorCode: "ROUTER_SHUTDOWN_FAILED" }, "Router shutdown failed");
+      });
+    },
+  });
+  app.decorate("router", router);
+  app.addHook("onReady", () => router.start());
+
   const ptyManager =
     options.ptyManager ??
     new PtyManager({
@@ -87,14 +103,18 @@ export async function createApp(
   });
   app.decorate("runtime", runtime);
 
-  // Runs on app.close(), which the signal handlers in index.ts call. Agents first, so
+  // Runs on app.close(): drain routing first, then agents, so
   // their stops are recorded as "stopped"; then every PTY left (scratch terminals, and
   // anything an agent stop could not finish) through the same process-tree cleanup.
   app.addHook("onClose", async () => {
     try {
-      await runtime.stopAll();
+      await router.stop();
     } finally {
-      await ptyManager.terminateAll();
+      try {
+        await runtime.stopAll();
+      } finally {
+        await ptyManager.terminateAll();
+      }
     }
   });
 

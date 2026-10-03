@@ -1,7 +1,9 @@
+import { randomUUID } from "node:crypto";
 import { constants } from "node:fs";
 import { lstat, mkdir, open, realpath, rmdir, unlink } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { AgentIdSchema, type Agent } from "@qelvra/shared";
+import { syncDirectory } from "../lib/atomic-publish.js";
 import { silentLogger, type ServiceLogger } from "../lib/logger.js";
 
 function inside(root: string, path: string): boolean {
@@ -47,6 +49,12 @@ export class AgentWorkspaceManager {
     );
   }
 
+  async getAgentsPath(): Promise<string> {
+    await this.check(this.hiveRoot, "directory");
+    await this.check(this.agentsRoot, "directory");
+    return realpath(this.agentsRoot);
+  }
+
   relativePath(agentId: string): string {
     this.agentRoot(agentId);
     return `hive/agents/${agentId}/workspace`;
@@ -69,6 +77,51 @@ export class AgentWorkspaceManager {
       await this.check(path, "directory");
     }
     return realpath(join(root, box));
+  }
+
+  /** Server-generated quarantine locations; never takes an original message filename. */
+  async createQuarantineDirectory(agentId: string): Promise<string> {
+    this.agentRoot(agentId); // Reuse the canonical agent-id/device-name checks.
+    await this.check(this.hiveRoot, "directory");
+    const root = join(this.hiveRoot, "quarantine");
+    const sender = join(root, agentId);
+    for (const path of [root, sender]) {
+      try {
+        await mkdir(path, { mode: 0o700 });
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+      }
+      await this.check(path, "directory");
+      await syncDirectory(path === root ? this.hiveRoot : root);
+    }
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const path = join(sender, randomUUID());
+      try {
+        await mkdir(path, { mode: 0o700 });
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "EEXIST") continue;
+        throw error;
+      }
+      await this.check(path, "directory");
+      await syncDirectory(sender);
+      return path;
+    }
+    throw new Error("Quarantine directory collision");
+  }
+
+  async checkQuarantineDirectory(agentId: string, directory: string): Promise<void> {
+    this.agentRoot(agentId);
+    const root = join(this.hiveRoot, "quarantine");
+    const sender = join(root, agentId);
+    if (
+      !inside(sender, directory) ||
+      relative(sender, directory).includes(sep) ||
+      directory === sender
+    ) {
+      throw new Error("Unsafe quarantine path");
+    }
+    for (const path of [this.hiveRoot, root, sender, directory])
+      await this.check(path, "directory");
   }
 
   async exists(agentId: string): Promise<boolean> {

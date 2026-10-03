@@ -56,8 +56,10 @@ files; recreating its ID reuses them. The developer shell retains `WORKSPACE_ROO
 See [ADR 0008](docs/adr/0008-agent-workspaces.md) for initialization and safety limits.
 
 The internal mailbox writes validated messages atomically into the sender's outbox;
-no delivery occurs yet. Run the disposable check with
-`npm run mailbox:smoke -w @qelvra/server`. See [ADR 0009](docs/adr/0009-mailbox-layer.md).
+the router automatically delivers them to registered recipients, including stopped agents. Run the disposable check with
+`npm run mailbox:smoke -w @qelvra/server` (mailbox alone) or
+`npm run router:smoke -w @qelvra/server` (automatic routing and recovery).
+See [ADR 0009](docs/adr/0009-mailbox-layer.md) and [ADR 0010](docs/adr/0010-message-router.md).
 
 ## Milestones
 
@@ -70,7 +72,7 @@ no delivery occurs yet. Run the disposable check with
 - [x] PR 7: Multiple agent terminals
 - [x] PR 8: Agent workspace manager
 - [x] PR 9: Mailbox
-- [ ] PR 10: Router
+- [x] PR 10: Router
 - [ ] PR 11: Fake agent
 - [ ] PR 12: Task system
 - [ ] PR 13: Real AI CLI provider
