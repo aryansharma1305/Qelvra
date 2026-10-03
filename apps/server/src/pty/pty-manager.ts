@@ -164,7 +164,7 @@ export class PtyManager {
     const rows = options.rows ?? PTY_DEFAULT_ROWS;
     assertSize(cols, rows);
     const cwd = this.resolveCwd(options.cwd);
-    const shell = this.shellProvider.resolve();
+    const shell = options.command ?? this.shellProvider.resolve();
 
     const info: PtySessionInfo = {
       id,
@@ -186,7 +186,7 @@ export class PtyManager {
         cols,
         rows,
         cwd,
-        env: ptyEnvironment(this.env),
+        env: ptyEnvironment({ ...this.env, ...options.command?.env }),
       });
     } catch (error) {
       // Not registered: a failed spawn leaves no session behind.

@@ -58,7 +58,7 @@ export const AgentSchema = z.object({
   name: AgentNameSchema,
   role: AgentRoleSchema,
   status: AgentStatusSchema,
-  /** Provider adapter id; null until providers exist (PR 13). */
+  /** Provider adapter id; fake is a development/test CLI, null uses the local shell. */
   providerId: z.string().min(1).max(64).nullable(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
@@ -76,6 +76,8 @@ export const CreateAgentRequestSchema = z.object({
   role: AgentRoleSchema,
   /** Optional explicit id; otherwise derived from the name (see agentIdFromName). */
   id: AgentIdSchema.optional(),
+  /** Fixed development/test provider only; executable configuration stays server-owned. */
+  providerId: z.literal("fake").nullable().optional(),
 });
 
 export type CreateAgentRequest = z.infer<typeof CreateAgentRequestSchema>;

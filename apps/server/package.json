@@ -11,7 +11,8 @@
     "postinstall": "node scripts/fix-node-pty.mjs",
     "pty:smoke": "tsx scripts/pty-smoke.ts",
     "mailbox:smoke": "tsx scripts/mailbox-smoke.ts",
-    "router:smoke": "tsx scripts/router-smoke.ts"
+    "router:smoke": "tsx scripts/router-smoke.ts",
+    "fake:smoke": "tsx scripts/fake-agent-smoke.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

@@ -61,6 +61,7 @@ export class MailboxManager {
           `${message.id}.json`,
           `${JSON.stringify(message)}\n`,
           () => this.directory(agentId, "outbox"),
+          true,
         );
         return message;
       } catch (error) {

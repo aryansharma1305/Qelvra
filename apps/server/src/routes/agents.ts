@@ -20,6 +20,7 @@ const STATUS_BY_CODE: Record<AgentErrorCode, number> = {
   AGENT_INVALID_ID: 400,
   AGENT_INVALID_NAME: 400,
   AGENT_INVALID_ROLE: 400,
+  AGENT_INVALID_PROVIDER: 400,
   AGENT_INVALID_TRANSITION: 409,
   AGENT_ALREADY_RUNNING: 409,
   AGENT_NOT_RUNNING: 409,
@@ -38,6 +39,7 @@ const FIELD_CODES: Record<string, ApiErrorCode> = {
   id: "AGENT_INVALID_ID",
   name: "AGENT_INVALID_NAME",
   role: "AGENT_INVALID_ROLE",
+  providerId: "AGENT_INVALID_PROVIDER",
 };
 
 /** Registry errors as HTTP errors; internal codes never leak as 5xx details. */

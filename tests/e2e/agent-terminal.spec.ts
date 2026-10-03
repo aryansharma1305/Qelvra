@@ -79,6 +79,54 @@ async function run(page: Page, command: string): Promise<void> {
 
 const tab = (page: Page, id: string) => page.locator(`[role="tab"][data-agent="${id}"]`);
 
+test("fake agents round-trip browser terminal input through real mailboxes and router", async ({
+  page,
+  request,
+}) => {
+  const ids: string[] = [];
+  for (const base of ["Fake Nova", "Fake Atlas"]) {
+    const response = await request.post(`${E2E_API_URL}/api/agents`, {
+      data: {
+        name: unique(base),
+        role: "Demo / Test",
+        providerId: "fake",
+        command: "/evil",
+        args: ["/evil"],
+        env: { QELVRA_AGENT_ID: "spoof" },
+      },
+    });
+    expect(response.status()).toBe(201);
+    const { agent } = (await response.json()) as { agent: { id: string; providerId: string } };
+    expect(agent.providerId).toBe("fake");
+    ids.push(agent.id);
+    created.push(agent.id);
+    expect((await request.post(`${E2E_API_URL}/api/agents/${agent.id}/start`)).status()).toBe(200);
+  }
+  const [nova, atlas] = ids;
+  if (!nova || !atlas) throw new Error("Both fake agents must be created");
+  await page.goto(`/terminal?agent=${nova}`);
+  await attached(page, nova);
+  await page.locator("#btn-single-view").click();
+  await run(page, "PING");
+  await expect(outputRow(page, "PONG").first()).toBeVisible();
+  await run(page, `SEND ${atlas} HELLO_FROM_BROWSER`);
+  await expect(page.locator(`${PANE} .xterm-rows`)).toContainText("MESSAGE_QUEUED");
+  await tab(page, atlas).click();
+  await attached(page, atlas);
+  await run(page, "STATUS");
+  await expect(outputRow(page, `READY ${atlas}`).first()).toBeVisible();
+  await tab(page, nova).click();
+  await attached(page, nova);
+  // Request real inbox contents until the asynchronous round-trip is visible. No
+  // server mailbox endpoint or direct filesystem write bypasses the terminal flow.
+  await expect(async () => {
+    await run(page, "CHECK_INBOX");
+    await expect(page.locator(`${PANE} .xterm-rows`)).toContainText("ACK:HELLO_FROM_BROWSER", {
+      timeout: 1000,
+    });
+  }).toPass({ timeout: 15000, intervals: [500, 1000] });
+});
+
 test("create, start and open an agent's terminal from its profile", async ({ page }) => {
   const name = unique("Nova");
   const id = idFor(name);

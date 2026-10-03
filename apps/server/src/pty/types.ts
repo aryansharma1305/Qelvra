@@ -1,3 +1,4 @@
+import type { ResolvedShell } from "./shell-provider.js";
 export type PtySessionStatus = "starting" | "running" | "exited" | "failed";
 
 /** How a PTY's process ended. `signal` is set when it was killed by a signal. */
@@ -26,6 +27,8 @@ export interface CreatePtySessionOptions {
   cwd?: string;
   cols?: number;
   rows?: number;
+  /** Internal server-owned launch selection. Never populated from WebSocket/API input. */
+  command?: ResolvedShell & { env?: NodeJS.ProcessEnv };
 }
 
 export interface Disposable {

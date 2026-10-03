@@ -99,6 +99,7 @@ export async function createApp(
     registry: agentRegistry,
     workspaces,
     pty: ptyManager,
+    allowFakeProvider: !config.isProduction,
     logger: app.log.child({ component: "agent-runtime" }),
   });
   app.decorate("runtime", runtime);

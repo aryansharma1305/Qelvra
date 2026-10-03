@@ -61,6 +61,13 @@ the router automatically delivers them to registered recipients, including stopp
 `npm run router:smoke -w @qelvra/server` (automatic routing and recovery).
 See [ADR 0009](docs/adr/0009-mailbox-layer.md) and [ADR 0010](docs/adr/0010-message-router.md).
 
+Development/test agents can opt into the fixed `providerId: "fake"` Node CLI. It supports
+PING, ECHO, STATUS, SEND, SEND_TASK, CHECK_INBOX, RESPOND and AUTO_RESPOND ON/OFF.
+Run `npm run fake:smoke -w @qelvra/server` for a disposable real PTY round-trip demo.
+See [ADR 0011](docs/adr/0011-fake-agent.md) and the
+[manual demo and verification](docs/verification/pr11-fake-agent.md).
+Production mode disables fake agents; default agents retain local shells.
+
 ## Milestones
 
 - [x] PR 1: Project bootstrap
@@ -73,7 +80,7 @@ See [ADR 0009](docs/adr/0009-mailbox-layer.md) and [ADR 0010](docs/adr/0010-mess
 - [x] PR 8: Agent workspace manager
 - [x] PR 9: Mailbox
 - [x] PR 10: Router
-- [ ] PR 11: Fake agent
+- [x] PR 11: Fake agent
 - [ ] PR 12: Task system
 - [ ] PR 13: Real AI CLI provider
 - [ ] PR 14: Orchestrator

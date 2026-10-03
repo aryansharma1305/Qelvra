@@ -25,8 +25,8 @@ packages/shared  ◀── Zod schemas + types used by both sides (API, terminal
 ```
 
 The browser never touches the filesystem or processes. All privileged work goes
-through the server, which only launches commands from an allowlisted provider
-registry.
+through the server, which launches default allowlisted shells or a fixed server-owned
+development/test fake CLI. Browser payloads cannot configure executable paths or arguments.
 
 API responses follow the contracts in `packages/shared/src/api.ts`; errors always use
 `{ "error": { "code", "message" } }` (ADR 0003).
@@ -86,3 +86,31 @@ MessageRouter has no AgentRuntimeManager/PtyManager dependency.
 Delivery preserves the envelope, recovers matching existing destinations, quarantines
 permanent failures and bounds transient retries. A stopped agent can receive messages.
 See [ADR 0010](../adr/0010-message-router.md) for lifecycle, recovery and limits.
+
+```text
+Browser Terminal
+  ↓ WebSocket input/attachment
+AgentRuntimeManager → server-owned runtime command resolver
+  ↓
+PtyManager → real node-pty process → Fake Agent CLI
+                                    ↓ MailboxManager
+                                 own outbox
+                                    ↓
+                               MessageRouter
+                                    ↓
+                                 other inbox
+                                    ↓ MailboxManager
+                              Fake Agent CLI
+                                    ↓ result in own outbox
+                               MessageRouter
+                                    ↓
+                              original inbox → CHECK_INBOX
+```
+
+Fake agents opt in with `providerId: "fake"`, only in development/test. Their workspace
+and identity come from server configuration. The CLI reuses mailbox validation and
+atomic publication, acknowledges incoming requests after response publication, and
+never responds to results. AUTO_RESPOND scans immediately and then every 500 ms;
+stopped-agent backlog survives until startup. Runtime/PTY lifecycle owns shutdown.
+No real AI, task execution, provider registry or messaging UI is introduced. See
+[ADR 0011](../adr/0011-fake-agent.md) for command semantics, retry memory and limits.

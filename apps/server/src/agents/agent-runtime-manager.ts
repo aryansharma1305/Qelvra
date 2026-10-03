@@ -1,3 +1,4 @@
+import { resolveRuntimeCommand } from "./runtime-command.js";
 import { randomUUID } from "node:crypto";
 import { agentIdFromName, CreateAgentRequestSchema, type Agent } from "@qelvra/shared";
 import type { AgentWorkspaceManager } from "../workspaces/agent-workspace-manager.js";
@@ -18,6 +19,8 @@ export interface AgentRuntimeManagerOptions {
   workspaces: AgentWorkspaceManager;
   pty: AgentPtyHost;
   logger?: ServiceLogger;
+  /** Server configuration only; disabled unless development/test composition enables it. */
+  allowFakeProvider?: boolean;
   /** Whether a pid still exists; injectable for tests. */
   isProcessAlive?: (pid: number) => boolean;
 }
@@ -96,8 +99,10 @@ export class AgentRuntimeManager {
   private readonly runtimes = new Map<string, Runtime>();
   private readonly queues = new Map<string, Promise<unknown>>();
   private shuttingDown = false;
+  private readonly allowFakeProvider: boolean;
 
   constructor(options: AgentRuntimeManagerOptions) {
+    this.allowFakeProvider = options.allowFakeProvider ?? false;
     this.registry = options.registry;
     this.workspaces = options.workspaces;
     this.pty = options.pty;
@@ -122,6 +127,8 @@ export class AgentRuntimeManager {
   /** Coordinates creation with starts/deletes so no shell observes a partial workspace. */
   create(input: CreateAgentInput): Promise<Agent> {
     const parsed = CreateAgentRequestSchema.parse(input);
+    if (parsed.providerId === "fake" && !this.allowFakeProvider)
+      throw new AgentError("AGENT_INVALID_PROVIDER", "Demo agents are disabled in production");
     const id = parsed.id ?? agentIdFromName(parsed.name);
     if (!id) throw new AgentError("AGENT_INVALID_NAME", "Cannot derive an agent id from this name");
     return this.enqueue(id, async () => {
@@ -261,7 +268,8 @@ export class AgentRuntimeManager {
     let session: PtySessionInfo;
     try {
       const cwd = await this.workspaces.ensureWorkspace(agent);
-      session = this.pty.createSession({ id: sessionId, cwd });
+      const command = resolveRuntimeCommand(agent, this.workspaces.dataDir, this.allowFakeProvider);
+      session = this.pty.createSession({ id: sessionId, cwd, ...(command ? { command } : {}) });
     } catch (error) {
       this.logger.error({ err: error, agentId }, "Agent shell failed to start");
       await this.registry.transition(agentId, "error");

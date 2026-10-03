@@ -53,12 +53,14 @@ export interface CreateAgentInput {
   name: string;
   role: string;
   id?: string | undefined;
+  providerId?: "fake" | null | undefined;
 }
 
 const FIELD_CODES: Record<string, AgentErrorCode> = {
   id: "AGENT_INVALID_ID",
   name: "AGENT_INVALID_NAME",
   role: "AGENT_INVALID_ROLE",
+  providerId: "AGENT_INVALID_PROVIDER",
 };
 
 function snapshot(agent: Agent): Agent {
@@ -144,7 +146,7 @@ export class AgentRegistry {
       name,
       role,
       status: "stopped",
-      providerId: null,
+      providerId: parsed.data.providerId ?? null,
       createdAt: now,
       updatedAt: now,
     };

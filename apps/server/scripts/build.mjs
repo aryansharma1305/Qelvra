@@ -17,3 +17,16 @@ await build({
   external,
   logLevel: "info",
 });
+
+// The demo child is independently executable with Node; no TypeScript loader in dist.
+await build({
+  entryPoints: ["src/fake-agent/cli.ts"],
+  outfile: "dist/fake-agent.js",
+  bundle: true,
+  platform: "node",
+  format: "esm",
+  target: "node22",
+  sourcemap: true,
+  external,
+  logLevel: "info",
+});

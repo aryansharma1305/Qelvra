@@ -4,6 +4,7 @@ export const AGENT_ERROR_CODES = {
   AGENT_INVALID_ID: "AGENT_INVALID_ID",
   AGENT_INVALID_NAME: "AGENT_INVALID_NAME",
   AGENT_INVALID_ROLE: "AGENT_INVALID_ROLE",
+  AGENT_INVALID_PROVIDER: "AGENT_INVALID_PROVIDER",
   /** start on an agent that already has a shell. */
   AGENT_ALREADY_RUNNING: "AGENT_ALREADY_RUNNING",
   /** An operation that needs a running shell (e.g. attaching a terminal). */

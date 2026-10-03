@@ -80,7 +80,6 @@ describe("agents API", () => {
       name: "Atlas",
       role: "Backend",
       status: "working",
-      providerId: "evil",
       command: "/bin/rm",
       args: ["-rf", "/"],
       cwd: "/",
@@ -92,6 +91,12 @@ describe("agents API", () => {
       providerId: null,
     });
     expect(res.body).not.toMatch(/bin\/rm|SECRET/);
+  });
+
+  it("rejects executable-looking provider IDs", async () => {
+    const res = await post({ name: "Unsafe", role: "Test", providerId: "/bin/sh" });
+    expect(res.statusCode).toBe(400);
+    expect(errorOf(res).code).toBe("AGENT_INVALID_PROVIDER");
   });
 
   it("rejects duplicates with 409", async () => {
