@@ -1,4 +1,10 @@
 import {
+  TaskListResponseSchema,
+  TaskResponseSchema,
+  type Task,
+  type CreateTaskRequest,
+} from "@qelvra/shared";
+import {
   AgentListResponseSchema,
   AgentResponseSchema,
   ApiErrorResponseSchema,
@@ -176,3 +182,45 @@ export function stopAgent(id: string, options?: CallOptions): Promise<Agent> {
 export function restartAgent(id: string, options?: CallOptions): Promise<Agent> {
   return agentLifecycle(id, "restart", options);
 }
+
+export async function listTasks(options?: CallOptions): Promise<Task[]> {
+  return (await requestJson("/api/tasks", TaskListResponseSchema, options)).tasks;
+}
+export async function getTask(id: string, options?: CallOptions): Promise<Task> {
+  return (await requestJson(`/api/tasks/${encodeURIComponent(id)}`, TaskResponseSchema, options))
+    .task;
+}
+export async function createTask(input: CreateTaskRequest, options?: CallOptions): Promise<Task> {
+  const body = {
+    title: input.title,
+    description: input.description ?? "",
+    ...(input.assignee === undefined ? {} : { assignee: input.assignee }),
+  };
+  return (await requestJson("/api/tasks", TaskResponseSchema, { ...options, method: "POST", body }))
+    .task;
+}
+export type TaskAction = "start" | "review" | "complete" | "fail";
+async function taskAction(
+  id: string,
+  action: TaskAction | "assign",
+  body?: unknown,
+  options?: CallOptions,
+): Promise<Task> {
+  return (
+    await requestJson(`/api/tasks/${encodeURIComponent(id)}/${action}`, TaskResponseSchema, {
+      ...options,
+      method: "POST",
+      ...(body === undefined ? {} : { body }),
+    })
+  ).task;
+}
+export const assignTask = (id: string, agentId: string, options?: CallOptions) =>
+  taskAction(id, "assign", { agentId }, options);
+export const startTask = (id: string, options?: CallOptions) =>
+  taskAction(id, "start", undefined, options);
+export const reviewTask = (id: string, options?: CallOptions) =>
+  taskAction(id, "review", undefined, options);
+export const completeTask = (id: string, options?: CallOptions) =>
+  taskAction(id, "complete", undefined, options);
+export const failTask = (id: string, options?: CallOptions) =>
+  taskAction(id, "fail", undefined, options);

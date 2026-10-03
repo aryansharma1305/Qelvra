@@ -81,7 +81,7 @@ Production mode disables fake agents; default agents retain local shells.
 - [x] PR 9: Mailbox
 - [x] PR 10: Router
 - [x] PR 11: Fake agent
-- [ ] PR 12: Task system
+- [x] PR 12: Task system
 - [ ] PR 13: Real AI CLI provider
 - [ ] PR 14: Orchestrator
 - [ ] PR 15: Activity dashboard

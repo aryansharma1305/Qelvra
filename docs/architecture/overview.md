@@ -31,7 +31,7 @@ development/test fake CLI. Browser payloads cannot configure executable paths or
 API responses follow the contracts in `packages/shared/src/api.ts`; errors always use
 `{ "error": { "code", "message" } }` (ADR 0003).
 
-`createApp()` owns the registry, workspace manager, mailbox manager, message router, agent runtime manager and one
+`createApp()` owns the registry, workspace manager, mailbox manager, message router, agent runtime manager, task registry and one
 `PtyManager` (`app.pty`). On startup it ensures existing agents' workspaces without
 starting them. Fastify readiness starts the router before listening. On shutdown it
 stops/drains routing, then agent runtimes and all remaining PTY sessions.
@@ -114,3 +114,21 @@ never responds to results. AUTO_RESPOND scans immediately and then every 500 ms;
 stopped-agent backlog survives until startup. Runtime/PTY lifecycle owns shutdown.
 No real AI, task execution, provider registry or messaging UI is introduced. See
 [ADR 0011](../adr/0011-fake-agent.md) for command semantics, retry memory and limits.
+
+```text
+User / future Orchestrator
+  ↓ explicit actions via REST or internal methods
+TaskRegistry (app.tasks)
+  ├── DATA_DIR/tasks.json (atomic snapshots)
+  ├── internal task events → future Activity consumers
+  └── task state → validated web client → Mission Control
+
+AgentRuntimeManager.delete → TaskRegistry.deleteAgent → active tasks return to Inbox
+                                                      → AgentRegistry.delete
+```
+
+Tasks do not start agents and mailbox/fake-agent results do not change task state.
+Runtime, mailboxes and tasks remain independent. A stopped agent can own a task.
+The task queue coordinates assignment, transitions and agent deletion; terminal
+tasks retain historical assignee IDs. See [ADR 0012](../adr/0012-task-system.md) for
+transitions, startup repair, two-file crash limits and the deferred execution bridge.

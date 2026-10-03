@@ -1,3 +1,4 @@
+import { TaskError } from "../tasks/task-errors.js";
 import {
   AgentIdSchema,
   CreateAgentRequestSchema,
@@ -44,6 +45,8 @@ const FIELD_CODES: Record<string, ApiErrorCode> = {
 
 /** Registry errors as HTTP errors; internal codes never leak as 5xx details. */
 function toAppError(error: unknown): unknown {
+  if (error instanceof TaskError)
+    return new AppError(500, "TASK_PERSISTENCE_FAILED", "Could not safely update assigned tasks");
   if (!(error instanceof AgentError)) return error;
   if (STATUS_BY_CODE[error.code] >= 500 && !REPORTED_5XX.has(error.code)) {
     return error; // generic 500 via the error handler

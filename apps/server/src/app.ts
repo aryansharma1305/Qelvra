@@ -1,3 +1,4 @@
+import { TaskRegistry, registerTaskRoutes } from "./tasks/index.js";
 import { MessageRouter } from "./router/index.js";
 import { MailboxManager } from "./mailbox/index.js";
 import Fastify, { type FastifyInstance } from "fastify";
@@ -24,6 +25,7 @@ declare module "fastify" {
     workspaces: AgentWorkspaceManager;
     mailbox: MailboxManager;
     router: MessageRouter;
+    tasks: TaskRegistry;
   }
 }
 
@@ -52,6 +54,12 @@ export async function createApp(
       logger: app.log.child({ component: "agents" }),
     }));
   app.decorate("agents", agentRegistry);
+  const tasks = await TaskRegistry.open({
+    file: join(config.dataDir, "tasks.json"),
+    registry: agentRegistry,
+    logger: app.log.child({ component: "tasks" }),
+  });
+  app.decorate("tasks", tasks);
 
   const workspaces = await AgentWorkspaceManager.open(
     config.dataDir,
@@ -100,6 +108,7 @@ export async function createApp(
     workspaces,
     pty: ptyManager,
     allowFakeProvider: !config.isProduction,
+    deleteAgent: (id) => tasks.deleteAgent(id),
     logger: app.log.child({ component: "agent-runtime" }),
   });
   app.decorate("runtime", runtime);
@@ -123,6 +132,7 @@ export async function createApp(
   await registerCors(app, config.webOrigins);
   registerHealthRoutes(app, SERVER_VERSION);
   registerAgentRoutes(app, agentRegistry, runtime);
+  registerTaskRoutes(app, tasks);
   await registerTerminalGateway(app, {
     pty: ptyManager,
     runtime,

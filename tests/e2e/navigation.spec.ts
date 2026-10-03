@@ -1,3 +1,5 @@
+import { TaskListResponseSchema } from "@qelvra/shared";
+import { E2E_API_URL } from "./env";
 import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
 
@@ -117,16 +119,20 @@ test("team activity tabs filter the feed", async ({ page }) => {
   await expect(feed.getByText("Michael assigned task to Nova")).toBeVisible();
 });
 
-test("task board column badges match their cards", async ({ page }) => {
+test("task board column badges match the real task snapshot", async ({ page, request }) => {
+  const snapshot = TaskListResponseSchema.parse(
+    await (await request.get(`${E2E_API_URL}/api/tasks`)).json(),
+  );
+  // Other workers may mutate the shared test registry. Use the actual API snapshot
+  // for this rendering assertion, rather than racing another worker's create/start.
+  await page.route("**/api/tasks", (route) => route.fulfill({ json: snapshot }));
   await page.goto("/tasks");
-  const expected = { Inbox: 3, Assigned: 2, Review: 2, Completed: 4 };
-  for (const [title, count] of Object.entries(expected)) {
-    const column = page
-      .locator("#kanban-canvas div.w-80")
-      .filter({ has: page.getByText(title, { exact: true }) });
-    await expect(column.getByText(/^#TSK-\d+$/)).toHaveCount(count);
-    await expect(
-      column.locator("span.rounded-full").getByText(String(count), { exact: true }),
-    ).toBeVisible();
+  for (const status of ["inbox", "assigned", "working", "review", "completed"]) {
+    const count = snapshot.tasks.filter((task) => task.status === status).length;
+    const column = page.locator(`[data-task-column="${status}"]`);
+    await expect(column.locator(".task-card")).toHaveCount(count);
+    await expect(column.locator("div.rounded-t-xl span.font-label-sm.rounded-full")).toHaveText(
+      String(count),
+    );
   }
 });

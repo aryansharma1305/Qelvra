@@ -21,6 +21,8 @@ export interface AgentRuntimeManagerOptions {
   logger?: ServiceLogger;
   /** Server configuration only; disabled unless development/test composition enables it. */
   allowFakeProvider?: boolean;
+  /** App composition coordinates persistent task cleanup with metadata deletion. */
+  deleteAgent?: (id: string) => Promise<Agent>;
   /** Whether a pid still exists; injectable for tests. */
   isProcessAlive?: (pid: number) => boolean;
 }
@@ -100,10 +102,12 @@ export class AgentRuntimeManager {
   private readonly queues = new Map<string, Promise<unknown>>();
   private shuttingDown = false;
   private readonly allowFakeProvider: boolean;
+  private readonly deleteAgent: (id: string) => Promise<Agent>;
 
   constructor(options: AgentRuntimeManagerOptions) {
     this.allowFakeProvider = options.allowFakeProvider ?? false;
     this.registry = options.registry;
+    this.deleteAgent = options.deleteAgent ?? ((id) => this.registry.delete(id));
     this.workspaces = options.workspaces;
     this.pty = options.pty;
     this.logger = options.logger ?? silentLogger;
@@ -138,7 +142,7 @@ export class AgentRuntimeManager {
         return agent;
       } catch (error) {
         try {
-          await this.registry.delete(agent.id);
+          await this.deleteAgent(agent.id);
         } catch (rollbackError) {
           this.logger.error(
             { agentId: agent.id, err: rollbackError },
@@ -175,7 +179,7 @@ export class AgentRuntimeManager {
   delete(agentId: string): Promise<Agent> {
     return this.enqueue(agentId, async () => {
       await this.doStop(agentId);
-      return this.registry.delete(agentId);
+      return this.deleteAgent(agentId);
     });
   }
 

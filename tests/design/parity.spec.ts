@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { test, expect, type Page } from "@playwright/test";
+import { seedTasks, readTaskReference, checkTaskParity, type TaskReference } from "./task-parity";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { E2E_API_URL } from "../e2e/env";
@@ -14,7 +15,9 @@ import {
 
 /**
  * Renders each approved Stitch screen (design/stitch) and its React route in the same
- * browser and compares them pixel by pixel. The sidebar column is excluded on app screens
+ * browser and compares them pixel by pixel. Mission Control checks its incumbent
+ * frames and live data contract; see task-parity.ts for the intentionally removed
+ * unsupported fields. The sidebar column is excluded on app screens
  * because the app intentionally uses one canonical sidebar (see ADR 0002).
  */
 
@@ -166,6 +169,8 @@ const DESIGN_AGENTS = [
   { id: "pixel", name: "Pixel", role: "Design System" },
 ] as const;
 
+let selectedTask = "";
+
 test.beforeAll(async ({ request }) => {
   for (const agent of DESIGN_AGENTS) {
     const res = await request.post(`${E2E_API_URL}/api/agents`, { data: agent });
@@ -178,6 +183,7 @@ test.beforeAll(async ({ request }) => {
     await (await request.get(`${E2E_API_URL}/api/agents`)).json(),
   ).agents;
   expect(agents.map(({ id, name, role }) => ({ id, name, role }))).toEqual(DESIGN_AGENTS);
+  selectedTask = await seedTasks(request);
 });
 
 const FREEZE_MOTION =
@@ -273,6 +279,7 @@ for (const width of [1280, 1440, 1920]) {
         const live = LIVE_ROUTES[route];
         const regions = shell === "app" ? [HEADER_AGENT_COUNT, ...(live?.regions ?? [])] : [];
         let terminalReference: TerminalReference | undefined;
+        let taskReference: TaskReference | undefined;
 
         let design = await capture(
           page,
@@ -282,7 +289,11 @@ for (const width of [1280, 1440, 1920]) {
                 terminalReference = await readTerminalReference(page);
                 await normalizeTerminal(page, terminalReference, true);
               }
-            : undefined,
+            : route === "/tasks"
+              ? async () => {
+                  taskReference = await readTaskReference(page);
+                }
+              : undefined,
         );
         const designBoxes = [];
         for (const region of regions) {
@@ -294,7 +305,7 @@ for (const width of [1280, 1440, 1920]) {
 
         let app = await capture(
           page,
-          route,
+          route === "/tasks" ? `/tasks?task=${selectedTask}` : route,
           terminalReference
             ? async () => {
                 if (!terminalReference) throw new Error("Missing terminal reference");
@@ -307,7 +318,12 @@ for (const width of [1280, 1440, 1920]) {
                 await normalizeTerminal(page, terminalReference, false);
                 await checkTerminalGeometry(page, terminalReference);
               }
-            : undefined,
+            : route === "/tasks"
+              ? async () => {
+                  if (!taskReference) throw new Error("Missing task reference");
+                  await checkTaskParity(page, taskReference, selectedTask);
+                }
+              : undefined,
         );
         for (const [index, region] of regions.entries()) {
           const appBoxes = await boxesOf(page, region.app);
@@ -347,6 +363,14 @@ for (const width of [1280, 1440, 1920]) {
           app = crop(app, 0, 0, app.width, height);
         }
 
+        if (route === "/tasks") {
+          // Content is checked against the original frame contract above. Preserve full
+          // screenshots for inspection; the shared header still gets its pixel check.
+          fs.writeFileSync(testInfo.outputPath("tasks-reference.png"), PNG.sync.write(design));
+          fs.writeFileSync(testInfo.outputPath("tasks-app.png"), PNG.sync.write(app));
+          design = crop(design, 0, 0, design.width, HEADER_HEIGHT);
+          app = crop(app, 0, 0, app.width, HEADER_HEIGHT);
+        }
         if (app.height !== design.height) {
           for (const [name, png] of [
             ["design", design],
@@ -378,7 +402,7 @@ for (const width of [1280, 1440, 1920]) {
               ]
             : [{ name: "page", x: 0, y: 0, w: design.width, h: design.height }];
 
-        for (const region of compared) {
+        for (const region of compared.filter((region) => region.h > 0)) {
           const expected = crop(design, region.x, region.y, region.w, region.h);
           const actual = crop(app, region.x, region.y, region.w, region.h);
           const diff = new PNG({ width: region.w, height: region.h });

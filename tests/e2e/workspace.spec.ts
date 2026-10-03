@@ -1,20 +1,5 @@
 import { expect, test } from "./fixtures";
 
-test("tasks: selected card toggles the inspector; close and Esc hide it", async ({ page }) => {
-  await page.goto("/tasks");
-  const inspector = page.locator("#inspector-drawer");
-  await expect(inspector).toBeVisible();
-  await page.locator("#selected-card").click();
-  await expect(inspector).toHaveCount(0);
-  await page.locator("#selected-card").click();
-  await expect(inspector).toBeVisible();
-  await page.getByTitle("Close Drawer (ESC)").click();
-  await expect(inspector).toHaveCount(0);
-  await page.locator("#selected-card").click();
-  await page.keyboard.press("Escape");
-  await expect(inspector).toHaveCount(0);
-});
-
 test("terminal: single/split layout and quick prompts", async ({ page }) => {
   await page.goto("/terminal");
   await expect(page.locator("#dev-shell-pane")).toBeVisible();

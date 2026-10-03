@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import { ConnectionStatus } from "./ConnectionStatus";
+import { useTasks } from "../../features/tasks/tasks-store";
 import { useAgents } from "../../features/agents/agents-store";
 import { NAV_ITEMS, type NavItem } from "./navigation";
 
@@ -34,9 +35,17 @@ function SidebarLink({ item }: { item: NavItem }) {
 // figures are design mock data until hardware telemetry exists.
 export function AppSidebar() {
   const { agents, status } = useAgents();
+  const tasks = useTasks();
   // The Agents badge shows the real number of registered agents once loaded.
   const items = NAV_ITEMS.map((item): NavItem => {
-    if (item.path !== "/agents" || !item.badge) return item;
+    if (!item.badge) return item;
+    if (item.path === "/tasks") {
+      return {
+        ...item,
+        badge: { ...item.badge, label: tasks.status === "ready" ? String(tasks.tasks.length) : "" },
+      };
+    }
+    if (item.path !== "/agents") return item;
     if (status !== "ready") return { label: item.label, path: item.path, icon: item.icon };
     return { ...item, badge: { ...item.badge, label: String(agents.length) } };
   });

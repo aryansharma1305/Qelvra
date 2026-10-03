@@ -35,7 +35,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Tasks",
     path: "/tasks",
     icon: "task_alt",
-    badge: { label: "14", className: "bg-surface-container-high text-on-surface-variant rounded" },
+    badge: { label: "", className: "bg-surface-container-high text-on-surface-variant rounded" },
   },
   { label: "Terminal", path: "/terminal", icon: "terminal", pulseDotClass: "bg-tertiary" },
   {

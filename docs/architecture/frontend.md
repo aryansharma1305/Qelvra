@@ -5,19 +5,19 @@ design was ported and why Tailwind is pinned.
 
 ## Routes
 
-| Route                  | Screen (design/stitch)         | Notes                                   |
-| ---------------------- | ------------------------------ | --------------------------------------- |
-| `/`                    | home_command_center            | Dashboard                               |
-| `/swarm`               | swarm_command_center           | Reached from the header "Agents Active" |
-| `/studio`              | ai_studio                      |                                         |
-| `/agents`              | ai_team_directory              | Real agents (`GET /api/agents`)         |
-| `/agents/new?step=1-5` | create_agent_wizard            | Creates name + role (`POST`)            |
-| `/agents/:agentId`     | nova_profile                   | Real agent, 404 state, delete           |
-| `/tasks`               | mission_control                |                                         |
-| `/terminal`            | multi_agent_terminal_workspace |                                         |
-| `/network`             | agent_network                  |                                         |
-| `/onboarding/*`        | onboarding_* (5 steps)         | Own shell; Esc / ←→ / ⌘↵ shortcuts      |
-| `/activity` etc.       | none                           | Explicit "Not built yet" state          |
+| Route                  | Screen (design/stitch)         | Notes                                        |
+| ---------------------- | ------------------------------ | -------------------------------------------- |
+| `/`                    | home_command_center            | Dashboard                                    |
+| `/swarm`               | swarm_command_center           | Reached from the header "Agents Active"      |
+| `/studio`              | ai_studio                      |                                              |
+| `/agents`              | ai_team_directory              | Real agents (`GET /api/agents`)              |
+| `/agents/new?step=1-5` | create_agent_wizard            | Creates name + role (`POST`)                 |
+| `/agents/:agentId`     | nova_profile                   | Real agent, 404 state, delete                |
+| `/tasks`               | mission_control                | Real task registry, lifecycle and assignment |
+| `/terminal`            | multi_agent_terminal_workspace |                                              |
+| `/network`             | agent_network                  |                                              |
+| `/onboarding/*`        | onboarding_* (5 steps)         | Own shell; Esc / ←→ / ⌘↵ shortcuts           |
+| `/activity` etc.       | none                           | Explicit "Not built yet" state               |
 
 ## Layout
 
@@ -28,10 +28,11 @@ src/
   components/onboarding/    OnboardingShell, header/footer, step order
   components/agents/        DirectoryAvatar (per-agent artwork), DeleteAgentButton
   features/agents/          agents-store (list), useAgent (one), presentation (card view)
+  features/tasks/           tasks-store (list, pending, mutation/refetch)
   features/terminal/        RealTerminal (xterm), terminal-client (protocol/state)
   lib/                      api.ts (REST client), ws.ts (WebSocket URLs)
   hooks/                    useLinkBehavior (link semantics for non-anchor elements), useNow
-  mocks/                    agents.tsx, tasks.tsx, activity.tsx (typed design mock data)
+  mocks/                    agents.tsx, activity.tsx (typed design mock data)
   pages/<page>/             page component + its section components + page-local state
   styles/fonts.css          self-hosted Geist, JetBrains Mono, Material Symbols
   assets/fonts/             WOFF2 files
@@ -49,11 +50,21 @@ Only name and role are sent from the wizard. The other steps are presentation-on
 
 ## Mock data
 
-Home, Swarm, Studio, Network, Tasks and Activity still render typed design mock data from
+Home, Swarm, Studio, Network and Activity still render typed design mock data from
 `src/mocks/` through reusable components (`OperativeCard`, `SwarmOperativeCard`,
-`TaskCards`, `ActivityItem`). `tests/unit/mocks.test.ts` validates them against the shared
+`ActivityItem`). `tests/unit/mocks.test.ts` validates them against the shared
 schemas. Single bespoke widgets and telemetry figures still hold their design text inline.
 Search for `TODO(PR` to find every place that switches to real data, and the milestone.
 
 Operative cards on Home and Swarm open `/agents/:id`, which shows the real profile when
 that agent is registered and "Agent not found" otherwise.
+
+## Tasks (real data)
+
+Mission Control, its cards, inspector, create form, filters, metrics and sidebar badge
+use validated task endpoints (ADR 0012). The task store follows the lightweight Agents
+pattern. Actions are explicit; assignments do not start agents. The five original
+columns remain; Failed appears when present and is also accessible through a filter. Unsupported priorities,
+per-task progress, telemetry and dependency figures are removed. No task demo data
+is loaded in production. Page entry and Refresh fetch current tasks and agents;
+mutation responses update the board, and conflicts reload the affected task.

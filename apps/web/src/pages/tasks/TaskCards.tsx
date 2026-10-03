@@ -1,140 +1,81 @@
-import type {
-  AssignedTaskMock,
-  CompletedTaskMock,
-  InboxTaskMock,
-  ReviewTaskMock,
-} from "../../mocks/tasks";
-
-// Kanban card designs from the Stitch Mission Control screen, one per column style.
-
-export function InboxTaskCard({ task }: { task: InboxTaskMock }) {
+import type { Agent, Task } from "@qelvra/shared";
+import { assigneeName, taskDate, taskLabelId, TASK_LABEL } from "./presentation";
+export function TaskCard({
+  task,
+  agents,
+  selected,
+  onSelect,
+}: {
+  task: Task;
+  agents: readonly Agent[];
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const working = task.status === "working";
+  const completed = task.status === "completed";
+  const assignee = assigneeName(task.assignee, agents);
   return (
-    <div
-      className={`group p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 hover:border-outline-variant/80 hover:bg-surface-container transition-all cursor-pointer ${task.tone.card}`}
+    <button
+      type="button"
+      data-task={task.id}
+      data-status={task.status}
+      aria-label={`Inspect ${task.title}`}
+      aria-pressed={selected}
+      onClick={onSelect}
+      className={`task-card w-full text-left p-3.5 rounded-lg transition-all relative ${selected ? "bg-surface-container-high border-2 border-secondary/80 shadow-[0_0_16px_rgba(76,215,246,0.18)]" : completed ? "bg-surface-container-low/60 border border-outline-variant/20 opacity-80 hover:opacity-100" : "bg-surface-container-low border border-outline-variant/30 hover:border-outline-variant/80 hover:bg-surface-container"}`}
     >
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-code-sm text-code-sm text-outline group-hover:text-primary transition-colors">
-          {task.id}
+      {selected && (
+        <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded bg-secondary text-on-secondary font-label-sm text-label-sm font-semibold uppercase tracking-wider shadow-sm">
+          Inspecting
+        </span>
+      )}
+      <span className="flex items-center justify-between mb-2 gap-2">
+        <span
+          className={`font-code-sm text-code-sm ${working ? "text-secondary" : "text-outline"}`}
+          title={task.id}
+        >
+          {taskLabelId(task.id)}
         </span>
         <span
-          className={`font-label-sm text-label-sm px-2 py-0.5 rounded uppercase font-medium ${task.tone.priority}`}
+          className={`font-label-sm text-label-sm px-2 py-0.5 rounded uppercase font-medium ${task.status === "failed" ? "bg-error-container/30 text-error" : "bg-surface-container-highest text-outline"}`}
         >
-          {task.priority}
+          {TASK_LABEL[task.status]}
         </span>
-      </div>
-      <h4 className="font-body-md text-body-md font-medium text-on-surface leading-snug">
-        {task.title}
-      </h4>
-      {task.description && (
-        <p className="font-body-sm text-body-sm text-outline mt-1.5 line-clamp-2">
-          {task.description}
-        </p>
-      )}
-      {task.footer}
-    </div>
-  );
-}
-
-export function AssignedTaskCard({ task }: { task: AssignedTaskMock }) {
-  return (
-    <div className="group p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 hover:border-primary/50 hover:bg-surface-container transition-all cursor-pointer">
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-code-sm text-code-sm text-outline group-hover:text-primary transition-colors">
-          {task.id}
-        </span>
-        <span
-          className={`font-label-sm text-label-sm px-2 py-0.5 rounded border uppercase font-medium ${task.tone.priority}`}
-        >
-          {task.priority}
-        </span>
-      </div>
-      <h4 className="font-body-md text-body-md font-medium text-on-surface leading-snug">
-        {task.title}
-      </h4>
-      <p className="font-body-sm text-body-sm text-outline mt-1 line-clamp-2">{task.description}</p>
-      <div className="mt-3 flex items-center justify-between p-2 rounded bg-surface-container-lowest/80 border border-outline-variant/20">
-        <div className="flex items-center gap-2">
-          <div
-            className={`w-5 h-5 rounded-full flex items-center justify-center font-code-sm text-[10px] font-bold ${task.tone.assigneeAvatar}`}
-          >
-            {task.assigneeInitial}
-          </div>
-          <span className="font-body-sm text-body-sm text-on-surface">{task.assignee}</span>
-        </div>
-        {task.state}
-      </div>
-      {task.dependencies && (
-        <div className="mt-2.5 flex items-center justify-between text-outline font-label-sm text-label-sm">
-          <span>{task.dependencies.label}</span>
-          <span className="text-on-surface-variant font-mono">{task.dependencies.steps}</span>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export function ReviewTaskCard({ task }: { task: ReviewTaskMock }) {
-  return (
-    <div className="group p-3.5 rounded-lg bg-surface-container-low border border-outline-variant/30 hover:border-amber-400/50 hover:bg-surface-container transition-all cursor-pointer">
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-code-sm text-code-sm text-outline group-hover:text-amber-300 transition-colors">
-          {task.id}
-        </span>
-        <span
-          className={`font-label-sm text-label-sm px-2 py-0.5 rounded border uppercase font-medium ${task.tone.priority}`}
-        >
-          {task.priority}
-        </span>
-      </div>
-      <h4 className="font-body-md text-body-md font-medium text-on-surface leading-snug">
-        {task.title}
-      </h4>
-      {task.description && (
-        <p className="font-body-sm text-body-sm text-outline mt-1 line-clamp-2">
-          {task.description}
-        </p>
-      )}
-      {task.reviewer && (
-        <div className="mt-3 p-2 rounded bg-surface-container-lowest/80 border border-outline-variant/20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center font-code-sm text-[10px] font-bold">
-              {task.reviewer.initial}
-            </div>
-            <span className="font-body-sm text-body-sm text-on-surface">{task.reviewer.name}</span>
-          </div>
-          <span className="font-label-sm text-label-sm text-amber-400 flex items-center gap-1">
-            <span className="material-symbols-outlined text-[13px]">rate_review</span>
-            {task.reviewer.status}
-          </span>
-        </div>
-      )}
-      <div
-        className={`flex items-center justify-between text-outline font-label-sm text-label-sm ${task.tone.footer}`}
+      </span>
+      <h4
+        className={`font-body-md text-body-md font-medium text-on-surface leading-snug break-words ${completed ? "line-through decoration-outline" : ""}`}
       >
-        <span className={task.tone.footerLabel}>{task.footerLabel}</span>
-        <span className={task.tone.footerStatus}>{task.footerStatus}</span>
-      </div>
-    </div>
-  );
-}
-
-export function CompletedTaskCard({ task }: { task: CompletedTaskMock }) {
-  return (
-    <div className="p-3.5 rounded-lg bg-surface-container-low/60 border border-outline-variant/20 opacity-80 hover:opacity-100 transition-opacity">
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="font-code-sm text-code-sm text-outline">{task.id}</span>
-        <span className="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1">
-          <span className="material-symbols-outlined text-[13px]">check</span>
-          Merged
-        </span>
-      </div>
-      <h4 className="font-body-md text-body-md font-medium text-on-surface line-through decoration-outline">
         {task.title}
       </h4>
-      <div className="mt-2.5 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-outline font-label-sm text-label-sm">
-        <span>{task.meta}</span>
-        <span className="text-outline">{task.reference}</span>
-      </div>
-    </div>
+      {task.description && (
+        <p className="font-body-sm text-body-sm text-outline mt-1.5 line-clamp-2 break-words">
+          {task.description}
+        </p>
+      )}
+      {task.assignee && (
+        <span className="mt-3 flex items-center justify-between p-2 rounded bg-surface-container-lowest/80 border border-outline-variant/20 gap-2">
+          <span className="flex items-center gap-2 min-w-0">
+            <span className="w-5 h-5 shrink-0 rounded-full flex items-center justify-center font-code-sm text-[10px] font-bold bg-primary/20 text-primary">
+              {assignee.slice(0, 1).toUpperCase()}
+            </span>
+            <span className="font-body-sm text-body-sm text-on-surface truncate">{assignee}</span>
+          </span>
+          <span className="font-label-sm text-label-sm text-outline">
+            {TASK_LABEL[task.status]}
+          </span>
+        </span>
+      )}
+      <span className="mt-3 pt-2.5 border-t border-outline-variant/20 flex items-center justify-between font-label-sm text-label-sm text-outline gap-2">
+        <span className="flex items-center gap-1.5">
+          <span className="material-symbols-outlined text-[14px]">schedule</span>
+          <time dateTime={task.updatedAt}>Updated {taskDate(task.updatedAt)}</time>
+        </span>
+        {!task.assignee && (
+          <span className="px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-mono">
+            Unassigned
+          </span>
+        )}
+      </span>
+    </button>
   );
 }
