@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node
 import { tmpdir } from "node:os";
 import { createInterface } from "node:readline";
 import { join } from "node:path";
-import { afterAll, afterEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { PtyError, PtyManager, type PtyErrorCode } from "../../../apps/server/src/pty/index";
 import {
   OutputBuffer,
@@ -189,14 +189,35 @@ describe("input and output", () => {
 
   it("passes input through unchanged, including control characters", async () => {
     const manager = createTestManager();
-    manager.createSession({ id: "ctrl" });
+    const info = manager.createSession({ id: "ctrl" });
     const output = new OutputBuffer(manager, "ctrl");
     const marker = uniqueMarker("AFTER_CTRL_C");
 
     manager.write("ctrl", "sleep 30\r");
+    // Typing a command does not mean the shell has started its foreground job yet.
+    // Wait for this shell's sleep, with its process group owning the terminal, before
+    // sending Ctrl-C; otherwise startup timing can cancel the command or miss sleep.
+    let sleepPid = 0;
+    await vi.waitFor(() => {
+      const rows = execFileSync("ps", ["-A", "-o", "pid=,ppid=,pgid=,tpgid=,args="])
+        .toString()
+        .split("\n");
+      const sleep = rows
+        .map((row) => row.trim().match(/^(\d+)\s+(\d+)\s+(\d+)\s+(-?\d+)\s+(.+)$/))
+        .find(
+          (row) =>
+            row &&
+            Number(row[2]) === requirePid(info) &&
+            row[3] === row[4] &&
+            /(?:^|[ /])sleep 30$/.test(row[5] ?? ""),
+        );
+      expect(sleep, "sleep must be this shell's foreground process").toBeDefined();
+      sleepPid = Number(sleep?.[1]);
+    });
     manager.write("ctrl", "\x03"); // Ctrl-C interrupts the foreground sleep
     manager.write("ctrl", `echo ${marker}\r`);
     await output.waitForLine(marker);
+    expect(isAlive(sleepPid), "Ctrl-C must end the foreground sleep").toBe(false);
     expect(manager.get("ctrl")?.status).toBe("running");
   });
 
