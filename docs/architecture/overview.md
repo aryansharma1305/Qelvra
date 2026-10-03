@@ -31,7 +31,7 @@ registry.
 API responses follow the contracts in `packages/shared/src/api.ts`; errors always use
 `{ "error": { "code", "message" } }` (ADR 0003).
 
-`createApp()` owns the registry, workspace manager, agent runtime manager and one
+`createApp()` owns the registry, workspace manager, mailbox manager, agent runtime manager and one
 `PtyManager` (`app.pty`). On startup it ensures existing agents' workspaces without
 starting them. On shutdown it stops agent runtimes, then all remaining PTY sessions.
 
@@ -52,3 +52,15 @@ and recreation reuses it. See [ADR 0008](../adr/0008-agent-workspaces.md) for ow
 path validation, rollback and isolation limits.
 
 Milestone status is tracked in the README.
+
+```text
+AgentRegistry ──────────────────────┐
+                                    ↓
+AgentWorkspaceManager ──────────▶ MailboxManager (app.mailbox)
+                                    ├── inbox/  validated reads + explicit acknowledgement
+                                    └── outbox/ atomic writes + validated reads
+```
+
+The internal mailbox depends only on registry lookup and workspace paths. It requires
+no running agent, exposes no browser endpoints, and never routes messages. See
+[ADR 0009](../adr/0009-mailbox-layer.md) for the V1 message contract and filesystem limits.

@@ -7,7 +7,7 @@ export default defineConfig({
   ...baseConfig,
   testDir: "tests/design",
   fullyParallel: true,
-  // Bound concurrent reference/app rendering to the verified three-worker setting.
-  workers: 3,
+  // Keep reference/app captures serial to reduce Chromium text-rasterization variance.
+  workers: 1,
   timeout: 90_000,
 });

@@ -55,6 +55,10 @@ Agent shells start in `DATA_DIR/hive/agents/<id>/workspace`. Each agent also has
 files; recreating its ID reuses them. The developer shell retains `WORKSPACE_ROOT`.
 See [ADR 0008](docs/adr/0008-agent-workspaces.md) for initialization and safety limits.
 
+The internal mailbox writes validated messages atomically into the sender's outbox;
+no delivery occurs yet. Run the disposable check with
+`npm run mailbox:smoke -w @qelvra/server`. See [ADR 0009](docs/adr/0009-mailbox-layer.md).
+
 ## Milestones
 
 - [x] PR 1: Project bootstrap
@@ -65,7 +69,7 @@ See [ADR 0008](docs/adr/0008-agent-workspaces.md) for initialization and safety 
 - [x] PR 6: Agent registry
 - [x] PR 7: Multiple agent terminals
 - [x] PR 8: Agent workspace manager
-- [ ] PR 9: Mailbox
+- [x] PR 9: Mailbox
 - [ ] PR 10: Router
 - [ ] PR 11: Fake agent
 - [ ] PR 12: Task system

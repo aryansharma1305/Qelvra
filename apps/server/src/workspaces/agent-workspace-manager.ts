@@ -61,6 +61,16 @@ export class AgentWorkspaceManager {
     return realpath(join(root, "workspace"));
   }
 
+  /** Fixed mailbox locations only; no message semantics or caller-supplied paths. */
+  async getMailboxPath(agentId: string, box: "inbox" | "outbox"): Promise<string> {
+    if (box !== "inbox" && box !== "outbox") throw new Error("Invalid mailbox box");
+    const root = this.agentRoot(agentId);
+    for (const path of [this.hiveRoot, this.agentsRoot, root, join(root, box)]) {
+      await this.check(path, "directory");
+    }
+    return realpath(join(root, box));
+  }
+
   async exists(agentId: string): Promise<boolean> {
     try {
       await this.getWorkspacePath(agentId);

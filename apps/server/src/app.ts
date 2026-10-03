@@ -1,3 +1,4 @@
+import { MailboxManager } from "./mailbox/index.js";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { ServerConfig } from "./config/env.js";
 import { AgentWorkspaceManager } from "./workspaces/agent-workspace-manager.js";
@@ -20,6 +21,7 @@ declare module "fastify" {
     /** Agents' live shells (one PTY per running agent). */
     runtime: AgentRuntimeManager;
     workspaces: AgentWorkspaceManager;
+    mailbox: MailboxManager;
   }
 }
 
@@ -66,6 +68,7 @@ export async function createApp(
     }
   }
   app.decorate("workspaces", workspaces);
+  app.decorate("mailbox", new MailboxManager({ workspaces, registry: agentRegistry }));
 
   const ptyManager =
     options.ptyManager ??
