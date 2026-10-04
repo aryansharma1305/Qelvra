@@ -1,4 +1,9 @@
 import {
+  ActivityListResponseSchema,
+  ActivitySummarySchema,
+  type ActivityType,
+} from "@qelvra/shared";
+import {
   TaskListResponseSchema,
   TaskResponseSchema,
   type Task,
@@ -224,3 +229,23 @@ export const completeTask = (id: string, options?: CallOptions) =>
   taskAction(id, "complete", undefined, options);
 export const failTask = (id: string, options?: CallOptions) =>
   taskAction(id, "fail", undefined, options);
+
+export function listActivity(
+  query: {
+    limit?: number;
+    cursor?: string;
+    type?: ActivityType;
+    agentId?: string;
+    taskId?: string;
+    entityType?: "agent" | "task" | "message" | "router";
+  } = {},
+  options?: CallOptions,
+) {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(query))
+    if (value !== undefined) params.set(key, String(value));
+  return requestJson(`/api/activity?${params}`, ActivityListResponseSchema, options);
+}
+export function getActivitySummary(options?: CallOptions) {
+  return requestJson("/api/activity/summary", ActivitySummarySchema, options);
+}

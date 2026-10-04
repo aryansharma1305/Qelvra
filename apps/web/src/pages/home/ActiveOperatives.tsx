@@ -12,10 +12,10 @@ export function ActiveOperatives() {
         <div className="flex items-center gap-2.5">
           <span className="material-symbols-outlined text-[20px] text-primary">hub</span>
           <h2 className="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
-            Active Swarm Operatives
+            Operative Preview
           </h2>
           <span className="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant">
-            6 NODES ONLINE
+            DESIGN PREVIEW
           </span>
         </div>
         <div className="flex items-center gap-2">

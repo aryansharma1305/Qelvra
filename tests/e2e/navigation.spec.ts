@@ -17,6 +17,7 @@ test("home renders inside the app shell", async ({ page }) => {
 const designedRoutes = [
   { link: "AI Studio", path: "/studio", heading: "AI Studio — Swarm Office" },
   { link: "Agents", path: "/agents", heading: "Your AI Team" },
+  { link: "Activity", path: "/activity", heading: "Activity" },
   { link: "Tasks", path: "/tasks", heading: "Mission Control" },
   { link: "Terminal", path: "/terminal", text: "Swarm Console" },
   { link: "Agent Network", path: "/network", text: "Swarm Mesh Network" },
@@ -32,14 +33,14 @@ for (const route of designedRoutes) {
       "page",
     );
     if (route.heading) {
-      await expect(page.getByRole("heading", { name: route.heading })).toBeVisible();
+      await expect(page.getByRole("heading", { name: route.heading, exact: true })).toBeVisible();
     } else if (route.text) {
       await expect(page.getByText(route.text).first()).toBeVisible();
     }
   });
 }
 
-for (const name of ["Activity", "Files", "Memory", "Automations", "Analytics", "Settings"]) {
+for (const name of ["Files", "Memory", "Automations", "Analytics", "Settings"]) {
   test(`${name} shows an explicit not-built-yet state`, async ({ page }) => {
     await page.goto("/");
     await sidebar(page).getByRole("link", { name }).click();
@@ -105,18 +106,19 @@ test("deep links and reloads render the right page", async ({ page }) => {
   await expect(page.locator("#step-panel-4")).toBeVisible();
 });
 
-test("team activity tabs filter the feed", async ({ page }) => {
+test("team activity tabs filter real events", async ({ page, request }) => {
+  const res = await request.post(`${E2E_API_URL}/api/tasks`, {
+    data: { title: "Activity filter task" },
+  });
+  expect(res.ok()).toBeTruthy();
   await page.goto("/");
-  const feed = page
-    .getByText("Team Activity")
-    .locator("xpath=ancestor::div[contains(@class,'lg:col-span-7')]");
-  await feed.getByRole("button", { name: "Alerts" }).click();
-  await expect(feed.getByText("Scout captured regression")).toBeVisible();
-  await expect(feed.getByText("Michael assigned task to Nova")).toHaveCount(0);
-  await feed.getByRole("button", { name: "Commits" }).click();
-  await expect(feed.getByText("Nova published Pull Request #418")).toBeVisible();
-  await feed.getByRole("button", { name: "All" }).click();
-  await expect(feed.getByText("Michael assigned task to Nova")).toBeVisible();
+  const feed = page.getByTestId("team-activity");
+  await feed.getByRole("button", { name: "Tasks", exact: true }).click();
+  await expect(feed.getByText("Activity filter task created", { exact: true })).toBeVisible();
+  await feed.getByRole("button", { name: "Agents", exact: true }).click();
+  await expect(feed.getByText("Activity filter task created", { exact: true })).toHaveCount(0);
+  await feed.getByRole("button", { name: "All", exact: true }).click();
+  await expect(feed.getByText("Activity filter task created", { exact: true })).toBeVisible();
 });
 
 test("task board column badges match the real task snapshot", async ({ page, request }) => {

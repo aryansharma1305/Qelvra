@@ -1,14 +1,35 @@
+import { useEffect, useState } from "react";
+import type { ActivitySummary } from "@qelvra/shared";
+import { getActivitySummary } from "../../lib/api";
 // Ported from the Stitch export (agent_hive_home_command_center/code.html). Keep visually identical to the design.
 
-export function SwarmTelemetry() {
+export function SwarmTelemetry({ latestEvent }: { latestEvent: string | undefined }) {
+  const [summary, setSummary] = useState<ActivitySummary | null>(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      void getActivitySummary({ signal: controller.signal })
+        .then(setSummary)
+        .catch(() => {
+          if (!controller.signal.aborted) setSummary(null);
+        });
+    }, 100);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [latestEvent]);
   return (
     <div className="lg:col-span-5 flex flex-col gap-4">
-      <div className="rounded-2xl bg-surface-container-low p-6 border border-outline-variant/20 shadow-sm flex flex-col gap-5">
+      <div
+        data-testid="activity-metrics"
+        className="rounded-2xl bg-surface-container-low p-6 border border-outline-variant/20 shadow-sm flex flex-col gap-5"
+      >
         <div className="flex items-center justify-between pb-3 border-b border-outline-variant/20">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[20px] text-primary">query_stats</span>
             <h3 className="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
-              Swarm Telemetry
+              Team Overview
             </h3>
           </div>
           <span className="font-code-sm text-code-sm text-tertiary">Real-time</span>
@@ -16,16 +37,16 @@ export function SwarmTelemetry() {
         <div className="grid grid-cols-2 gap-3">
           <div className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex flex-col gap-1">
             <span className="font-label-sm text-label-sm text-outline uppercase">
-              Active Capacity
+              Active Agents
             </span>
             <div className="flex items-baseline justify-between">
               <span className="font-headline-md text-headline-md text-on-surface font-semibold">
-                5 / 6
+                {summary?.activeAgents ?? "—"}
               </span>
-              <span className="font-code-sm text-code-sm text-tertiary">92% load</span>
+              <span className="font-code-sm text-code-sm text-tertiary">Running</span>
             </div>
             <span className="font-code-sm text-code-sm text-on-surface-variant">
-              Operatives assigned
+              Live agent sessions
             </span>
           </div>
           <div className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex flex-col gap-1">
@@ -34,40 +55,40 @@ export function SwarmTelemetry() {
             </span>
             <div className="flex items-baseline justify-between">
               <span className="font-headline-md text-headline-md text-on-surface font-semibold">
-                28
+                {summary?.completedToday ?? "—"}
               </span>
-              <span className="font-code-sm text-code-sm text-primary">+14%</span>
+              <span className="font-code-sm text-code-sm text-primary">UTC today</span>
             </div>
             <span className="font-code-sm text-code-sm text-on-surface-variant">
-              Autonomous DAG runs
+              Completed tasks
             </span>
           </div>
           <div className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex flex-col gap-1">
             <span className="font-label-sm text-label-sm text-outline uppercase">
-              Active Concurrency
+              Working Tasks
             </span>
             <div className="flex items-baseline justify-between">
               <span className="font-headline-md text-headline-md text-on-surface font-semibold">
-                4
+                {summary?.workingTasks ?? "—"}
               </span>
-              <span className="font-code-sm text-code-sm text-secondary">Sub-DAGs</span>
+              <span className="font-code-sm text-code-sm text-secondary">In progress</span>
             </div>
             <span className="font-code-sm text-code-sm text-on-surface-variant">
-              Parallel execution
+              Tasks being worked on
             </span>
           </div>
           <div className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/15 flex flex-col gap-1">
             <span className="font-label-sm text-label-sm text-outline uppercase">
-              Avg Dispatch Rate
+              Delivered Today
             </span>
             <div className="flex items-baseline justify-between">
               <span className="font-headline-md text-headline-md text-on-surface font-semibold">
-                4m 18s
+                {summary?.recordedDeliveriesToday ?? "—"}
               </span>
-              <span className="font-code-sm text-code-sm text-tertiary">P95</span>
+              <span className="font-code-sm text-code-sm text-tertiary">UTC today</span>
             </div>
             <span className="font-code-sm text-code-sm text-on-surface-variant">
-              End-to-end task time
+              Recorded message deliveries
             </span>
           </div>
         </div>
@@ -79,29 +100,27 @@ export function SwarmTelemetry() {
                 Local GPU Engine
               </span>
             </div>
-            <span className="font-code-sm text-code-sm text-on-surface-variant">
-              RTX 4090 (24GB)
-            </span>
+            <span className="font-code-sm text-code-sm text-on-surface-variant">Not measured</span>
           </div>
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between font-code-sm text-code-sm">
               <span className="text-on-surface-variant">VRAM Allocation</span>
-              <span className="text-secondary font-medium">14.2 GB / 24.0 GB (59%)</span>
+              <span className="text-secondary font-medium">Not measured</span>
             </div>
             <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden flex">
-              <div className="bg-secondary h-full w-[45%]" title="Model Weights" />
-              <div className="bg-primary h-full w-[14%]" title="KV Cache" />
+              <div className="bg-secondary h-full w-0" title="Model Weights" />
+              <div className="bg-primary h-full w-0" title="KV Cache" />
             </div>
             <div className="flex items-center justify-between text-outline font-label-sm text-label-sm pt-0.5">
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                Weights: 10.8 GB
+                Weights: —
               </span>
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                KV Cache: 3.4 GB
+                KV Cache: —
               </span>
-              <span>Free: 9.8 GB</span>
+              <span>Free: —</span>
             </div>
           </div>
           <div className="mt-1 pt-2.5 border-t border-outline-variant/20 flex items-center justify-between font-code-sm text-code-sm text-outline">
@@ -109,11 +128,11 @@ export function SwarmTelemetry() {
               <span className="material-symbols-outlined text-[14px] text-tertiary">
                 thermostat
               </span>
-              <span>Thermal: 54°C</span>
+              <span>Thermal: —</span>
             </div>
             <div className="flex items-center gap-1.5 text-tertiary">
               <span className="material-symbols-outlined text-[14px]">savings</span>
-              <span>Inference Cost: $0.00 (Local)</span>
+              <span>Inference Cost: —</span>
             </div>
           </div>
         </div>

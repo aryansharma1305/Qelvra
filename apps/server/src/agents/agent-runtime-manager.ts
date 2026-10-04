@@ -25,6 +25,8 @@ export interface AgentRuntimeManagerOptions {
   deleteAgent?: (id: string) => Promise<Agent>;
   /** Whether a pid still exists; injectable for tests. */
   isProcessAlive?: (pid: number) => boolean;
+  /** Successful logical restart; committed status transitions own start/stop events. */
+  onRestart?: (agent: Agent) => void;
 }
 
 /** A running agent's shell, as seen from outside the manager. */
@@ -97,6 +99,7 @@ export class AgentRuntimeManager {
   private readonly workspaces: AgentWorkspaceManager;
   private readonly pty: AgentPtyHost;
   private readonly logger: ServiceLogger;
+  private readonly onRestart: ((agent: Agent) => void) | undefined;
   private readonly isProcessAlive: (pid: number) => boolean;
   private readonly runtimes = new Map<string, Runtime>();
   private readonly queues = new Map<string, Promise<unknown>>();
@@ -111,6 +114,7 @@ export class AgentRuntimeManager {
     this.workspaces = options.workspaces;
     this.pty = options.pty;
     this.logger = options.logger ?? silentLogger;
+    this.onRestart = options.onRestart;
     this.isProcessAlive = options.isProcessAlive ?? defaultIsProcessAlive;
   }
 
@@ -171,7 +175,13 @@ export class AgentRuntimeManager {
   restart(agentId: string): Promise<Agent> {
     return this.enqueue(agentId, async () => {
       await this.doStop(agentId);
-      return this.doStart(agentId);
+      const agent = await this.doStart(agentId);
+      try {
+        this.onRestart?.(agent);
+      } catch {
+        this.logger.warn({ errorCode: "ACTIVITY_SUBSCRIBER_FAILED" }, "Restart observer failed");
+      }
+      return agent;
     });
   }
 

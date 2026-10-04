@@ -8,8 +8,15 @@ import { silentLogger, type ServiceLogger } from "../lib/logger.js";
 
 export type RouterEvent = {
   type:
-    "message.detected" | "message.delivered" | "message.delivery_failed" | "message.quarantined";
-  from: string;
+    | "message.detected"
+    | "message.queued"
+    | "message.delivered"
+    | "message.delivery_failed"
+    | "message.quarantined"
+    | "router.started"
+    | "router.stopped"
+    | "router.error";
+  from?: string;
   messageId?: string;
   to?: string;
   messageType?: string;
@@ -151,6 +158,7 @@ export class MessageRouter {
       });
       if (generation !== this.generation) throw new Error("ROUTER_START_CANCELLED");
       watcher.on("error", () => {
+        this.emit({ type: "router.error", errorCode: "ROUTER_WATCH_FAILED" });
         this.logger.error(
           { event: "router.watch_failed", errorCode: "ROUTER_WATCH_FAILED" },
           "Router watcher failed",
@@ -161,6 +169,7 @@ export class MessageRouter {
       await this.options.workspaces.getAgentsPath();
       if (generation !== this.generation) throw new Error("ROUTER_START_CANCELLED");
       this.running = true;
+      this.emit({ type: "router.started" });
       this.subscription = this.options.registry.subscribe((event) => {
         if (event.type === "agent.created") this.track(this.refreshAgent(event.agent.id));
         if (event.type === "agent.deleted") {
@@ -179,6 +188,7 @@ export class MessageRouter {
         buffered.map(({ agentId, filename }) => this.processEntry(agentId, filename)),
       );
     } catch (error) {
+      this.emit({ type: "router.error", errorCode: "ROUTER_START_FAILED" });
       this.startupScan = false;
       this.bufferedEvents.clear();
       this.running = false;
@@ -286,12 +296,17 @@ export class MessageRouter {
     const fields: Omit<RouterEvent, "type"> = { from: agentId };
     if (MessageIdSchema.safeParse(id).success) fields.messageId = id;
     this.emit({ type: "message.detected", ...fields });
+    let queued = false;
     for (let attempt = 0; attempt < 3; attempt++) {
       if (!this.running || !this.options.registry.get(agentId)) return;
       try {
         const message = await this.options.mailbox.readMessage(agentId, "outbox", id);
         fields.to = message.to;
         fields.messageType = message.type;
+        if (!queued) {
+          this.emit({ type: "message.queued", ...fields });
+          queued = true;
+        }
         if (!this.running || !this.options.registry.get(agentId)) return;
         const result = await this.options.mailbox.deliverInboxMessage(message.to, message);
         // Stop may arrive after publication: finish acknowledgement safely, never undo inbox.
@@ -357,6 +372,7 @@ export class MessageRouter {
     return stopping;
   }
   private async shutdown(): Promise<void> {
+    const wasRunning = this.running;
     this.running = false;
     this.startupScan = false;
     this.bufferedEvents.clear();
@@ -374,5 +390,6 @@ export class MessageRouter {
     await watcher?.close();
     await this.starting?.catch(() => undefined);
     await Promise.all([...this.maintenance, ...this.inFlight.values()]);
+    if (wasRunning) this.emit({ type: "router.stopped" });
   }
 }

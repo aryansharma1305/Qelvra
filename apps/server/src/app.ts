@@ -1,3 +1,10 @@
+import {
+  ActivityStore,
+  ActivityPublisher,
+  registerActivityRoutes,
+  registerActivityGateway,
+} from "./activity/index.js";
+import { recordRouterActivity, observeActivity } from "./activity/domain-events.js";
 import { TaskRegistry, registerTaskRoutes } from "./tasks/index.js";
 import { MessageRouter } from "./router/index.js";
 import { MailboxManager } from "./mailbox/index.js";
@@ -26,6 +33,7 @@ declare module "fastify" {
     mailbox: MailboxManager;
     router: MessageRouter;
     tasks: TaskRegistry;
+    activity: ActivityPublisher;
   }
 }
 
@@ -80,7 +88,14 @@ export async function createApp(
   app.decorate("workspaces", workspaces);
   app.decorate("mailbox", new MailboxManager({ workspaces, registry: agentRegistry }));
 
+  const activity = new ActivityPublisher(
+    await ActivityStore.open(join(config.dataDir, "events.jsonl"), app.log),
+    app.log,
+  );
+  app.decorate("activity", activity);
+  const subscriptions = observeActivity(activity, agentRegistry, tasks);
   const router = new MessageRouter({
+    onEvent: (event) => recordRouterActivity(activity, event),
     registry: agentRegistry,
     workspaces,
     mailbox: app.mailbox,
@@ -108,6 +123,14 @@ export async function createApp(
     workspaces,
     pty: ptyManager,
     allowFakeProvider: !config.isProduction,
+    onRestart: (agent) => {
+      void activity.publish({
+        type: "agent.restarted",
+        entity: { type: "agent", id: agent.id },
+        metadata: { agentName: agent.name },
+        actor: { type: "user" },
+      });
+    },
     deleteAgent: (id) => tasks.deleteAgent(id),
     logger: app.log.child({ component: "agent-runtime" }),
   });
@@ -123,7 +146,12 @@ export async function createApp(
       try {
         await runtime.stopAll();
       } finally {
-        await ptyManager.terminateAll();
+        try {
+          await ptyManager.terminateAll();
+        } finally {
+          for (const subscription of subscriptions) subscription.dispose();
+          await activity.close();
+        }
       }
     }
   });
@@ -133,11 +161,13 @@ export async function createApp(
   registerHealthRoutes(app, SERVER_VERSION);
   registerAgentRoutes(app, agentRegistry, runtime);
   registerTaskRoutes(app, tasks);
+  registerActivityRoutes(app, activity);
   await registerTerminalGateway(app, {
     pty: ptyManager,
     runtime,
     allowedOrigins: config.webOrigins,
   });
 
+  registerActivityGateway(app, activity, config.webOrigins);
   return app;
 }

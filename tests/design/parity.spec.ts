@@ -1,3 +1,9 @@
+import {
+  readActivityFixture,
+  prepareHomeReference,
+  prepareHomeApp,
+  type ActivityFixture,
+} from "./activity-parity";
 import fs from "node:fs";
 import path from "node:path";
 import { test, expect, type Page } from "@playwright/test";
@@ -119,6 +125,42 @@ const LIVE_ROUTES: Partial<Record<string, LiveRoute>> = {
  * comparing, so everything else on the screen is still checked.
  */
 const DESIGN_COPY_EDITS: Partial<Record<string, readonly [string, string][]>> = {
+  agent_hive_home_command_center: [
+    ["Your autonomous agent collective is actively executing across", "Your agent collective has"],
+    ["4 production DAGs", "5 registered agents"],
+    ["5 Active Operatives", "0 Active Operatives"],
+    ["12ms Latency", "Latency: —"],
+    ["Swarm Synced", "Activity live"],
+    ["Active Swarm Operatives", "Operative Preview"],
+    ["6 NODES ONLINE", "DESIGN PREVIEW"],
+    ["Swarm Telemetry", "Team Overview"],
+    ["Active Capacity", "Active Agents"],
+    ["5 / 6", "0"],
+    ["92% load", "Running"],
+    ["Operatives assigned", "Live agent sessions"],
+    [">28<", ">4<"],
+    ["+14%", "UTC today"],
+    ["Autonomous DAG runs", "Completed tasks"],
+    ["Active Concurrency", "Working Tasks"],
+    [
+      '>4</span>\n<span class="font-code-sm text-code-sm text-secondary">Sub-DAGs',
+      '>3</span>\n<span class="font-code-sm text-code-sm text-secondary">In progress',
+    ],
+    ["Parallel execution", "Tasks being worked on"],
+    ["Avg Dispatch Rate", "Delivered Today"],
+    ["4m 18s", "0"],
+    ["P95", "UTC today"],
+    ["End-to-end task time", "Recorded message deliveries"],
+    ["RTX 4090 (24GB)", "Not measured"],
+    ["14.2 GB / 24.0 GB (59%)", "Not measured"],
+    ["bg-secondary h-full w-[45%]", "bg-secondary h-full w-0"],
+    ["bg-primary h-full w-[14%]", "bg-primary h-full w-0"],
+    ["Weights: 10.8 GB", "Weights: —"],
+    ["KV Cache: 3.4 GB", "KV Cache: —"],
+    ["Free: 9.8 GB", "Free: —"],
+    ["Thermal: 54°C", "Thermal: —"],
+    ["Inference Cost: $0.00 (Local)", "Inference Cost: —"],
+  ],
   // Creating registers a stopped agent; nothing is brought online until agent processes exist.
   agent_hive_create_agent_wizard: [["Bring Agent Online", "Create Agent"]],
 };
@@ -170,6 +212,7 @@ const DESIGN_AGENTS = [
 ] as const;
 
 let selectedTask = "";
+let activityFixture: ActivityFixture;
 
 test.beforeAll(async ({ request }) => {
   for (const agent of DESIGN_AGENTS) {
@@ -184,6 +227,7 @@ test.beforeAll(async ({ request }) => {
   ).agents;
   expect(agents.map(({ id, name, role }) => ({ id, name, role }))).toEqual(DESIGN_AGENTS);
   selectedTask = await seedTasks(request);
+  activityFixture = await readActivityFixture(request);
 });
 
 const FREEZE_MOTION =
@@ -293,7 +337,9 @@ for (const width of [1280, 1440, 1920]) {
               ? async () => {
                   taskReference = await readTaskReference(page);
                 }
-              : undefined,
+              : route === "/"
+                ? async () => prepareHomeReference(page, activityFixture)
+                : undefined,
         );
         const designBoxes = [];
         for (const region of regions) {
@@ -323,7 +369,9 @@ for (const width of [1280, 1440, 1920]) {
                   if (!taskReference) throw new Error("Missing task reference");
                   await checkTaskParity(page, taskReference, selectedTask);
                 }
-              : undefined,
+              : route === "/"
+                ? async () => prepareHomeApp(page, activityFixture)
+                : undefined,
         );
         for (const [index, region] of regions.entries()) {
           const appBoxes = await boxesOf(page, region.app);

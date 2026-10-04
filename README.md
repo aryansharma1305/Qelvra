@@ -82,6 +82,11 @@ Production mode disables fake agents; default agents retain local shells.
 - [x] PR 10: Router
 - [x] PR 11: Fake agent
 - [x] PR 12: Task system
-- [ ] PR 13: Real AI CLI provider
+- [x] PR 13: Persistent activity events and live dashboard
 - [ ] PR 14: Orchestrator
-- [ ] PR 15: Activity dashboard
+- [ ] PR 15: Runtime telemetry
+
+Activity is persisted in `DATA_DIR/events.jsonl` and available at `/api/activity` and
+`/ws/activity`. `/activity` and Dashboard Team Activity use this live stream.
+Run `npm run activity:smoke -w @qelvra/server` for a disposable fake-agent/task demo
+with restart and privacy verification. See [ADR 0013](docs/adr/0013-activity-events.md).

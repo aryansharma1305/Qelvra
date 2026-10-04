@@ -120,7 +120,7 @@ User / future Orchestrator
   ↓ explicit actions via REST or internal methods
 TaskRegistry (app.tasks)
   ├── DATA_DIR/tasks.json (atomic snapshots)
-  ├── internal task events → future Activity consumers
+  ├── internal task events → Activity Publisher
   └── task state → validated web client → Mission Control
 
 AgentRuntimeManager.delete → TaskRegistry.deleteAgent → active tasks return to Inbox
@@ -132,3 +132,25 @@ Runtime, mailboxes and tasks remain independent. A stopped agent can own a task.
 The task queue coordinates assignment, transitions and agent deletion; terminal
 tasks retain historical assignee IDs. See [ADR 0012](../adr/0012-task-system.md) for
 transitions, startup repair, two-file crash limits and the deferred execution bridge.
+
+## Persistent activity (PR 13)
+
+```text
+AgentRegistry committed identity/status + Runtime restart
+TaskRegistry committed transitions
+MessageRouter validated outbox/delivery/lifecycle facts
+  ↓ safe allowlisted domain adapters (nonblocking)
+Activity Publisher (server identity/time, serialized, persisted-before-notify)
+  ↓
+ActivityStore → DATA_DIR/events.jsonl
+  ├── GET /api/activity (newest-first cursor pages + diagnostics)
+  ├── GET /api/activity/summary (supported domain/history counts)
+  └── /ws/activity (read-only, origin-checked, bounded backpressure)
+        ↓ validated client, REST resnapshot on reconnect
+      Activity page / Dashboard feed (100-event browser bound)
+```
+
+Activity observes committed facts; it never controls tasks, agents or message delivery.
+Log failures allow domain operations to succeed and surface structured diagnostics and
+live degraded status. See [ADR 0013](../adr/0013-activity-events.md) for ownership,
+privacy, disk/history limits, corruption recovery and crash semantics.

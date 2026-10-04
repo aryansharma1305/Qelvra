@@ -17,7 +17,8 @@ design was ported and why Tailwind is pinned.
 | `/terminal`            | multi_agent_terminal_workspace |                                              |
 | `/network`             | agent_network                  |                                              |
 | `/onboarding/*`        | onboarding_* (5 steps)         | Own shell; Esc / ←→ / ⌘↵ shortcuts           |
-| `/activity` etc.       | none                           | Explicit "Not built yet" state               |
+| `/activity`            | home timeline frame            | Real REST/live events                        |
+| `/files` etc.          | none                           | Explicit "Not built yet" state               |
 
 ## Layout
 
@@ -32,7 +33,8 @@ src/
   features/terminal/        RealTerminal (xterm), terminal-client (protocol/state)
   lib/                      api.ts (REST client), ws.ts (WebSocket URLs)
   hooks/                    useLinkBehavior (link semantics for non-anchor elements), useNow
-  mocks/                    agents.tsx, activity.tsx (typed design mock data)
+  features/activity/        validated stream, bounded page state, human formatter
+  mocks/                    agents.tsx (remaining design previews)
   pages/<page>/             page component + its section components + page-local state
   styles/fonts.css          self-hosted Geist, JetBrains Mono, Material Symbols
   assets/fonts/             WOFF2 files
@@ -50,9 +52,8 @@ Only name and role are sent from the wizard. The other steps are presentation-on
 
 ## Mock data
 
-Home, Swarm, Studio, Network and Activity still render typed design mock data from
-`src/mocks/` through reusable components (`OperativeCard`, `SwarmOperativeCard`,
-`ActivityItem`). `tests/unit/mocks.test.ts` validates them against the shared
+Home operative previews, Swarm, Studio and Network still render typed design mock data from
+`src/mocks/` through reusable operative card components. `tests/unit/mocks.test.ts` validates them against the shared
 schemas. Single bespoke widgets and telemetry figures still hold their design text inline.
 Search for `TODO(PR` to find every place that switches to real data, and the milestone.
 
@@ -68,3 +69,19 @@ columns remain; Failed appears when present and is also accessible through a fil
 per-task progress, telemetry and dependency figures are removed. No task demo data
 is loaded in production. Page entry and Refresh fetch current tasks and agents;
 mutation responses update the board, and conflicts reload the affected task.
+
+## Activity (real data)
+
+`/activity` reuses the existing Home timeline frame with a single human formatter,
+All/Agents/Tasks/Messages/System filters, entity links, relative times and ISO tooltips.
+The Dashboard shows the latest five matching events. Neither imports activity mocks.
+Each mounted page owns one stream; global shell state does not subscribe to events.
+The client connects, buffers incoming facts during the REST resnapshot, deduplicates by
+ID and retains at most 100 visible events. Five bounded retries and a handshake timeout
+lead to explicit Retry; older cursor pages and Latest activity are available on Activity.
+
+Dashboard Team Overview reads supported counts from `/api/activity/summary` with a
+short debounce; activity does not pretend to measure productivity, GPU or inference.
+UTC-today message counts refer to retained activity history, not lifetime totals.
+Home operative cards remain explicitly labeled DESIGN PREVIEW; provider execution,
+orchestrator intelligence and the other existing mock surfaces are deferred.

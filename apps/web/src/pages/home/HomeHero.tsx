@@ -1,6 +1,11 @@
+import type { ConnectionState } from "../../features/activity/activity-client";
+import { useAgents } from "../../features/agents/agents-store";
+import { ACTIVE_STATUSES } from "../../features/agents/presentation";
 // Ported from the Stitch export (agent_hive_home_command_center/code.html). Keep visually identical to the design.
 
-export function HomeHero() {
+export function HomeHero({ activityState }: { activityState: ConnectionState }) {
+  const { agents } = useAgents();
+  const active = agents.filter((agent) => ACTIVE_STATUSES.includes(agent.status)).length;
   return (
     <div className="flex flex-col gap-4 relative">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -22,8 +27,8 @@ export function HomeHero() {
             .
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Your autonomous agent collective is actively executing across{" "}
-            <span className="text-on-surface font-medium">4 production DAGs</span>.
+            Your agent collective has{" "}
+            <span className="text-on-surface font-medium">{agents.length} registered agents</span>.
           </p>
         </div>
         <div className="flex items-center gap-3 self-start lg:self-center bg-surface-container-low px-4 py-2 rounded-xl border border-outline-variant/20 shadow-sm backdrop-blur-md">
@@ -33,18 +38,22 @@ export function HomeHero() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
             </span>
             <span className="font-code-sm text-code-sm text-on-surface font-medium">
-              Swarm Synced
+              {activityState === "live"
+                ? "Activity live"
+                : activityState === "error"
+                  ? "Activity paused"
+                  : "Connecting…"}
             </span>
           </div>
           <span className="text-outline-variant/60 font-code-sm text-code-sm">/</span>
           <div className="flex items-center gap-1.5 text-on-surface-variant font-code-sm text-code-sm">
             <span className="material-symbols-outlined text-[15px] text-tertiary">group_work</span>
-            <span>5 Active Operatives</span>
+            <span>{active} Active Operatives</span>
           </div>
           <span className="text-outline-variant/60 font-code-sm text-code-sm">/</span>
           <div className="flex items-center gap-1.5 text-on-surface-variant font-code-sm text-code-sm">
             <span className="material-symbols-outlined text-[15px] text-secondary">speed</span>
-            <span>12ms Latency</span>
+            <span>Latency: —</span>
           </div>
         </div>
       </div>
