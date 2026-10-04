@@ -1,4 +1,4 @@
-import { resolveRuntimeCommand } from "./runtime-command.js";
+import { ProviderRegistry, ProviderError } from "../providers/index.js";
 import { randomUUID } from "node:crypto";
 import { agentIdFromName, CreateAgentRequestSchema, type Agent } from "@qelvra/shared";
 import type { AgentWorkspaceManager } from "../workspaces/agent-workspace-manager.js";
@@ -21,6 +21,7 @@ export interface AgentRuntimeManagerOptions {
   logger?: ServiceLogger;
   /** Server configuration only; disabled unless development/test composition enables it. */
   allowFakeProvider?: boolean;
+  providers?: ProviderRegistry;
   /** App composition coordinates persistent task cleanup with metadata deletion. */
   deleteAgent?: (id: string) => Promise<Agent>;
   /** Whether a pid still exists; injectable for tests. */
@@ -105,10 +106,13 @@ export class AgentRuntimeManager {
   private readonly queues = new Map<string, Promise<unknown>>();
   private shuttingDown = false;
   private readonly allowFakeProvider: boolean;
+  private readonly providers: ProviderRegistry;
   private readonly deleteAgent: (id: string) => Promise<Agent>;
 
   constructor(options: AgentRuntimeManagerOptions) {
     this.allowFakeProvider = options.allowFakeProvider ?? false;
+    this.providers =
+      options.providers ?? new ProviderRegistry({ allowFake: this.allowFakeProvider });
     this.registry = options.registry;
     this.deleteAgent = options.deleteAgent ?? ((id) => this.registry.delete(id));
     this.workspaces = options.workspaces;
@@ -282,11 +286,25 @@ export class AgentRuntimeManager {
     let session: PtySessionInfo;
     try {
       const cwd = await this.workspaces.ensureWorkspace(agent);
-      const command = resolveRuntimeCommand(agent, this.workspaces.dataDir, this.allowFakeProvider);
-      session = this.pty.createSession({ id: sessionId, cwd, ...(command ? { command } : {}) });
+      const command = await this.providers.resolve(agent, cwd, this.workspaces.dataDir);
+      try {
+        session = this.pty.createSession({ id: sessionId, cwd: command.cwd, command });
+      } catch {
+        if (agent.providerId === null || agent.providerId === "shell")
+          throw new AgentError("AGENT_START_FAILED", `Could not start a shell for "${agentId}"`);
+        throw new ProviderError(
+          "PROVIDER_LAUNCH_FAILED",
+          "The provider could not start. Check its installation and try again.",
+        );
+      }
     } catch (error) {
-      this.logger.error({ err: error, agentId }, "Agent shell failed to start");
-      await this.registry.transition(agentId, "error");
+      const errorCode = error instanceof ProviderError ? error.code : "AGENT_START_FAILED";
+      this.logger.error(
+        { errorCode, agentId, providerId: agent.providerId ?? "shell" },
+        "Agent provider failed to start",
+      );
+      await this.registry.transition(agentId, "error", errorCode);
+      if (error instanceof ProviderError) throw error;
       throw new AgentError("AGENT_START_FAILED", `Could not start a shell for "${agentId}"`, {
         cause: error,
       });

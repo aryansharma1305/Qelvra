@@ -1,3 +1,4 @@
+import { ProviderError } from "../providers/index.js";
 import { TaskError } from "../tasks/task-errors.js";
 import {
   AgentIdSchema,
@@ -45,6 +46,8 @@ const FIELD_CODES: Record<string, ApiErrorCode> = {
 
 /** Registry errors as HTTP errors; internal codes never leak as 5xx details. */
 function toAppError(error: unknown): unknown {
+  if (error instanceof ProviderError)
+    return new AppError(error.code === "PROVIDER_NOT_FOUND" ? 400 : 409, error.code, error.message);
   if (error instanceof TaskError)
     return new AppError(500, "TASK_PERSISTENCE_FAILED", "Could not safely update assigned tasks");
   if (!(error instanceof AgentError)) return error;

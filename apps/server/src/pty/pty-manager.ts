@@ -186,11 +186,15 @@ export class PtyManager {
         cols,
         rows,
         cwd,
-        env: ptyEnvironment({ ...this.env, ...options.command?.env }),
+        env: ptyEnvironment(
+          options.command?.inheritEnv === false
+            ? { ...options.command.env }
+            : { ...this.env, ...options.command?.env },
+        ),
       });
     } catch (error) {
       // Not registered: a failed spawn leaves no session behind.
-      this.logger.error({ err: error, sessionId: id, shell: shell.file, cwd }, "PTY spawn failed");
+      this.logger.error({ errorCode: "PTY_SPAWN_FAILED", sessionId: id }, "PTY spawn failed");
       throw new PtyError("PTY_SPAWN_FAILED", `Could not start a shell for session "${id}"`, {
         cause: error,
       });

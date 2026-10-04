@@ -25,13 +25,13 @@ packages/shared  ◀── Zod schemas + types used by both sides (API, terminal
 ```
 
 The browser never touches the filesystem or processes. All privileged work goes
-through the server, which launches default allowlisted shells or a fixed server-owned
-development/test fake CLI. Browser payloads cannot configure executable paths or arguments.
+through the server, which resolves allowlisted shells, fake agents and installed AI CLIs
+through the server-owned ProviderRegistry. Browser payloads cannot configure executable paths or arguments.
 
 API responses follow the contracts in `packages/shared/src/api.ts`; errors always use
 `{ "error": { "code", "message" } }` (ADR 0003).
 
-`createApp()` owns the registry, workspace manager, mailbox manager, message router, agent runtime manager, task registry and one
+`createApp()` owns the registry, workspace manager, mailbox manager, message router, agent runtime manager, provider registry, task registry and one
 `PtyManager` (`app.pty`). On startup it ensures existing agents' workspaces without
 starting them. Fastify readiness starts the router before listening. On shutdown it
 stops/drains routing, then agent runtimes and all remaining PTY sessions.
@@ -43,7 +43,9 @@ Agent routes → AgentRuntimeManager.create → AgentRegistry → DATA_DIR/agent
 
 AgentRuntimeManager.start/restart
   ├── AgentWorkspaceManager → validated workspace cwd
-  └── PtyManager.createSession({ cwd }) → node-pty → local shell
+  └── ProviderRegistry → ProviderCommandResolver (filtered env, fixed argv)
+                              ↓
+               PtyManager.createSession({ cwd, command }) → node-pty → provider CLI
 
 Scratch terminal gateway → PtyManager → default WORKSPACE_ROOT cwd
 ```
@@ -154,3 +156,13 @@ Activity observes committed facts; it never controls tasks, agents or message de
 Log failures allow domain operations to succeed and surface structured diagnostics and
 live degraded status. See [ADR 0013](../adr/0013-activity-events.md) for ownership,
 privacy, disk/history limits, corruption recovery and crash semantics.
+
+## AI provider admission (PR 14)
+
+`GET /api/providers` lazily discovers known CLI definitions with bounded version/help/auth
+probes. Sixty-second caching and a three-provider concurrency limit isolate broken tools
+from normal server operation. Null agent providers retain the local shell; fake uses the
+same registry in development/test only. Installed Ollama remains unconfigured until model
+selection exists. Browser requests cannot choose executable paths, argv, cwd or environment.
+Agent provider environments replace, rather than merge, the parent server environment.
+See [ADR 0014](../adr/0014-ai-provider-layer.md) for IDs, authentication and isolation limits.

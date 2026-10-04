@@ -1,3 +1,4 @@
+import { E2E_API_URL } from "./env";
 import { expect, test } from "./fixtures";
 
 test("wizard starts at step 1 and steps are deep-linkable", async ({ page }) => {
@@ -33,12 +34,29 @@ test("identity edits update the live preview", async ({ page }) => {
   await expect(page.locator("#step-pill-1")).toContainText("Sentinel");
 });
 
-test("provider and temperature update the preview", async ({ page }) => {
+test("API provider selection updates the preview and unavailable cards are disabled", async ({
+  page,
+  request,
+}) => {
+  const response = await request.get(`${E2E_API_URL}/api/providers`);
+  const { providers } = await response.json();
+  // Make one known unavailable result deterministic without installing any external CLI.
+  const fixture = providers.map((provider: { id: string }) =>
+    provider.id === "gemini"
+      ? { ...provider, available: false, reason: "CLI_NOT_FOUND" }
+      : provider,
+  );
+  await page.route("**/api/providers", (route) => route.fulfill({ json: { providers: fixture } }));
   await page.goto("/agents/new?step=2");
-  await page.getByRole("radio", { name: "Claude 3.5 Sonnet" }).click();
-  await expect(page.locator("#live-agent-provider")).toHaveText("Claude 3.5 Sonnet");
-  await page.getByRole("slider", { name: "Cognitive temperature" }).fill("80");
-  await expect(page.locator("#temp-display")).toHaveText("0.80 (Creative Hypothesis Mode)");
+  await expect(page.getByRole("radio")).toHaveCount(providers.length);
+  const missing = page.getByRole("radio", { name: /Gemini CLI/ });
+  await expect(missing).toBeDisabled();
+  await expect(missing).toContainText("Not installed");
+  await page.getByRole("radio", { name: /Fake agent/ }).click();
+  await expect(page.locator("#live-agent-provider")).toHaveText("Fake agent (development)");
+  await expect(
+    page.locator("input[name=executable],input[name=args],input[name=cwd],input[name=apiKey]"),
+  ).toHaveCount(0);
 });
 
 test("toggling tools updates counts", async ({ page }) => {

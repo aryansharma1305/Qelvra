@@ -151,15 +151,11 @@ describe("real fake-agent execution loop", () => {
       ["atlas", "scout", "DONE:TASK:abc"],
       ["scout", "nova", "ACK:FROM_SCOUT"],
     ]) {
-      await until(async () => {
-        const messages = await inbox(required(id));
-        return (
-          messages.length === 1 && messages.every((m) => m.type === "result" && m.body === body)
-        );
-      });
-      expect(await inbox(required(id))).toEqual([
-        expect.objectContaining({ from, to: id, type: "result", body }),
-      ]);
+      // One retried snapshot checks every field. A second immediate read could overlap
+      // the router unlinking the published hard link (a legitimate ctime change).
+      await expect
+        .poll(() => inbox(required(id)), { timeout: 10000, interval: 30 })
+        .toEqual([expect.objectContaining({ from, to: id, type: "result", body })]);
     }
     await cleanMailboxes(ids);
     expect(app.router.status().delivered).toBe(6);
@@ -296,7 +292,7 @@ describe("real fake-agent execution loop", () => {
         providerId: "fake",
       });
       await expect(production.runtime.start("disabled")).rejects.toMatchObject({
-        code: "AGENT_START_FAILED",
+        code: "PROVIDER_UNAVAILABLE",
       });
       expect(production.pty.size).toBe(0);
     } finally {

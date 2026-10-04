@@ -5,6 +5,7 @@ import {
   agentIdFromName,
   type Agent,
   type AgentStatus,
+  type ProviderId,
 } from "@qelvra/shared";
 import { z } from "zod";
 import { writeFileAtomic } from "../lib/atomic-write.js";
@@ -38,7 +39,7 @@ const StoreFileSchema = z.object({
 
 export type AgentRegistryEvent =
   | { type: "agent.created"; agent: Agent }
-  | { type: "agent.updated"; agent: Agent; previousStatus: AgentStatus }
+  | { type: "agent.updated"; agent: Agent; previousStatus: AgentStatus; errorCode?: string }
   | { type: "agent.deleted"; agent: Agent };
 
 export interface AgentRegistryOptions {
@@ -53,7 +54,7 @@ export interface CreateAgentInput {
   name: string;
   role: string;
   id?: string | undefined;
-  providerId?: "fake" | null | undefined;
+  providerId?: ProviderId | null | undefined;
 }
 
 const FIELD_CODES: Record<string, AgentErrorCode> = {
@@ -170,7 +171,7 @@ export class AgentRegistry {
   }
 
   /** Server-internal lifecycle change, validated against AGENT_TRANSITIONS. */
-  async transition(id: string, to: AgentStatus): Promise<Agent> {
+  async transition(id: string, to: AgentStatus, errorCode?: string): Promise<Agent> {
     const current = this.agents.get(id);
     if (!current) throw new AgentError("AGENT_NOT_FOUND", `Agent "${id}" does not exist`);
     if (!AGENT_TRANSITIONS[current.status].includes(to)) {
@@ -183,7 +184,12 @@ export class AgentRegistry {
     this.agents.set(id, updated);
     await this.persist(() => this.agents.set(id, current));
 
-    this.emit({ type: "agent.updated", agent: snapshot(updated), previousStatus: current.status });
+    this.emit({
+      type: "agent.updated",
+      agent: snapshot(updated),
+      previousStatus: current.status,
+      ...(errorCode ? { errorCode } : {}),
+    });
     return snapshot(updated);
   }
 

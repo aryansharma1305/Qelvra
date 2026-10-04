@@ -1,10 +1,10 @@
+import type { ProviderId } from "@qelvra/shared";
 // Form state for the Create Agent wizard. Defaults reproduce the Stitch design's mock values.
-// Only name and role are submitted (POST /api/agents); the other steps are presentation-only
-// until providers (PR 13) and workspaces (PR 8) exist.
+// Name, role and a canonical provider ID are submitted. Other draft controls are design previews.
 
 export const WIZARD_STEPS = [
   { title: "IDENTITY", subtitle: "Operative Alias & Role Profile" },
-  { title: "INTELLIGENCE", subtitle: "Reasoning Substrate & Temperature" },
+  { title: "INTELLIGENCE", subtitle: "Installed CLI & Availability" },
   { title: "CAPABILITIES", subtitle: "Synthesizing Operative Profile" },
   { title: "WORKSPACE", subtitle: "Filesystem Mounting & IPC Bus" },
   { title: "DIRECTIVE", subtitle: "System Prompt & Guidelines" },
@@ -115,13 +115,6 @@ export const TOOLS: readonly ToolDefinition[] = [
   },
 ];
 
-export const PROVIDERS = [
-  { id: "ollama", label: "Ollama Local (RTX 4090)" },
-  { id: "gemini", label: "Gemini 2.5 Pro" },
-  { id: "claude", label: "Claude 3.5 Sonnet" },
-] as const;
-export type ProviderId = (typeof PROVIDERS)[number]["id"];
-
 export const DIRECTIVE_PRESETS = {
   security: `<role>\nYou are Kite, an autonomous security auditor and hardening operative.\nStrict zero-trust verification applies to every execution step.\n</role>\n\n<operational_heuristics>\n- Disallow any unauthenticated network egress.\n- Sanitize all AST mutations against taint-analysis rules.\n</operational_heuristics>`,
   velocity: `<role>\nYou are Kite, a rapid prototyping and continuous build operative.\nPrioritize rapid test-driven iteration and micro-benchmarking.\n</role>\n\n<operational_heuristics>\n- Execute parallel pytest runners across 8 threads.\n- Push automatic ephemeral staging branches for each patch.\n</operational_heuristics>`,
@@ -145,7 +138,7 @@ export const DEFAULT_AGENT_DRAFT: AgentDraft = {
   name: "Kite",
   role: "Staff Systems Architect & DevOps Lead",
   avatar: 0,
-  provider: "ollama",
+  provider: "shell",
   temperature: 25,
   tools: new Set(["coding", "terminal", "git", "files", "testing", "browser"]),
   preset: "architect",
@@ -164,5 +157,13 @@ export function temperatureLabel(sliderValue: number): string {
 }
 
 export function providerLabel(id: ProviderId): string {
-  return PROVIDERS.find((provider) => provider.id === id)?.label ?? id;
+  return {
+    shell: "Local shell",
+    fake: "Fake agent (development)",
+    ollama: "Ollama",
+    codex: "Codex",
+    gemini: "Gemini CLI",
+    "claude-code": "Claude Code",
+    opencode: "OpenCode",
+  }[id];
 }

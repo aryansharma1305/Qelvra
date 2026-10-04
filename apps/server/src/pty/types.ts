@@ -28,7 +28,7 @@ export interface CreatePtySessionOptions {
   cols?: number;
   rows?: number;
   /** Internal server-owned launch selection. Never populated from WebSocket/API input. */
-  command?: ResolvedShell & { env?: NodeJS.ProcessEnv };
+  command?: ResolvedShell & { env?: NodeJS.ProcessEnv; inheritEnv?: boolean };
 }
 
 export interface Disposable {

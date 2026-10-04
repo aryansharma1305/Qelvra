@@ -1,3 +1,4 @@
+import { ProviderRegistry } from "../../../apps/server/src/providers/index";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -32,6 +33,14 @@ beforeEach(async () => {
   app = await createApp(loadConfig({ WEB_ORIGIN: ORIGIN, DATA_DIR: dataDir }), {
     logger: false,
     ptyManager: pty,
+    providerRegistry: new ProviderRegistry({
+      env: {
+        PATH: process.env.PATH,
+        HOME: dataDir,
+        SHELL: process.env.QELVRA_TEST_SHELL ?? "/bin/sh",
+        LANG: "C",
+      },
+    }),
   });
   await app.listen({ host: "127.0.0.1", port: 0 });
   const address = app.server.address();

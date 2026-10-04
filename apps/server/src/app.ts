@@ -11,6 +11,7 @@ import { MailboxManager } from "./mailbox/index.js";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { ServerConfig } from "./config/env.js";
 import { AgentWorkspaceManager } from "./workspaces/agent-workspace-manager.js";
+import { ProviderRegistry } from "./providers/index.js";
 import { join } from "node:path";
 import { AgentRegistry, AgentRuntimeManager } from "./agents/index.js";
 import { registerCors } from "./plugins/cors.js";
@@ -25,6 +26,7 @@ declare module "fastify" {
   interface FastifyInstance {
     /** Owns all PTY processes; terminated when the app closes. */
     pty: PtyManager;
+    providers: ProviderRegistry;
     /** Known agents and their server-owned lifecycle state. */
     agents: AgentRegistry;
     /** Agents' live shells (one PTY per running agent). */
@@ -44,6 +46,7 @@ export interface CreateAppOptions {
   ptyManager?: PtyManager;
   /** Inject a registry (tests); otherwise <dataDir>/agents.json is opened. */
   agentRegistry?: AgentRegistry;
+  providerRegistry?: ProviderRegistry;
 }
 
 /** Builds the Fastify app without listening, so it can be exercised with app.inject(). */
@@ -118,7 +121,16 @@ export async function createApp(
     });
   app.decorate("pty", ptyManager);
 
+  const providers =
+    options.providerRegistry ??
+    new ProviderRegistry({
+      allowFake: !config.isProduction,
+      logger: app.log.child({ component: "providers" }),
+    });
+  app.decorate("providers", providers);
+  app.get("/api/providers", async () => ({ providers: await providers.list() }));
   const runtime = new AgentRuntimeManager({
+    providers,
     registry: agentRegistry,
     workspaces,
     pty: ptyManager,

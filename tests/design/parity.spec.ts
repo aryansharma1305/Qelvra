@@ -5,13 +5,14 @@ import {
   type ActivityFixture,
 } from "./activity-parity";
 import fs from "node:fs";
+import { pathToFileURL } from "node:url";
 import path from "node:path";
 import { test, expect, type Page } from "@playwright/test";
 import { seedTasks, readTaskReference, checkTaskParity, type TaskReference } from "./task-parity";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { E2E_API_URL } from "../e2e/env";
-import { AgentListResponseSchema } from "@qelvra/shared";
+import { ProviderListResponseSchema, AgentListResponseSchema } from "@qelvra/shared";
 import {
   checkTerminalGeometry,
   normalizeTerminal,
@@ -162,7 +163,29 @@ const DESIGN_COPY_EDITS: Partial<Record<string, readonly [string, string][]>> = 
     ["Inference Cost: $0.00 (Local)", "Inference Cost: —"],
   ],
   // Creating registers a stopped agent; nothing is brought online until agent processes exist.
-  agent_hive_create_agent_wizard: [["Bring Agent Online", "Create Agent"]],
+  agent_hive_create_agent_wizard: [
+    ["Bring Agent Online", "Create Agent"],
+    ["Ollama Local (RTX 4090)", "Local shell"],
+    ["Ollama Local", "Local shell"],
+    ["DeepSeek-R1 • 128k ctx • temp 0.25", "Provider configuration"],
+    ["LIVE OPERATIVE SYNTHESIS", "OPERATIVE PREVIEW"],
+    ["ARMED CAPABILITIES", "PREVIEW CAPABILITIES"],
+    ["Cognitive Readiness", "Inference telemetry"],
+    ["94% Nominal", "Not measured"],
+    ["bg-tertiary w-[94%]", "bg-tertiary w-0"],
+    ["Footprint: 5.2 GB VRAM", "Footprint: —"],
+    ["Est. Cost: $0.00/hr", "Est. Cost: —"],
+    ["INITIAL SYNTHESIZED GREETING", "AFTER CREATION"],
+    [
+      "Ready to initialize. Swarm mesh connected. Awaiting initial task delegation.",
+      "Create this agent, then open its profile to start a terminal session.",
+    ],
+    ["Sandbox Enclave Tier 3 Active", "Workspace per agent"],
+    ["AIRGAPPED", "LOCAL"],
+    ["Zero-Egress Sandboxed", "Workspace per agent"],
+    [">READY<", ">DRAFT<"],
+    [">ONLINE<", ">DRAFT<"],
+  ],
 };
 
 const SCREENS: readonly { screen: string; route: string; shell: "app" | "onboarding" }[] = [
@@ -230,6 +253,59 @@ test.beforeAll(async ({ request }) => {
   activityFixture = await readActivityFixture(request);
 });
 
+// Canonical deterministic discovery fixture; no additional visual masks.
+const providers = [
+  {
+    id: "shell",
+    name: "Local shell",
+    kind: "shell",
+    available: true,
+    version: null,
+    reason: null,
+    auth: "not-required",
+    configured: true,
+    capabilities: {
+      interactive: true,
+      local: true,
+      requiresAuth: false,
+      supportsWorkspace: true,
+    },
+  },
+  {
+    id: "fake",
+    name: "Fake agent (development)",
+    kind: "fake",
+    available: true,
+    version: null,
+    reason: null,
+    auth: "not-required",
+    configured: true,
+    capabilities: {
+      interactive: true,
+      local: true,
+      requiresAuth: false,
+      supportsWorkspace: true,
+    },
+  },
+  ...["codex", "gemini", "claude-code", "opencode", "ollama"].map((id) => ({
+    id,
+    name: id,
+    kind: "cli",
+    available: false,
+    version: null,
+    reason: "CLI_NOT_FOUND",
+    auth: "unknown",
+    configured: id !== "ollama",
+    capabilities: {
+      interactive: true,
+      local: id === "ollama",
+      requiresAuth: id !== "ollama",
+      supportsWorkspace: true,
+    },
+  })),
+];
+const providerFixture = ProviderListResponseSchema.parse({ providers });
+
 const FREEZE_MOTION =
   "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}";
 
@@ -239,10 +315,26 @@ function staticDesignFile(screen: string, outDir: string): string {
   html = html.replace(/<script(?![^>]*tailwind)[^>]*>[\s\S]*?<\/script>/g, (tag) =>
     tag.includes("tailwind.config") ? tag : "",
   );
-  // Same font fix as apps/web/index.html: the export's onboarding font URL drops JetBrains Mono.
+  // ADR 0002 retained the exact approved font files. Use those same bytes in the
+  // reference, avoiding remote font loading/version drift and the export's invalid
+  // onboarding JetBrains Mono weights. Keep all original typography and layout.
+  const fonts = fs
+    .readFileSync(path.resolve("apps/web/src/styles/fonts.css"), "utf8")
+    .replace(
+      /url\((\.\.\/assets\/fonts\/[^)]+)\)/g,
+      (_match, file: string) =>
+        `url("${pathToFileURL(path.resolve("apps/web/src/styles", file)).href}")`,
+    );
+  html = html.replace(/<link[^>]*href="https:\/\/fonts\.googleapis\.com\/[^>]*>/g, "");
+  html = html.replace("</head>", `<style>${fonts}</style></head>`);
+  // The original remote brand URL has expired; ADR 0002 retained this exact artwork.
   html = html.replace(
-    "family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900",
-    "family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600",
+    /https:\/\/lh3\.googleusercontent\.com\/aida\/(?:AEtjO1XPInVhy3rS6tZTmZQ0bOK1tl|AEtjO1UNVnzaUQYxTYZFNl56FCT9u2h7gRt05hx)[^"\s<>]*/g,
+    pathToFileURL(path.resolve("apps/web/public/stitch/brand-mark.png")).href,
+  );
+  html = html.replace(
+    /https:\/\/lh3\.googleusercontent\.com\/aida\/AEtjO1X-gWG5cUbKyle7KnRgx_mkiMuaciOj5eaeAdDtCQcZT[^"\s<>]*/g,
+    pathToFileURL(path.resolve("apps/web/public/stitch/avatar-user.jpg")).href,
   );
   // User-approved product rename; compare the same Qelvra copy without altering exports.
   html = html.replaceAll("Agent Hive", "Qelvra");
@@ -349,6 +441,8 @@ for (const width of [1280, 1440, 1920]) {
           ? (await boxesOf(page, live.cutoff.design))[0]
           : undefined;
 
+        // Interception only on the app: reference assets load before deterministic app API interception.
+        await page.route("**/api/providers", (route) => route.fulfill({ json: providerFixture }));
         let app = await capture(
           page,
           route === "/tasks" ? `/tasks?task=${selectedTask}` : route,

@@ -27,7 +27,7 @@ describe("create agent wizard helpers", () => {
   it("defaults reproduce the design's state", () => {
     expect(DEFAULT_AGENT_DRAFT.name).toBe("Kite");
     expect(DEFAULT_AGENT_DRAFT.tools.size).toBe(6);
-    expect(providerLabel(DEFAULT_AGENT_DRAFT.provider)).toBe("Ollama Local (RTX 4090)");
+    expect(providerLabel(DEFAULT_AGENT_DRAFT.provider)).toBe("Local shell");
   });
 
   it("only enables known tools by default", () => {

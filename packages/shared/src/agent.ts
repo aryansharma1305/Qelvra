@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ProviderIdSchema } from "./provider.js";
 
 /**
  * Agent ids are used as directory names under hive/agents/ and as routing
@@ -76,8 +77,8 @@ export const CreateAgentRequestSchema = z.object({
   role: AgentRoleSchema,
   /** Optional explicit id; otherwise derived from the name (see agentIdFromName). */
   id: AgentIdSchema.optional(),
-  /** Fixed development/test provider only; executable configuration stays server-owned. */
-  providerId: z.literal("fake").nullable().optional(),
+  /** Known provider ID only; executable configuration stays server-owned. */
+  providerId: ProviderIdSchema.nullable().optional(),
 });
 
 export type CreateAgentRequest = z.infer<typeof CreateAgentRequestSchema>;

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ProviderIdSchema } from "./provider.js";
 import { AgentIdSchema, AgentNameSchema } from "./agent.js";
 import { MessageIdSchema, MessageTypeSchema } from "./message.js";
 import { TaskIdSchema, TaskTitleSchema } from "./task.js";
@@ -54,7 +55,11 @@ export const ActivityInputSchema = z.discriminatedUnion("type", [
     type: z.enum(AGENT_ACTIVITY_TYPES),
     actor,
     entity: z.strictObject({ type: z.literal("agent"), id: AgentIdSchema }),
-    metadata: z.strictObject({ agentName: AgentNameSchema, errorCode: ErrorCode.optional() }),
+    metadata: z.strictObject({
+      agentName: AgentNameSchema,
+      providerId: ProviderIdSchema.optional(),
+      errorCode: ErrorCode.optional(),
+    }),
   }),
   z.strictObject({
     type: z.enum(TASK_ACTIVITY_TYPES),

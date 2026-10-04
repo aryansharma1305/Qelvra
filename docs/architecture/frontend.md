@@ -48,7 +48,9 @@ server API/WebSocket (PR 3+).
 The Agents directory, drawer, profile, wizard submit, sidebar badge and header pill use
 the agent registry (ADR 0006). Cards keep the design's markup; fields with no backing data
 yet show explicit placeholders (`toDirectoryCard` in `features/agents/presentation.ts`).
-Only name and role are sent from the wizard. The other steps are presentation-only.
+Name, role and a known provider ID are sent from the wizard. Provider cards and profile
+availability use `/api/providers`; unavailable providers are disabled in the wizard.
+Other draft controls remain presentation-only.
 
 ## Mock data
 
@@ -83,5 +85,5 @@ lead to explicit Retry; older cursor pages and Latest activity are available on 
 Dashboard Team Overview reads supported counts from `/api/activity/summary` with a
 short debounce; activity does not pretend to measure productivity, GPU or inference.
 UTC-today message counts refer to retained activity history, not lifetime totals.
-Home operative cards remain explicitly labeled DESIGN PREVIEW; provider execution,
-orchestrator intelligence and the other existing mock surfaces are deferred.
+Home operative cards remain explicitly labeled DESIGN PREVIEW; orchestrator intelligence
+and the other existing mock surfaces are deferred. Agent provider startup is real (ADR 0014).

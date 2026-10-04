@@ -1,4 +1,4 @@
-import { MessageTypeSchema } from "@qelvra/shared";
+import { MessageTypeSchema, ProviderIdSchema } from "@qelvra/shared";
 import type { AgentRegistry } from "../agents/agent-registry.js";
 import type { TaskRegistry } from "../tasks/task-registry.js";
 import type { RouterEvent } from "../router/message-router.js";
@@ -25,7 +25,17 @@ export function observeActivity(
         entity: { type: "agent", id: event.agent.id },
         metadata: {
           agentName: event.agent.name,
-          ...(type === "agent.error" ? { errorCode: "AGENT_RUNTIME_ERROR" } : {}),
+          ...(ProviderIdSchema.safeParse(event.agent.providerId ?? "shell").success
+            ? { providerId: ProviderIdSchema.parse(event.agent.providerId ?? "shell") }
+            : {}),
+          ...(type === "agent.error"
+            ? {
+                errorCode:
+                  event.type === "agent.updated"
+                    ? (event.errorCode ?? "AGENT_RUNTIME_ERROR")
+                    : "AGENT_RUNTIME_ERROR",
+              }
+            : {}),
         },
       });
     }),

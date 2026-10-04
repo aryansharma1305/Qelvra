@@ -13,12 +13,12 @@ export function AgentLivePreview() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="font-label-sm text-label-sm uppercase tracking-wider text-outline">
-              LIVE OPERATIVE SYNTHESIS
+              OPERATIVE PREVIEW
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-ping" />
           </div>
           <span className="font-code-sm text-code-sm text-tertiary px-2 py-0.5 rounded bg-tertiary/10 font-mono">
-            READY
+            DRAFT
           </span>
         </div>
         <div className="bg-surface-container-lowest p-6 rounded-2xl flex flex-col items-center text-center gap-4 relative overflow-hidden shadow-xl">
@@ -39,7 +39,7 @@ export function AgentLivePreview() {
             </div>
             <div className="absolute -bottom-2 -right-2 px-2 py-0.5 rounded-full bg-tertiary text-on-tertiary font-label-sm text-label-sm font-mono flex items-center gap-1 shadow">
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              <span>ONLINE</span>
+              <span>DRAFT</span>
             </div>
           </div>
           <div className="flex flex-col gap-1 w-full">
@@ -72,7 +72,7 @@ export function AgentLivePreview() {
                   {providerLabel(draft.provider)}
                 </span>
                 <span className="font-label-sm text-label-sm text-outline truncate">
-                  DeepSeek-R1 • 128k ctx • temp {(draft.temperature / 100).toFixed(2)}
+                  Provider configuration
                 </span>
               </div>
             </div>
@@ -80,7 +80,7 @@ export function AgentLivePreview() {
           </div>
           <div className="w-full flex flex-col gap-2 text-left">
             <div className="flex items-center justify-between font-label-sm text-label-sm text-outline">
-              <span>ARMED CAPABILITIES</span>
+              <span>PREVIEW CAPABILITIES</span>
               <span className="text-primary font-mono" id="live-tool-count">
                 {armedTools.length} ACTIVE
               </span>
@@ -99,33 +99,33 @@ export function AgentLivePreview() {
           </div>
           <div className="w-full flex flex-col gap-2 pt-2">
             <div className="flex items-center justify-between font-code-sm text-code-sm">
-              <span className="text-on-surface-variant">Cognitive Readiness</span>
-              <span className="text-tertiary font-semibold font-mono">94% Nominal</span>
+              <span className="text-on-surface-variant">Inference telemetry</span>
+              <span className="text-tertiary font-semibold font-mono">Not measured</span>
             </div>
             <div className="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-              <div className="h-full bg-tertiary w-[94%] rounded-full shadow-sm" />
+              <div className="h-full bg-tertiary w-0 rounded-full shadow-sm" />
             </div>
             <div className="flex items-center justify-between font-label-sm text-label-sm text-outline">
-              <span>Footprint: 5.2 GB VRAM</span>
-              <span>Est. Cost: $0.00/hr</span>
+              <span>Footprint: —</span>
+              <span>Est. Cost: —</span>
             </div>
           </div>
           <div className="w-full p-3 rounded-xl bg-surface-container text-left flex flex-col gap-1.5">
             <div className="flex items-center justify-between font-label-sm text-label-sm text-outline">
-              <span>INITIAL SYNTHESIZED GREETING</span>
+              <span>AFTER CREATION</span>
               <span className="material-symbols-outlined text-[14px] text-tertiary">sms</span>
             </div>
             <p className="font-code-sm text-code-sm text-on-surface leading-snug font-mono">
-              “Ready to initialize. Swarm mesh connected. Awaiting initial task delegation.”
+              “Create this agent, then open its profile to start a terminal session.”
             </p>
           </div>
         </div>
         <div className="p-3 bg-surface-container-lowest rounded-xl flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
           <span className="flex items-center gap-2">
             <span className="material-symbols-outlined text-secondary text-[18px]">verified</span>
-            Sandbox Enclave Tier 3 Active
+            Workspace per agent
           </span>
-          <span className="font-mono text-tertiary">AIRGAPPED</span>
+          <span className="font-mono text-tertiary">LOCAL</span>
         </div>
       </div>
       <div className="pt-4 flex items-center justify-between text-outline font-label-sm text-label-sm">

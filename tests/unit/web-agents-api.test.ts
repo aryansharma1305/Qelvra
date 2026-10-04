@@ -6,6 +6,7 @@ import {
   deleteAgent,
   getAgent,
   listAgents,
+  listProviders,
   restartAgent,
   startAgent,
   stopAgent,
@@ -69,6 +70,33 @@ describe("agent API client", () => {
     ).resolves.toEqual(nova);
     expect(request?.method).toBe("POST");
     expect(JSON.parse(String(request?.body))).toEqual({ name: "Nova", role: "Frontend" });
+  });
+
+  it("submits canonical provider ID while discarding browser executable and args", async () => {
+    const fetchImpl = respond({ agent: { ...nova, providerId: "fake" } }, 201);
+    await createAgent(
+      {
+        name: "Nova",
+        role: "Test",
+        providerId: "fake",
+        ...{ command: "evil", args: ["evil"], cwd: "/evil", env: { KEY: "secret" } },
+      },
+      { fetchImpl },
+    );
+    const init = fetchImpl.mock.calls[0] as unknown as [string, RequestInit];
+    expect(JSON.parse(String(init[1].body))).toEqual({
+      name: "Nova",
+      role: "Test",
+      providerId: "fake",
+    });
+  });
+  it("validates provider discovery response and rejects injected executable fields", async () => {
+    const fetchImpl = respond({ providers: [] });
+    expect(await listProviders({ fetchImpl })).toEqual([]);
+    const invalid = await failure(
+      listProviders({ fetchImpl: respond({ providers: [{ id: "evil", executable: "/evil" }] }) }),
+    );
+    expect(invalid.kind).toBe("invalid_response");
   });
 
   it("maps create errors to the server's code and message", async () => {

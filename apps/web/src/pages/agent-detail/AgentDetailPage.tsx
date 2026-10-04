@@ -94,7 +94,7 @@ export function AgentDetailPage({ agent: loaded }: { agent: Agent }) {
                 className="lg:col-span-3"
                 icon="tune"
                 title="Directives & Stack"
-                message="No provider or system directive configured. These arrive with AI providers."
+                message="Provider controls model and permissions. System directives are not configured yet."
               />
               <div className="lg:col-span-6 flex flex-col gap-space-md">
                 <PendingPanel

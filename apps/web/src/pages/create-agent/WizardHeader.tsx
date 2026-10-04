@@ -117,7 +117,7 @@ export function WizardHeader({ step, onStepSelect }: WizardHeaderProps) {
             format_image_left
           </span>
           <span className="font-code-sm text-code-sm text-on-surface-variant">
-            Zero-Egress Sandboxed
+            Workspace per agent
           </span>
         </div>
       </div>

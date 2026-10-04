@@ -127,6 +127,37 @@ test("fake agents round-trip browser terminal input through real mailboxes and r
   }).toPass({ timeout: 15000, intervals: [500, 1000] });
 });
 
+test("wizard-selected fake provider starts through the real registry and stops cleanly", async ({
+  page,
+  request,
+}) => {
+  const name = unique("Provider Fixture");
+  const id = idFor(name);
+  created.push(id);
+  await page.goto("/agents/new");
+  await page.locator("#input-agent-name").fill(name);
+  await page.locator("#input-agent-role").fill("Provider test");
+  await page.locator("#step-pill-2").click();
+  await page.getByRole("radio", { name: /Fake agent/ }).click();
+  await page.locator("#btn-create-agent").click();
+  await expect(page).toHaveURL("/agents");
+  const record = await (await request.get(`${E2E_API_URL}/api/agents/${id}`)).json();
+  expect(record.agent.providerId).toBe("fake");
+  await page.goto(`/agents/${id}`);
+  await expect(page.getByTestId("agent-provider")).toContainText("Available");
+  await page.getByRole("button", { name: /^play_arrow Start$/ }).click();
+  await expect(page.getByTestId("agent-status")).toHaveText("RUNNING");
+  await page.getByRole("button", { name: /Open Terminal/ }).click();
+  const pid = await attached(page, id);
+  await page.locator("#btn-single-view").click();
+  await run(page, "STATUS");
+  await expect(outputRow(page, `READY ${id}`).first()).toBeVisible();
+  await page.goto(`/agents/${id}`);
+  await page.getByRole("button", { name: /^stop Stop$/ }).click();
+  await expect(page.getByTestId("agent-status")).toHaveText("STOPPED");
+  await expect.poll(() => isAlive(pid)).toBe(false);
+});
+
 test("create, start and open an agent's terminal from its profile", async ({ page }) => {
   const name = unique("Nova");
   const id = idFor(name);

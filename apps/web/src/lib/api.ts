@@ -1,3 +1,4 @@
+import { ProviderListResponseSchema, type Provider } from "@qelvra/shared";
 import {
   ActivityListResponseSchema,
   ActivitySummarySchema,
@@ -148,6 +149,7 @@ export async function createAgent(
     name: input.name,
     role: input.role,
     ...(input.id === undefined ? {} : { id: input.id }),
+    ...(input.providerId === undefined ? {} : { providerId: input.providerId }),
   };
   return (
     await requestJson("/api/agents", AgentResponseSchema, { ...options, method: "POST", body })
@@ -248,4 +250,13 @@ export function listActivity(
 }
 export function getActivitySummary(options?: CallOptions) {
   return requestJson("/api/activity/summary", ActivitySummarySchema, options);
+}
+
+export async function listProviders(options?: CallOptions): Promise<Provider[]> {
+  return (
+    await requestJson("/api/providers", ProviderListResponseSchema, {
+      timeoutMs: 20000,
+      ...options,
+    })
+  ).providers;
 }

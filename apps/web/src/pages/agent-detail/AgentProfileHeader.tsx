@@ -1,5 +1,6 @@
 // Ported from the Stitch export (agent_hive_nova_profile/code.html). Keep visually identical to the design.
 
+import { useProviders, providerStatus } from "../../features/providers/useProviders";
 import type { Agent } from "@qelvra/shared";
 import { DeleteAgentButton } from "../../components/agents/DeleteAgentButton";
 import type { AgentAction } from "../../features/agents/agents-store";
@@ -44,6 +45,8 @@ export function AgentProfileHeader({
   onDelete,
 }: AgentProfileHeaderProps) {
   const now = useNow();
+  const { providers, loading, error } = useProviders();
+  const provider = providers.find((p) => p.id === (agent.providerId ?? "shell"));
   const busy = pending !== undefined;
   const canStart = STARTABLE_STATUSES.includes(agent.status);
   const canStop = STOPPABLE_STATUSES.includes(agent.status);
@@ -145,7 +148,16 @@ export function AgentProfileHeader({
                 <span className="material-symbols-outlined text-[14px] text-outline">
                   psychology
                 </span>
-                <span>{agent.providerId ?? "No provider configured"}</span>
+                <span data-testid="agent-provider">
+                  {provider?.name ?? agent.providerId ?? "Local shell"} ·{" "}
+                  {provider
+                    ? providerStatus(provider)
+                    : loading
+                      ? "Checking availability…"
+                      : error
+                        ? "Availability unknown"
+                        : "Unknown provider"}
+                </span>
               </div>
               <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container font-code-sm text-code-sm text-on-surface-variant">
                 <span className="material-symbols-outlined text-[14px] text-outline">schedule</span>

@@ -83,10 +83,19 @@ Production mode disables fake agents; default agents retain local shells.
 - [x] PR 11: Fake agent
 - [x] PR 12: Task system
 - [x] PR 13: Persistent activity events and live dashboard
-- [ ] PR 14: Orchestrator
+- [x] PR 14: Safe AI CLI provider layer
 - [ ] PR 15: Runtime telemetry
 
 Activity is persisted in `DATA_DIR/events.jsonl` and available at `/api/activity` and
 `/ws/activity`. `/activity` and Dashboard Team Activity use this live stream.
 Run `npm run activity:smoke -w @qelvra/server` for a disposable fake-agent/task demo
 with restart and privacy verification. See [ADR 0013](docs/adr/0013-activity-events.md).
+
+Provider discovery is available at `GET /api/providers`. The Create Agent wizard uses
+this API and submits a known provider ID; local shell remains the safe default.
+Unavailable CLIs, missing authentication and Ollama model configuration are reported
+honestly. No provider is installed or logged in automatically. See
+[ADR 0014](docs/adr/0014-ai-provider-layer.md) and the
+[provider verification report](docs/verification/pr14-ai-providers.md).
+Run `npm run provider:smoke -w @qelvra/server -- codex` for a local-only disposable
+interactive startup/cleanup check, without sending a model prompt.

@@ -27,11 +27,14 @@ export function CreateAgentPage() {
   // The step lives in the URL so it survives reloads and works with back/forward.
   const goToStep = (next: number) => setSearchParams({ step: String(clampStep(next)) });
 
-  // Only name and role are real in this release; the other steps (avatar, provider,
-  // temperature, tools, workspace, directive) are presentation-only and are not sent.
+  // Only identity and a known provider ID are submitted.
   const submit = async () => {
     if (submitting) return;
-    const parsed = CreateAgentRequestSchema.safeParse({ name: draft.name, role: draft.role });
+    const parsed = CreateAgentRequestSchema.safeParse({
+      name: draft.name,
+      role: draft.role,
+      providerId: draft.provider,
+    });
     if (!parsed.success) {
       setSubmitError(parsed.error.issues[0]?.message ?? "Name and role are required");
       goToStep(1);
