@@ -47,15 +47,27 @@ export function registerExecutionRoutes(app: FastifyInstance, execution: AgentEx
     controlled(request.params.id, undefined, () => execution.get(request.params.id)),
   );
   app.post<{ Params: { id: string } }>("/api/tasks/:id/execute", async (request, reply) => {
+    if (app.orchestration?.manages(request.params.id))
+      throw new AppError(
+        409,
+        "ORCHESTRATION_TASK_MANAGED",
+        "This task is managed by a goal. Cancel the goal before manually changing it.",
+      );
     const result = await controlled(request.params.id, request.body ?? {}, () =>
       execution.executeTask(request.params.id),
     );
     reply.code(202);
     return result;
   });
-  app.post<{ Params: { id: string } }>("/api/tasks/:id/cancel-execution", (request) =>
-    controlled(request.params.id, request.body ?? {}, () =>
+  app.post<{ Params: { id: string } }>("/api/tasks/:id/cancel-execution", (request) => {
+    if (app.orchestration?.manages(request.params.id))
+      throw new AppError(
+        409,
+        "ORCHESTRATION_TASK_MANAGED",
+        "Cancel the goal to stop its executions.",
+      );
+    return controlled(request.params.id, request.body ?? {}, () =>
       execution.cancelTask(request.params.id),
-    ),
-  );
+    );
+  });
 }

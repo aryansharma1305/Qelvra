@@ -13,7 +13,7 @@ export interface ActivityQuery {
   type?: ActivityType | undefined;
   agentId?: string | undefined;
   taskId?: string | undefined;
-  entityType?: "agent" | "task" | "message" | "router" | undefined;
+  entityType?: "agent" | "task" | "message" | "router" | "orchestration" | undefined;
   entityId?: string;
 }
 /** A single process owns the append queue. No compaction or implicit repair. */
@@ -155,9 +155,12 @@ export class ActivityStore {
         (!type || event.type === type) &&
         (!entityType || event.entity?.type === entityType) &&
         (!entityId || event.entity?.id === entityId) &&
-        (!taskId || (event.entity?.type === "task" && event.entity.id === taskId)) &&
+        (!taskId ||
+          (event.entity?.type === "task" && event.entity.id === taskId) ||
+          ("taskId" in event.metadata && event.metadata.taskId === taskId)) &&
         (!agentId ||
           (event.entity?.type === "agent" && event.entity.id === agentId) ||
+          ("agentId" in event.metadata && event.metadata.agentId === agentId) ||
           (event.actor?.type === "agent" && event.actor.id === agentId) ||
           ("assigneeId" in event.metadata && event.metadata.assigneeId === agentId) ||
           ("from" in event.metadata &&

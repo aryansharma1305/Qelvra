@@ -49,6 +49,10 @@ export const TaskExecutionRequestSchema = z.strictObject({
   description: TaskDescriptionSchema,
   workspace: z.literal("."),
   instructions: z.array(text(1024)).max(8),
+  /** Server-only context; HTTP Execute accepts no fields. */
+  decision: z
+    .strictObject({ phase: z.enum(["plan", "review", "summary"]), context: text(48 * 1024) })
+    .optional(),
 });
 export type TaskExecutionRequest = z.infer<typeof TaskExecutionRequestSchema>;
 export const EXECUTION_STATUSES = [

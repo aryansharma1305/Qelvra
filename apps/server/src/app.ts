@@ -1,4 +1,9 @@
 import {
+  OrchestrationService,
+  registerOrchestrationRoutes,
+  type OrchestrationOptions,
+} from "./orchestration/index.js";
+import {
   ActivityStore,
   ActivityPublisher,
   registerActivityRoutes,
@@ -42,6 +47,7 @@ declare module "fastify" {
     tasks: TaskRegistry;
     activity: ActivityPublisher;
     execution: AgentExecutionService;
+    orchestration: OrchestrationService;
   }
 }
 
@@ -53,6 +59,10 @@ export interface CreateAppOptions {
   /** Inject a registry (tests); otherwise <dataDir>/agents.json is opened. */
   agentRegistry?: AgentRegistry;
   providerRegistry?: ProviderRegistry;
+  orchestrationOptions?: Pick<
+    OrchestrationOptions,
+    "maxTasks" | "maxAttempts" | "maxConcurrent" | "timeoutMs"
+  >;
   executionOptions?: Pick<ExecutionOptions, "timeoutMs" | "processes">;
 }
 
@@ -176,6 +186,19 @@ export async function createApp(
     resultsReady = true;
     await execution.scanResults();
   });
+  const orchestration = await OrchestrationService.open({
+    dataDir: config.dataDir,
+    tasks,
+    agents: agentRegistry,
+    providers,
+    execution,
+    activity,
+    ...config.orchestration,
+    ...options.orchestrationOptions,
+    logger: app.log.child({ component: "orchestration" }),
+  });
+  app.decorate("orchestration", orchestration);
+  app.addHook("onReady", () => orchestration.recover());
   const runtime = new AgentRuntimeManager({
     providers,
     registry: agentRegistry,
@@ -201,7 +224,11 @@ export async function createApp(
   app.addHook("onClose", async () => {
     try {
       try {
-        await execution.stopAll();
+        try {
+          await orchestration.stopAll();
+        } finally {
+          await execution.stopAll();
+        }
       } finally {
         await router.stop();
       }
@@ -225,6 +252,7 @@ export async function createApp(
   registerAgentRoutes(app, agentRegistry, runtime);
   registerTaskRoutes(app, tasks, execution);
   registerExecutionRoutes(app, execution);
+  registerOrchestrationRoutes(app, orchestration);
   registerActivityRoutes(app, activity);
   await registerTerminalGateway(app, {
     pty: ptyManager,

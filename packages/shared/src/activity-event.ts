@@ -4,6 +4,7 @@ import { AgentIdSchema, AgentNameSchema } from "./agent.js";
 import { MessageIdSchema, MessageTypeSchema } from "./message.js";
 import { TaskIdSchema, TaskTitleSchema } from "./task.js";
 import { ExecutionIdSchema } from "./execution-result.js";
+import { GoalIdSchema } from "./orchestration.js";
 
 export const AGENT_ACTIVITY_TYPES = [
   "agent.created",
@@ -35,12 +36,27 @@ export const EXECUTION_ACTIVITY_TYPES = [
   "execution.failed",
   "execution.cancelled",
 ] as const;
+export const ORCHESTRATION_ACTIVITY_TYPES = [
+  "orchestration.created",
+  "orchestration.planning",
+  "orchestration.planned",
+  "orchestration.started",
+  "orchestration.task_started",
+  "orchestration.task_approved",
+  "orchestration.task_rework",
+  "orchestration.completed",
+  "orchestration.failed",
+  "orchestration.cancelled",
+  "orchestration.paused",
+  "orchestration.resumed",
+] as const;
 export const ACTIVITY_TYPES = [
   ...AGENT_ACTIVITY_TYPES,
   ...MESSAGE_ACTIVITY_TYPES,
   ...TASK_ACTIVITY_TYPES,
   ...ROUTER_ACTIVITY_TYPES,
   ...EXECUTION_ACTIVITY_TYPES,
+  ...ORCHESTRATION_ACTIVITY_TYPES,
 ] as const;
 export const ActivityTypeSchema = z.enum(ACTIVITY_TYPES);
 export const ActivityIdSchema = z
@@ -59,6 +75,18 @@ const actor = z
   .optional();
 // Strict allowlists: never accept bodies, descriptions, terminal data, env or arbitrary blobs.
 export const ActivityInputSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.enum(ORCHESTRATION_ACTIVITY_TYPES),
+    actor,
+    entity: z.strictObject({ type: z.literal("orchestration"), id: GoalIdSchema }),
+    metadata: z.strictObject({
+      goalId: GoalIdSchema,
+      taskId: TaskIdSchema.optional(),
+      agentId: AgentIdSchema.optional(),
+      attempt: z.number().int().min(1).max(3).optional(),
+      errorCode: ErrorCode.optional(),
+    }),
+  }),
   z.strictObject({
     type: z.enum(EXECUTION_ACTIVITY_TYPES),
     actor,

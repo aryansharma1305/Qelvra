@@ -101,28 +101,31 @@ describe("activity client and formatter", () => {
   });
   it("formats every canonical event with human copy, safe links and lightweight relative time", () => {
     for (const type of ACTIVITY_TYPES) {
-      const entity =
-        type.startsWith("task.") || type.startsWith("execution.")
+      const entity = type.startsWith("orchestration.")
+        ? { type: "orchestration", id: "goal-00000000-0000-4000-8000-000000000001" }
+        : type.startsWith("task.") || type.startsWith("execution.")
           ? { type: "task", id: "task-00000000-0000-4000-8000-000000000001" }
           : type.startsWith("message.")
             ? { type: "message", id: "msg-00000000-0000-4000-8000-000000000001" }
             : type.startsWith("router.")
               ? { type: "router", id: "router" }
               : { type: "agent", id: "nova" };
-      const metadata = type.startsWith("execution.")
-        ? {
-            executionId: "exec-00000000-0000-4000-8000-000000000001",
-            taskId: "task-00000000-0000-4000-8000-000000000001",
-            agentId: "nova",
-            providerId: "fake",
-          }
-        : type.startsWith("task.")
-          ? { taskTitle: "Login", assigneeId: "nova", assigneeName: "Nova" }
-          : type.startsWith("message.")
-            ? { from: "nova", to: "atlas", messageType: "message" }
-            : type.startsWith("router.")
-              ? {}
-              : { agentName: "Nova" };
+      const metadata = type.startsWith("orchestration.")
+        ? { goalId: "goal-00000000-0000-4000-8000-000000000001" }
+        : type.startsWith("execution.")
+          ? {
+              executionId: "exec-00000000-0000-4000-8000-000000000001",
+              taskId: "task-00000000-0000-4000-8000-000000000001",
+              agentId: "nova",
+              providerId: "fake",
+            }
+          : type.startsWith("task.")
+            ? { taskTitle: "Login", assigneeId: "nova", assigneeName: "Nova" }
+            : type.startsWith("message.")
+              ? { from: "nova", to: "atlas", messageType: "message" }
+              : type.startsWith("router.")
+                ? {}
+                : { agentName: "Nova" };
       const display = formatActivityEvent(
         ActivityEventSchema.parse({ ...event(), type, entity, metadata }),
       );

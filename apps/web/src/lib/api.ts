@@ -1,6 +1,11 @@
 import { ProviderListResponseSchema, type Provider } from "@qelvra/shared";
 import { TaskExecutionResponseSchema } from "@qelvra/shared";
 import {
+  OrchestrationListResponseSchema,
+  OrchestrationResponseSchema,
+  type CreateOrchestrationRequest,
+} from "@qelvra/shared";
+import {
   ActivityListResponseSchema,
   ActivitySummarySchema,
   type ActivityType,
@@ -240,7 +245,7 @@ export function listActivity(
     type?: ActivityType;
     agentId?: string;
     taskId?: string;
-    entityType?: "agent" | "task" | "message" | "router";
+    entityType?: "agent" | "task" | "message" | "router" | "orchestration";
   } = {},
   options?: CallOptions,
 ) {
@@ -280,3 +285,30 @@ export const cancelTaskExecution = (id: string, options?: CallOptions) =>
     TaskExecutionResponseSchema,
     { method: "POST", body: {}, timeoutMs: 10000, ...options },
   );
+export const listOrchestrations = async (options?: CallOptions) =>
+  (await requestJson("/api/orchestrations", OrchestrationListResponseSchema, options))
+    .orchestrations;
+export const createOrchestration = async (
+  body: CreateOrchestrationRequest,
+  options?: CallOptions,
+) =>
+  (
+    await requestJson("/api/orchestrations", OrchestrationResponseSchema, {
+      method: "POST",
+      body,
+      timeoutMs: 25000,
+      ...options,
+    })
+  ).orchestration;
+export const runOrchestrationAction = async (
+  id: string,
+  action: "plan" | "run" | "cancel" | "resume",
+  options?: CallOptions,
+) =>
+  (
+    await requestJson(
+      `/api/orchestrations/${encodeURIComponent(id)}/${action}`,
+      OrchestrationResponseSchema,
+      { method: "POST", body: {}, timeoutMs: 25000, ...options },
+    )
+  ).orchestration;

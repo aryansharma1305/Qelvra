@@ -65,6 +65,12 @@ export function registerTaskRoutes(
   });
   for (const action of ["start", "review", "complete", "fail"] as const) {
     app.post<{ Params: { id: string } }>(`/api/tasks/:id/${action}`, (request) => {
+      if (app.orchestration?.manages(request.params.id))
+        throw new AppError(
+          409,
+          "ORCHESTRATION_TASK_MANAGED",
+          "This task is managed by a goal. Cancel the goal before manually changing it.",
+        );
       if (execution?.isActive(request.params.id))
         throw new AppError(
           409,

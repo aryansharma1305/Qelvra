@@ -6,6 +6,7 @@ import { refreshTasks, useTasks } from "../../features/tasks/tasks-store";
 import { KanbanBoard } from "./KanbanBoard";
 import { MissionControlHeader } from "./MissionControlHeader";
 import { TaskInspector } from "./TaskInspector";
+import { GoalPanel } from "./GoalPanel";
 import { CreateTaskForm } from "./CreateTaskForm";
 export function TasksPage() {
   const { tasks, status, error, pending } = useTasks();
@@ -58,6 +59,12 @@ export function TasksPage() {
       <div className="flex flex-col w-full">
         <MissionControlHeader
           tasks={tasks}
+          goalsActive={params.get("view") === "goals"}
+          onKanban={() => setParams({})}
+          onGoals={() => {
+            setCreating(false);
+            setParams({ view: "goals" });
+          }}
           filter={filter}
           onFilter={setFilter}
           onCreate={create}
@@ -98,40 +105,50 @@ export function TasksPage() {
             </button>
           </div>
         )}
-        <div className="flex flex-1 min-h-[calc(100vh-14rem)] overflow-hidden">
-          <KanbanBoard
-            tasks={tasks}
+        {params.get("view") === "goals" ? (
+          <GoalPanel
             agents={agents.agents}
-            selectedId={selectedId}
-            filter={filter}
-            onSelect={select}
-            onCreate={create}
+            tasks={tasks}
+            selectedId={params.get("goal")}
+            onSelect={(id) => setParams({ view: "goals", goal: id }, { replace: true })}
+            onClose={() => setParams({})}
           />
-          {creating ? (
-            <CreateTaskForm
+        ) : (
+          <div className="flex flex-1 min-h-[calc(100vh-14rem)] overflow-hidden">
+            <KanbanBoard
+              tasks={tasks}
               agents={agents.agents}
-              agentsError={agents.error}
-              onRetryAgents={() => {
-                void refreshAgents();
-              }}
-              onClose={close}
+              selectedId={selectedId}
+              filter={filter}
+              onSelect={select}
+              onCreate={create}
             />
-          ) : (
-            selected && (
-              <TaskInspector
-                key={selected.id}
-                task={selected}
+            {creating ? (
+              <CreateTaskForm
                 agents={agents.agents}
                 agentsError={agents.error}
                 onRetryAgents={() => {
                   void refreshAgents();
                 }}
-                busy={Boolean(pending[selected.id])}
                 onClose={close}
               />
-            )
-          )}
-        </div>
+            ) : (
+              selected && (
+                <TaskInspector
+                  key={selected.id}
+                  task={selected}
+                  agents={agents.agents}
+                  agentsError={agents.error}
+                  onRetryAgents={() => {
+                    void refreshAgents();
+                  }}
+                  busy={Boolean(pending[selected.id])}
+                  onClose={close}
+                />
+              )
+            )}
+          </div>
+        )}
       </div>
     </main>
   );

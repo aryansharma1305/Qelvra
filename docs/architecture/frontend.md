@@ -85,8 +85,7 @@ lead to explicit Retry; older cursor pages and Latest activity are available on 
 Dashboard Team Overview reads supported counts from `/api/activity/summary` with a
 short debounce; activity does not pretend to measure productivity, GPU or inference.
 UTC-today message counts refer to retained activity history, not lifetime totals.
-Home operative cards remain explicitly labeled DESIGN PREVIEW; orchestrator intelligence
-and the other existing mock surfaces are deferred. Agent provider startup is real (ADR 0014).
+Home operative cards remain explicitly labeled DESIGN PREVIEW; the other existing mock surfaces are deferred. Agent provider startup is real (ADR 0014).
 
 ## Task execution and review (PR 15)
 
@@ -97,3 +96,15 @@ Complete and Return to Working remain human actions; returning does not start a 
 Provider discovery explicitly gates automation. Controlled failures preserve retryable
 assignment; raw provider logs and commands are never sent by the browser. See
 [ADR 0015](../adr/0015-real-ai-execution.md). The board and design chrome remain unchanged.
+
+## Goals (PR 16)
+
+Mission Control’s Goals view (`/tasks?view=goals&goal=<id>`) uses validated orchestration
+APIs for draft creation, Generate Plan, Run Plan, Cancel and recovery Resume. It shows
+real task counts, assignments/provider, attempt limits, safe review reasons and final
+workspace/file references. Task links open the existing inspector; agent links open
+real profiles. The incumbent Stitch typography, surfaces and controls are reused, with
+a full-width scrollable Goals view on small screens. Activity notifications coalesce
+REST refreshes; a two-second active-goal fallback covers missing/degraded activity.
+Neither planning nor execution starts from merely creating a goal. See
+[ADR 0016](../adr/0016-orchestrator.md).

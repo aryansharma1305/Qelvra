@@ -19,7 +19,12 @@ const definitions = PROVIDER_DEFINITIONS.map((def) =>
     ? {
         ...def,
         execution: {
-          args: [fileURLToPath(new URL("./execution-cli.mjs", import.meta.url)), "title"],
+          args: [
+            "--import",
+            import.meta.resolve("tsx"),
+            fileURLToPath(new URL("./execution-cli.mjs", import.meta.url)),
+            "title",
+          ],
           input: "json" as const,
           output: "json" as const,
         },

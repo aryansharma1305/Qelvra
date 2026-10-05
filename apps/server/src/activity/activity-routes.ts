@@ -9,7 +9,7 @@ const Query = z.strictObject({
   type: ActivityTypeSchema.optional(),
   agentId: AgentIdSchema.optional(),
   taskId: TaskIdSchema.optional(),
-  entityType: z.enum(["agent", "task", "message", "router"]).optional(),
+  entityType: z.enum(["agent", "task", "message", "router", "orchestration"]).optional(),
 });
 export function registerActivityRoutes(app: FastifyInstance, activity: ActivityPublisher) {
   app.get("/api/activity/summary", async () => {

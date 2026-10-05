@@ -10,6 +10,43 @@ for await (const data of process.stdin) {
 }
 const input = JSON.parse(raw);
 const request = input.request;
+if (request.decision) {
+  const { fakeDecision } =
+    await import("../../apps/server/src/providers/provider-orchestration.ts");
+  const context = JSON.parse(request.decision.context);
+  const scenario = /\[fixture:(\w+)\]/.exec(context.goal.title)?.[1];
+  let decision = fakeDecision(request);
+  if (scenario === "rework") {
+    if (request.decision.phase === "plan") {
+      decision.tasks = decision.tasks.slice(0, 1);
+      decision.tasks[0].title = "[fixture:rework] Build frontend";
+    }
+    if (request.decision.phase === "review" && context.attempt === 1)
+      decision = {
+        decision: "rework",
+        reason: "Add the requested detail",
+        reworkInstructions: "Add the requested detail and return a fresh result.",
+      };
+  }
+  if (scenario === "timeout" && request.decision.phase === "plan") {
+    decision.tasks = decision.tasks.slice(0, 1);
+    decision.tasks[0].title = "[fixture:timeout] Crash frontend";
+  }
+  await new Promise((r) => setTimeout(r, 600));
+  process.stdout.write(
+    JSON.stringify({
+      executionId: request.executionId,
+      requestMessageId: input.requestMessageId,
+      taskId: request.taskId,
+      agentId: request.agentId,
+      status: "completed",
+      summary: "Structured decision",
+      changedFiles: [],
+      notes: JSON.stringify(decision),
+    }),
+  );
+  process.exit(0);
+}
 const mode =
   process.argv[2] === "title"
     ? (/^\[fixture:(\w+)\]/.exec(request.title)?.[1] ?? "success")

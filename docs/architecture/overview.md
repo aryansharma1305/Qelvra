@@ -179,4 +179,31 @@ Atomic `executions.json` records support status/result APIs, timeout/cancellatio
 restart recovery. A fixed IPC watchdog cleans up provider trees on normal exit and hard
 server death on macOS/Linux. Only verified Codex and development fake adapters advertise
 automation. See [ADR 0015](../adr/0015-real-ai-execution.md) for contracts, lifecycle and
-provider-native isolation limitations. AI success never automatically completes a task.
+provider-native isolation limitations. AI success moves a task to Review; manual execution requires human completion.
+Approved goal plans authorize the bounded orchestration review policy below.
+
+## Goal orchestration (PR 16)
+
+```text
+User → Create draft → Generate Plan → validate → explicit Run Plan
+                               ↓                     ↓
+OrchestrationService → ordinary decision tasks + worker tasks → TaskRegistry
+                               ↓                     ↓
+                     AgentExecutionService → MailboxManager / MessageRouter
+                               ↓
+                     existing provider adapter / process lifecycle
+                               ↓
+                     validated result → Review → approve or bounded rework
+                               ↓
+                     all workers Completed → validated goal summary
+```
+
+`app.orchestration` persists separate atomic `orchestrations.json` snapshots and
+observes committed task, execution and agent events. Worker IDs are reserved before
+materialization; explicit Resume repairs a partial materialization with the same IDs.
+Dependencies stay local to the plan; a service-wide cap and the existing one-execution
+per-agent rule bound scheduling. Decision tasks use the orchestrator’s own workspace,
+normal admission and result correlation. No generic provider actions are interpreted.
+Shutdown pauses goals before execution cleanup; startup recovers executions first and
+requires explicit Resume for unfinished goals. See [ADR 0016](../adr/0016-orchestrator.md)
+for limits, retry policy, ownership protection and isolated-workspace limitations.

@@ -44,11 +44,15 @@ function upsert(task: Task) {
     ),
   });
 }
-export async function refreshTasks() {
+export async function refreshTasks(quiet = false) {
   request?.abort();
   const controller = new AbortController();
   request = controller;
-  publish({ ...state, status: "loading", error: null });
+  publish({
+    ...state,
+    status: quiet && state.status === "ready" ? "ready" : "loading",
+    error: null,
+  });
   try {
     const tasks = await listTasks({ signal: controller.signal });
     if (!controller.signal.aborted) publish({ ...state, tasks, status: "ready", error: null });

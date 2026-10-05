@@ -117,7 +117,7 @@ export class TaskRegistry {
       },
     };
   }
-  create(input: CreateTaskRequest): Promise<Task> {
+  create(input: CreateTaskRequest, reservedId?: string): Promise<Task> {
     return this.enqueue(async () => {
       const parsed = CreateTaskRequestSchema.safeParse(input);
       if (!parsed.success) {
@@ -132,11 +132,23 @@ export class TaskRegistry {
         );
       }
       const assignee = parsed.data.assignee ?? null;
+      // Durable server-only identity, never accepted from HTTP task input.
+      if (reservedId) {
+        const existing = this.get(reservedId);
+        if (existing) {
+          if (
+            existing.title !== parsed.data.title ||
+            existing.description !== parsed.data.description
+          )
+            throw new TaskError("TASK_INVALID_TITLE", "Reserved task identity conflicts");
+          return existing;
+        }
+      }
       if (assignee) this.agent(assignee);
       const now = this.now();
       const task = TaskSchema.parse({
         ...parsed.data,
-        id: `task-${randomUUID()}`,
+        id: reservedId ?? `task-${randomUUID()}`,
         assignee,
         status: assignee ? "assigned" : "inbox",
         createdBy: "user",

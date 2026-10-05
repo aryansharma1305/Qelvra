@@ -7,12 +7,18 @@ export function MissionControlHeader({
   filter,
   onFilter,
   onCreate,
+  onGoals,
+  goalsActive,
+  onKanban,
   onRefresh,
 }: {
   tasks: readonly Task[];
   filter: "all" | TaskStatus;
   onFilter: (filter: "all" | TaskStatus) => void;
   onCreate: () => void;
+  onGoals: () => void;
+  goalsActive: boolean;
+  onKanban: () => void;
   onRefresh: () => void;
 }) {
   const count = (status: TaskStatus) => tasks.filter((task) => task.status === status).length;
@@ -42,7 +48,13 @@ export function MissionControlHeader({
         <div className="flex flex-wrap items-center gap-2.5">
           <div className="flex items-center bg-surface-container-low p-1 rounded border border-outline-variant/30">
             <button
-              className="flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container-high text-primary font-body-sm text-body-sm font-medium shadow-sm transition-all"
+              aria-pressed={!goalsActive}
+              onClick={onKanban}
+              className={
+                goalsActive
+                  ? "flex items-center gap-1.5 px-3 py-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all font-body-sm text-body-sm"
+                  : "flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container-high text-primary font-body-sm text-body-sm font-medium shadow-sm transition-all"
+              }
               id="btn-kanban"
             >
               <span className="material-symbols-outlined text-[16px]">view_kanban</span>
@@ -57,12 +69,18 @@ export function MissionControlHeader({
               <span>List</span>
             </button>
             <button
-              disabled
-              title="This view is not available yet"
-              className="flex items-center gap-1.5 px-3 py-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all font-body-sm text-body-sm"
+              title="Goals and task plans"
+              aria-label="Goals"
+              onClick={onGoals}
+              aria-pressed={goalsActive}
+              className={
+                goalsActive
+                  ? "flex items-center gap-1.5 px-3 py-1 rounded bg-surface-container-high text-primary font-body-sm text-body-sm font-medium shadow-sm transition-all"
+                  : "flex items-center gap-1.5 px-3 py-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all font-body-sm text-body-sm"
+              }
             >
               <span className="material-symbols-outlined text-[16px]">account_tree</span>
-              <span>DAG</span>
+              <span>Goals</span>
             </button>
           </div>
           <div className="h-6 w-px bg-outline-variant/30 hidden sm:block" />

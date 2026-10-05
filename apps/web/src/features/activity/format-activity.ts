@@ -25,6 +25,7 @@ const COLORS = {
 export function formatActivityEvent(event: ActivityEvent) {
   const kind = event.type.split(".")[0] as "agent" | "task" | "message" | "router";
   const error = [
+    "orchestration.failed",
     "execution.failed",
     "agent.error",
     "router.error",
@@ -32,7 +33,37 @@ export function formatActivityEvent(event: ActivityEvent) {
     "message.delivery_failed",
     "message.quarantined",
   ].includes(event.type);
-  const tone = COLORS[error ? "error" : event.type.startsWith("execution.") ? "task" : kind];
+  const tone =
+    COLORS[error ? "error" : /^(execution|orchestration)\./.test(event.type) ? "task" : kind];
+  if ("goalId" in event.metadata) {
+    const titles = {
+      "orchestration.created": "Goal created",
+      "orchestration.planning": "Goal planning started",
+      "orchestration.planned": "Goal plan ready",
+      "orchestration.started": "Goal execution started",
+      "orchestration.task_started": "Goal task started",
+      "orchestration.task_approved": "Goal task approved",
+      "orchestration.task_rework": "Goal task needs rework",
+      "orchestration.completed": "Goal completed",
+      "orchestration.failed": "Goal failed",
+      "orchestration.cancelled": "Goal cancelled",
+      "orchestration.paused": "Goal paused after restart",
+      "orchestration.resumed": "Goal resumed",
+    };
+    return {
+      tone,
+      icon: error ? "error" : "account_tree",
+      title: titles[event.type as keyof typeof titles],
+      detail: [
+        event.metadata.agentId,
+        event.metadata.attempt ? `Attempt ${event.metadata.attempt}` : "",
+        event.metadata.errorCode,
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      href: `/tasks?view=goals&goal=${encodeURIComponent(event.metadata.goalId)}`,
+    };
+  }
   if ("executionId" in event.metadata) {
     return {
       tone,

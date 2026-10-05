@@ -23,6 +23,15 @@ const EnvSchema = z.object({
   DATA_DIR: z.string().trim().min(1).optional(),
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  ORCHESTRATION_MAX_TASKS: z.coerce.number().int().min(1).max(20).default(20),
+  ORCHESTRATION_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(3).default(3),
+  ORCHESTRATION_MAX_CONCURRENT: z.coerce.number().int().min(1).max(5).default(3),
+  ORCHESTRATION_TIMEOUT_MS: z.coerce
+    .number()
+    .int()
+    .min(1000)
+    .max(24 * 60 * 60 * 1000)
+    .default(60 * 60 * 1000),
   EXECUTION_TIMEOUT_MS: z.coerce
     .number()
     .int()
@@ -40,6 +49,12 @@ export interface ServerConfig {
   logLevel: z.infer<typeof EnvSchema>["LOG_LEVEL"];
   isProduction: boolean;
   executionTimeoutMs: number;
+  orchestration: {
+    maxTasks: number;
+    maxAttempts: number;
+    maxConcurrent: number;
+    timeoutMs: number;
+  };
 }
 
 export class ConfigError extends Error {
@@ -64,6 +79,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
     LOG_LEVEL,
     NODE_ENV,
     EXECUTION_TIMEOUT_MS,
+    ORCHESTRATION_MAX_TASKS,
+    ORCHESTRATION_MAX_ATTEMPTS,
+    ORCHESTRATION_MAX_CONCURRENT,
+    ORCHESTRATION_TIMEOUT_MS,
   } = parsed.data;
   return {
     host: HOST,
@@ -75,6 +94,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
     logLevel: LOG_LEVEL,
     isProduction: NODE_ENV === "production",
     executionTimeoutMs: EXECUTION_TIMEOUT_MS,
+    orchestration: {
+      maxTasks: ORCHESTRATION_MAX_TASKS,
+      maxAttempts: ORCHESTRATION_MAX_ATTEMPTS,
+      maxConcurrent: ORCHESTRATION_MAX_CONCURRENT,
+      timeoutMs: ORCHESTRATION_TIMEOUT_MS,
+    },
   };
 }
 

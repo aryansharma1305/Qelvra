@@ -85,6 +85,7 @@ Production mode disables fake agents; default agents retain local shells.
 - [x] PR 13: Persistent activity events and live dashboard
 - [x] PR 14: Safe AI CLI provider layer
 - [x] PR 15: Explicit real AI task execution
+- [x] PR 16: Goals, bounded orchestration and automated review
 
 Activity is persisted in `DATA_DIR/events.jsonl` and available at `/api/activity` and
 `/ws/activity`. `/activity` and Dashboard Team Activity use this live stream.
@@ -109,3 +110,20 @@ leave work retryable. See [ADR 0015](docs/adr/0015-real-ai-execution.md) and the
 Run `npm run execution:smoke -w @qelvra/server -- fake` for a disposable deterministic
 demo, or omit `-- fake` for the local authenticated Codex hello.txt check. These use
 temporary data and leave existing agents untouched.
+
+Goals are available in Mission Control’s **Goals** view (`/tasks?view=goals`). Create a
+draft, choose an available automation agent as orchestrator, Generate Plan, inspect its
+task breakdown, then explicitly Run Plan. Worker tasks use the same task registry,
+execution service and mailbox transport. Approved results complete tasks; rework is
+limited to three attempts. Restarted runs pause until Resume. Cancel preserves tasks
+and workspaces. Each agent keeps its own workspace; summaries reference files without
+merging them. See [ADR 0016](docs/adr/0016-orchestrator.md) and the
+[PR 16 verification report](docs/verification/pr16-orchestrator.md).
+
+Run `npm run orchestration:smoke -w @qelvra/server -- fake` for a disposable complete
+fake goal, or omit `-- fake` for authenticated Codex planning/review/summary with fake
+workers. `npm run execution:bundle-smoke -w @qelvra/server` verifies shipped bundles
+including orchestration after a build. Server bounds are `ORCHESTRATION_MAX_TASKS`
+(default 20, maximum 20), `ORCHESTRATION_MAX_ATTEMPTS` (3, maximum 3),
+`ORCHESTRATION_MAX_CONCURRENT` (3, maximum 5) and `ORCHESTRATION_TIMEOUT_MS`
+(default one hour, range one second to 24 hours).

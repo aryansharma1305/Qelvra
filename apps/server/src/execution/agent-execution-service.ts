@@ -9,6 +9,7 @@ import {
   ProviderIdSchema,
   type Execution,
   type TaskExecutionResponse,
+  type TaskExecutionRequest,
 } from "@qelvra/shared";
 import type { AgentRegistry } from "../agents/agent-registry.js";
 import type { TaskRegistry } from "../tasks/task-registry.js";
@@ -44,6 +45,7 @@ export class AgentExecutionService {
   private timestamp = 0;
   private readonly active = new Map<string, { controller: AbortController; work: Promise<void> }>();
   private readonly deletingAgents = new Set<string>();
+  private readonly listeners = new Set<(execution: Execution) => void>();
   private readonly processes: ExecutionProcessManager;
   private readonly logger: ServiceLogger;
   private constructor(
@@ -74,7 +76,14 @@ export class AgentExecutionService {
     const execution = this.store.latest(taskId);
     return { execution, result: execution?.result ?? null };
   }
-  executeTask(taskId: string): Promise<TaskExecutionResponse> {
+  subscribe(listener: (execution: Execution) => void) {
+    this.listeners.add(listener);
+    return { dispose: () => this.listeners.delete(listener) };
+  }
+  executeTask(
+    taskId: string,
+    context: Pick<TaskExecutionRequest, "decision" | "instructions"> = { instructions: [] },
+  ): Promise<TaskExecutionResponse> {
     return this.serial(async () => {
       if (this.closing) throw new ExecutionError("EXECUTION_SHUTTING_DOWN");
       if (this.isActive(taskId)) throw new ExecutionError("TASK_ALREADY_EXECUTING");
@@ -130,7 +139,9 @@ export class AgentExecutionService {
             instructions: [
               "Work only in the current workspace.",
               "Return a correlated structured result; never mutate Qelvra task state.",
+              ...context.instructions,
             ],
+            ...(context.decision ? { decision: context.decision } : {}),
           });
           const message = await this.options.mailbox.writeControlMessage({
             to: agent.id,
@@ -459,6 +470,13 @@ export class AgentExecutionService {
         ...(record.errorCode ? { errorCode: record.errorCode } : {}),
       },
     });
+    for (const listener of this.listeners) {
+      try {
+        listener(structuredClone(record));
+      } catch {
+        this.logger.warn({ errorCode: "EXECUTION_SUBSCRIBER_FAILED" }, "Execution observer failed");
+      }
+    }
   }
   private serial<T>(operation: () => Promise<T>): Promise<T> {
     const work = this.queue.then(operation, operation);

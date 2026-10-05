@@ -4,6 +4,7 @@ import {
   prepareHomeApp,
   type ActivityFixture,
 } from "./activity-parity";
+import { seedGoalFixture, checkGoalParity, type GoalFixture } from "./orchestration-parity";
 import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
@@ -236,8 +237,10 @@ const DESIGN_AGENTS = [
 
 let selectedTask = "";
 let activityFixture: ActivityFixture;
+let goalFixture: GoalFixture;
 
 test.beforeAll(async ({ request }) => {
+  goalFixture = await seedGoalFixture();
   for (const agent of DESIGN_AGENTS) {
     const res = await request.post(`${E2E_API_URL}/api/agents`, {
       data: { ...agent, ...(agent.id === "scout" ? { providerId: "fake" } : {}) },
@@ -517,6 +520,7 @@ for (const width of [1280, 1440, 1920]) {
           fs.writeFileSync(testInfo.outputPath("tasks-app.png"), PNG.sync.write(app));
           design = crop(design, 0, 0, design.width, HEADER_HEIGHT);
           app = crop(app, 0, 0, app.width, HEADER_HEIGHT);
+          await checkGoalParity(page, goalFixture, testInfo);
         }
         if (app.height !== design.height) {
           for (const [name, png] of [

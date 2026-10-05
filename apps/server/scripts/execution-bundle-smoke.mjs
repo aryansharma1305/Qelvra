@@ -77,11 +77,49 @@ try {
     )) !== "Create landing page\n"
   )
     throw new Error("Bundled workspace mismatch");
+  const { agent: planner } = await post("/agents", {
+    name: "Bundle Michael",
+    role: "Orchestrator",
+    providerId: "fake",
+  });
+  for (const [name, role] of [
+    ["Bundle Frontend", "Frontend Engineer"],
+    ["Bundle Backend", "Backend Engineer"],
+  ])
+    await post("/agents", { name, role, providerId: "fake" });
+  const { orchestration: goal } = await post("/orchestrations", {
+    title: "Build frontend and backend",
+    description: "Verify shipped decision and worker bundles.",
+    orchestratorAgentId: planner.id,
+  });
+  const goalDeadline = Date.now() + 30000;
+  async function awaitGoal(status) {
+    for (;;) {
+      const { orchestration } = await (await fetch(base + `/orchestrations/${goal.id}`)).json();
+      if (orchestration.status === status) return orchestration;
+      if (["failed", "cancelled"].includes(orchestration.status) || Date.now() > goalDeadline)
+        throw new Error("Bundled orchestration failed");
+      await pause();
+    }
+  }
+  await post(`/orchestrations/${goal.id}/plan`, {});
+  const planned = await awaitGoal("planned");
+  if (planned.taskIds.length || planned.plan.tasks.length !== 2)
+    throw new Error("Bundled plan approval mismatch");
+  await post(`/orchestrations/${goal.id}/run`, {});
+  const completed = await awaitGoal("completed");
+  if (
+    completed.finalSummary.completedTasks.length !== 2 ||
+    completed.tasks.some((slot) => slot.attempts !== 1)
+  )
+    throw new Error("Bundled orchestration result mismatch");
   console.log(
     JSON.stringify({
       bundledServer: true,
       bundledWorker: true,
       bundledFake: true,
+      bundledOrchestration: true,
+      goalStatus: completed.status,
       taskStatus: updated.task.status,
       structuredResult: true,
     }),

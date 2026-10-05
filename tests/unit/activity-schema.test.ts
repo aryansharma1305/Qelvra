@@ -7,6 +7,22 @@ const input = {
   metadata: { agentName: "Nova" },
 };
 describe("canonical activity schema", () => {
+  it("orchestration metadata rejects result bodies, prompts, commands and environment", () => {
+    const goalId = `goal-${randomUUID()}`,
+      input = {
+        type: "orchestration.task_started",
+        entity: { type: "orchestration", id: goalId },
+        metadata: { goalId, agentId: "nova", taskId: `task-${randomUUID()}`, attempt: 1 },
+      };
+    expect(ActivityInputSchema.safeParse(input).success).toBe(true);
+    for (const key of ["prompt", "result", "command", "env", "body"])
+      expect(
+        ActivityInputSchema.safeParse({
+          ...input,
+          metadata: { ...input.metadata, [key]: "PRIVATE" },
+        }).success,
+      ).toBe(false);
+  });
   it("execution metadata accepts only bounded correlation IDs and a controlled error code", () => {
     const execution = {
       type: "execution.failed",
@@ -60,7 +76,7 @@ describe("canonical activity schema", () => {
     expect(
       ActivityEventSchema.safeParse({ ...event, metadata: { agentName: "x".repeat(81) } }).success,
     ).toBe(false);
-    expect(ACTIVITY_TYPES).toHaveLength(24);
+    expect(ACTIVITY_TYPES).toHaveLength(36);
   });
   it("rejects mismatched entities and arbitrary message metadata", () => {
     expect(
