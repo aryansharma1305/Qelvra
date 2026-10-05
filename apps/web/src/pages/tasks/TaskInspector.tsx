@@ -2,11 +2,18 @@ import type { Agent, Task } from "@qelvra/shared";
 import { useEffect, useRef, useState } from "react";
 import { updateTask } from "../../features/tasks/tasks-store";
 import { assigneeName, taskLabelId, TASK_LABEL } from "./presentation";
+import { useTaskExecution } from "../../features/tasks/useTaskExecution";
+import {
+  useProviders,
+  canLaunchProvider,
+  providerStatus,
+} from "../../features/providers/useProviders";
+import { TaskExecutionDetails } from "./TaskExecutionDetails";
 
 export function TaskInspector({
   task,
   agents,
-  busy,
+  busy: taskBusy,
   agentsError,
   onRetryAgents,
   onClose,
@@ -20,6 +27,16 @@ export function TaskInspector({
 }) {
   const [agentId, setAgentId] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const execution = useTaskExecution(task.id);
+  const { providers, error: providerError } = useProviders();
+  const agent = agents.find((a) => a.id === task.assignee);
+  const provider = providers.find((p) => p.id === (agent?.providerId ?? "shell"));
+  const providerName = provider?.name ?? execution.execution?.providerId ?? "Checking provider…";
+  const canExecute = !!provider?.capabilities.automation && canLaunchProvider(provider);
+  const executeEligible =
+    task.status === "assigned" ||
+    (task.status === "working" && execution.execution?.status === "succeeded");
+  const busy = taskBusy || execution.pending || execution.active;
   const close = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     close.current?.focus();
@@ -116,6 +133,42 @@ export function TaskInspector({
         <p className="font-body-sm text-body-sm text-outline">
           Task state is managed here. Assignment does not start an agent or execute this task.
         </p>
+        <TaskExecutionDetails
+          execution={execution.execution}
+          result={execution.result}
+          active={execution.active}
+          providerName={providerName}
+        />
+        {executeEligible && providerError && (
+          <p role="alert" className="font-body-sm text-body-sm text-error">
+            {providerError}
+            <button onClick={() => window.location.reload()} className="ml-2 underline">
+              Reload providers
+            </button>
+          </p>
+        )}
+        {executeEligible && !canExecute && !providerError && (
+          <p className="font-body-sm text-body-sm text-outline">
+            {provider
+              ? !provider.capabilities.automation
+                ? `${provider.name} supports terminal sessions only. Choose an execution-capable provider for this task.`
+                : providerStatus(provider)
+              : "Checking execution availability…"}
+          </p>
+        )}
+        {execution.error && (
+          <div role="alert" className="font-body-sm text-body-sm text-error">
+            {execution.error}
+            <button
+              onClick={() => {
+                void execution.reload();
+              }}
+              className="ml-2 underline"
+            >
+              Refresh status
+            </button>
+          </div>
+        )}
         {task.status === "inbox" && (
           <div className="flex flex-col gap-2">
             <label htmlFor="task-assignee" className="font-body-sm text-body-sm text-on-surface">
@@ -160,6 +213,26 @@ export function TaskInspector({
         className="p-4 border-t border-outline-variant/30 bg-surface-container-low/70 flex items-center justify-end flex-wrap gap-2"
         aria-busy={busy}
       >
+        {executeEligible && (
+          <Action
+            disabled={busy || !canExecute}
+            onClick={() => {
+              void execution.run();
+            }}
+          >
+            Execute
+          </Action>
+        )}
+        {execution.active && (
+          <Action
+            disabled={execution.pending}
+            onClick={() => {
+              void execution.run(true);
+            }}
+          >
+            Cancel execution
+          </Action>
+        )}
         {task.status === "inbox" && (
           <Action
             disabled={busy || !agents.some((agent) => agent.id === agentId)}

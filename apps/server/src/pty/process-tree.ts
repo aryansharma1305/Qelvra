@@ -6,7 +6,8 @@ const MAX_FREEZE_PASSES = 10;
 
 /** pid -> ppid for every process, via `ps` (available on macOS and Linux). */
 async function processTable(): Promise<Map<number, number>> {
-  const { stdout } = await execFileAsync("ps", ["-A", "-o", "pid=,ppid="]);
+  // Supervision must not resolve an agent-created executable from the workspace PATH.
+  const { stdout } = await execFileAsync("/bin/ps", ["-A", "-o", "pid=,ppid="]);
   const table = new Map<number, number>();
   for (const line of stdout.split("\n")) {
     const [pid, ppid] = line.trim().split(/\s+/).map(Number);

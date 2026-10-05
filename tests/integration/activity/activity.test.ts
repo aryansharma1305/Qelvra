@@ -36,6 +36,11 @@ describe("real activity ownership and transport", () => {
     if (!pid) throw new Error("Missing demo process");
     process.kill(pid, "SIGKILL");
     await expect.poll(() => app.agents.get("nova")?.status).toBe("error");
+    // Registry visibility precedes its async persistence/committed observer event.
+    // Wait for the durable fact, rather than flushing before it has been published.
+    await expect
+      .poll(async () => (await events()).filter((event) => event.type === "agent.error"))
+      .toHaveLength(1);
     const errors = (await events()).filter((event) => event.type === "agent.error");
     expect(errors).toHaveLength(1);
     expect(errors[0]?.metadata).toMatchObject({ errorCode: "AGENT_RUNTIME_ERROR" });

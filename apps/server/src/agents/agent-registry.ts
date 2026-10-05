@@ -130,6 +130,11 @@ export class AgentRegistry {
     }
     const { name, role } = parsed.data;
     const id = parsed.data.id ?? agentIdFromName(name);
+    if (id === "system")
+      throw new AgentError(
+        "AGENT_INVALID_ID",
+        "This id is reserved for the server control mailbox",
+      );
     if (!id) {
       throw new AgentError(
         "AGENT_INVALID_NAME",

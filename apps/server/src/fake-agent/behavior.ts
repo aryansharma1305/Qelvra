@@ -4,6 +4,15 @@ import type { MailboxManager } from "../mailbox/index.js";
 /** Results/status/errors are terminal data, never another request. */
 export function responseFor(message: Message): OutboxMessageInput | null {
   if (message.type !== "message" && message.type !== "task") return null;
+  // Structured execution work belongs to the one-shot adapter, even when the
+  // interactive demo runtime is already watching this inbox.
+  if (message.type === "task" && message.from === "system") {
+    try {
+      if (JSON.parse(message.body).kind === "qelvra.task.v1") return null;
+    } catch {
+      /* Ordinary legacy task. */
+    }
+  }
   return {
     to: message.from,
     type: "result",

@@ -2,6 +2,8 @@ import { ProviderIdSchema, type Agent, type Provider, type ProviderId } from "@q
 import { ProviderDetector, type DetectorOptions } from "./provider-detector.js";
 import { ProviderError } from "./provider-errors.js";
 import { resolveProviderCommand } from "./provider-command.js";
+import { buildExecutionCommand, type ExecutionInput } from "./provider-execution.js";
+import { ExecutionError } from "../execution/execution-errors.js";
 import {
   PROVIDER_DEFINITIONS,
   type ProviderDefinition,
@@ -99,5 +101,20 @@ export class ProviderRegistry {
         `${def.name} needs authentication. Sign in using the provider's own CLI, then refresh availability.`,
       );
     return resolveProviderCommand(def, executable, agent, cwd, dataDir, this.detector.env);
+  }
+  async resolveExecution(
+    agent: Agent,
+    cwd: string,
+    dataDir: string,
+    input: ExecutionInput,
+    schemaFile: string,
+    resultFile: string,
+  ) {
+    const base = await this.resolve(agent, cwd, dataDir);
+    const def = this.definition(agent.providerId ?? "shell");
+    const provider = await this.get(def.id);
+    if (!provider.capabilities.automation || !def.execution)
+      throw new ExecutionError("PROVIDER_NOT_AUTOMATION_CAPABLE");
+    return buildExecutionCommand(def, base, input, schemaFile, resultFile);
   }
 }

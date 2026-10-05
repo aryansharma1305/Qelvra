@@ -13,6 +13,11 @@ import type { ServerConfig } from "./config/env.js";
 import { AgentWorkspaceManager } from "./workspaces/agent-workspace-manager.js";
 import { ProviderRegistry } from "./providers/index.js";
 import { join } from "node:path";
+import {
+  AgentExecutionService,
+  registerExecutionRoutes,
+  type ExecutionOptions,
+} from "./execution/index.js";
 import { AgentRegistry, AgentRuntimeManager } from "./agents/index.js";
 import { registerCors } from "./plugins/cors.js";
 import { registerErrorHandling } from "./plugins/errors.js";
@@ -36,6 +41,7 @@ declare module "fastify" {
     router: MessageRouter;
     tasks: TaskRegistry;
     activity: ActivityPublisher;
+    execution: AgentExecutionService;
   }
 }
 
@@ -47,6 +53,7 @@ export interface CreateAppOptions {
   /** Inject a registry (tests); otherwise <dataDir>/agents.json is opened. */
   agentRegistry?: AgentRegistry;
   providerRegistry?: ProviderRegistry;
+  executionOptions?: Pick<ExecutionOptions, "timeoutMs" | "processes">;
 }
 
 /** Builds the Fastify app without listening, so it can be exercised with app.inject(). */
@@ -89,7 +96,15 @@ export async function createApp(
     }
   }
   app.decorate("workspaces", workspaces);
-  app.decorate("mailbox", new MailboxManager({ workspaces, registry: agentRegistry }));
+  if (agentRegistry.get("system"))
+    throw new Error(
+      "The system id is reserved for the control mailbox; rename the existing agent before startup",
+    );
+  await workspaces.ensureControlMailboxes();
+  app.decorate(
+    "mailbox",
+    new MailboxManager({ workspaces, registry: agentRegistry, controlMailbox: true }),
+  );
 
   const activity = new ActivityPublisher(
     await ActivityStore.open(join(config.dataDir, "events.jsonl"), app.log),
@@ -97,8 +112,22 @@ export async function createApp(
   );
   app.decorate("activity", activity);
   const subscriptions = observeActivity(activity, agentRegistry, tasks);
+  let resultsReady = false;
+
   const router = new MessageRouter({
-    onEvent: (event) => recordRouterActivity(activity, event),
+    onEvent: (event) => {
+      recordRouterActivity(activity, event);
+      if (resultsReady && event.type === "message.delivered" && event.to === "system")
+        void app.execution
+          ?.scanResults()
+          .catch(() =>
+            app.log.error(
+              { errorCode: "EXECUTION_RESULT_HANDLER_FAILED" },
+              "Execution result handler requires storage repair",
+            ),
+          );
+    },
+    controlMailbox: true,
     registry: agentRegistry,
     workspaces,
     mailbox: app.mailbox,
@@ -129,6 +158,24 @@ export async function createApp(
     });
   app.decorate("providers", providers);
   app.get("/api/providers", async () => ({ providers: await providers.list() }));
+  const execution = await AgentExecutionService.open({
+    tasks,
+    agents: agentRegistry,
+    mailbox: app.mailbox,
+    router,
+    workspaces,
+    providers,
+    activity,
+    timeoutMs: config.executionTimeoutMs,
+    logger: app.log.child({ component: "execution" }),
+    ...options.executionOptions,
+  });
+  app.decorate("execution", execution);
+  app.addHook("onReady", async () => {
+    await execution.recover();
+    resultsReady = true;
+    await execution.scanResults();
+  });
   const runtime = new AgentRuntimeManager({
     providers,
     registry: agentRegistry,
@@ -143,7 +190,7 @@ export async function createApp(
         actor: { type: "user" },
       });
     },
-    deleteAgent: (id) => tasks.deleteAgent(id),
+    deleteAgent: (id) => execution.deleteAgent(id, () => tasks.deleteAgent(id)),
     logger: app.log.child({ component: "agent-runtime" }),
   });
   app.decorate("runtime", runtime);
@@ -153,7 +200,11 @@ export async function createApp(
   // anything an agent stop could not finish) through the same process-tree cleanup.
   app.addHook("onClose", async () => {
     try {
-      await router.stop();
+      try {
+        await execution.stopAll();
+      } finally {
+        await router.stop();
+      }
     } finally {
       try {
         await runtime.stopAll();
@@ -172,7 +223,8 @@ export async function createApp(
   await registerCors(app, config.webOrigins);
   registerHealthRoutes(app, SERVER_VERSION);
   registerAgentRoutes(app, agentRegistry, runtime);
-  registerTaskRoutes(app, tasks);
+  registerTaskRoutes(app, tasks, execution);
+  registerExecutionRoutes(app, execution);
   registerActivityRoutes(app, activity);
   await registerTerminalGateway(app, {
     pty: ptyManager,

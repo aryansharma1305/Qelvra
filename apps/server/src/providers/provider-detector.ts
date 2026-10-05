@@ -52,7 +52,11 @@ export class ProviderDetector {
       id: def.id,
       name: def.name,
       kind: def.kind,
-      capabilities: { ...def.capabilities },
+      capabilities: {
+        ...def.capabilities,
+        automation:
+          def.id === "fake" && def.capabilities.automation && process.platform !== "win32",
+      },
       available: false,
       version: null,
       reason: null,
@@ -114,6 +118,25 @@ export class ProviderDetector {
         }
       }
       provider.available = true;
+      if (def.id === "codex") {
+        try {
+          const automationHelp = await this.probe(executable, ["exec", "--help"], env);
+          provider.capabilities.automation =
+            process.platform !== "win32" &&
+            automationHelp.exitCode === 0 &&
+            [
+              "--output-schema",
+              "--output-last-message",
+              "--ignore-user-config",
+              "--ignore-rules",
+              "--ephemeral",
+              "--sandbox",
+              "--skip-git-repo-check",
+            ].every((flag) => automationHelp.stdout.includes(flag));
+        } catch {
+          provider.capabilities.automation = false;
+        }
+      }
       provider.reason = !provider.configured
         ? "CONFIGURATION_REQUIRED"
         : provider.auth === "auth-required"

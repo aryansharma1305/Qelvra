@@ -25,13 +25,28 @@ const COLORS = {
 export function formatActivityEvent(event: ActivityEvent) {
   const kind = event.type.split(".")[0] as "agent" | "task" | "message" | "router";
   const error = [
+    "execution.failed",
     "agent.error",
     "router.error",
     "task.failed",
     "message.delivery_failed",
     "message.quarantined",
   ].includes(event.type);
-  const tone = COLORS[error ? "error" : kind];
+  const tone = COLORS[error ? "error" : event.type.startsWith("execution.") ? "task" : kind];
+  if ("executionId" in event.metadata) {
+    return {
+      tone,
+      icon: error ? "error" : "task_alt",
+      title: {
+        "execution.started": "Agent execution started",
+        "execution.completed": "Agent result ready for review",
+        "execution.failed": "Agent execution failed",
+        "execution.cancelled": "Agent execution cancelled",
+      }[event.type as "execution.started"],
+      detail: `${event.metadata.agentId} · ${event.metadata.providerId}${event.metadata.errorCode ? ` · ${event.metadata.errorCode}` : ""}`,
+      href: `/tasks?task=${encodeURIComponent(event.metadata.taskId)}`,
+    };
+  }
   if ("agentName" in event.metadata) {
     const verb = {
       "agent.created": "registered",
@@ -86,7 +101,7 @@ export function formatActivityEvent(event: ActivityEvent) {
       title,
       detail:
         event.metadata.errorCode ?? `Message type: ${event.metadata.messageType ?? "unknown"}`,
-      href: `/agents/${encodeURIComponent(to ?? from)}`,
+      href: to === "system" ? "/activity" : `/agents/${encodeURIComponent(to ?? from)}`,
     };
   }
   return {

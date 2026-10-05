@@ -55,6 +55,34 @@ export class AgentWorkspaceManager {
     return realpath(this.agentsRoot);
   }
 
+  /** Dedicated server control mailbox; never an Agent record or workspace. */
+  async ensureControlMailboxes(): Promise<void> {
+    await this.check(this.hiveRoot, "directory");
+    for (const path of [
+      join(this.hiveRoot, "system"),
+      join(this.hiveRoot, "system", "inbox"),
+      join(this.hiveRoot, "system", "outbox"),
+    ]) {
+      try {
+        await mkdir(path, { mode: 0o700 });
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+      }
+      await this.check(path, "directory");
+    }
+  }
+
+  async getControlMailboxPath(box: "inbox" | "outbox"): Promise<string> {
+    if (box !== "inbox" && box !== "outbox") throw new Error("Invalid control mailbox");
+    for (const path of [
+      this.hiveRoot,
+      join(this.hiveRoot, "system"),
+      join(this.hiveRoot, "system", box),
+    ])
+      await this.check(path, "directory");
+    return realpath(join(this.hiveRoot, "system", box));
+  }
+
   relativePath(agentId: string): string {
     this.agentRoot(agentId);
     return `hive/agents/${agentId}/workspace`;
@@ -151,7 +179,11 @@ export class AgentWorkspaceManager {
   }
 
   /** Only the two fixed metadata files can be read; symlinks and hard links are refused. */
-  async readMetadata(agentId: string, file: "agent.md" | "memory.md"): Promise<string> {
+  async readMetadata(
+    agentId: string,
+    file: "agent.md" | "memory.md",
+    maxBytes?: number,
+  ): Promise<string> {
     if (file !== "agent.md" && file !== "memory.md") throw new Error("Invalid metadata file");
     await this.getWorkspacePath(agentId);
     const path = join(this.agentRoot(agentId), file);
@@ -160,6 +192,14 @@ export class AgentWorkspaceManager {
     try {
       const stat = await handle.stat();
       if (!stat.isFile() || stat.nlink !== 1) throw new Error("Unsafe workspace metadata");
+      if (maxBytes !== undefined) {
+        const buffer = Buffer.alloc(maxBytes);
+        const { bytesRead } = await handle.read(buffer, 0, buffer.length, 0);
+        return (
+          buffer.subarray(0, bytesRead).toString("utf8") +
+          (stat.size > maxBytes ? "\n[Instructions truncated]" : "")
+        );
+      }
       return await handle.readFile("utf8");
     } finally {
       await handle.close();

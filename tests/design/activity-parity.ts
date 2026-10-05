@@ -68,7 +68,7 @@ export async function readActivityFixture(request: APIRequestContext) {
     activeAgents: 0,
     completedToday: 4,
     workingTasks: 3,
-    recordedDeliveriesToday: 0,
+    recordedDeliveriesToday: 2,
   });
   expect(tasks).toHaveLength(14);
   return { events, summary };

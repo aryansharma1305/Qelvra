@@ -16,6 +16,7 @@ export const ProviderSchema = z.strictObject({
   kind: z.enum(["cli", "shell", "fake"]),
   capabilities: z.strictObject({
     interactive: z.boolean(),
+    automation: z.boolean(),
     local: z.boolean(),
     requiresAuth: z.boolean(),
     supportsWorkspace: z.boolean(),

@@ -1,4 +1,5 @@
 import { ProviderListResponseSchema, type Provider } from "@qelvra/shared";
+import { TaskExecutionResponseSchema } from "@qelvra/shared";
 import {
   ActivityListResponseSchema,
   ActivitySummarySchema,
@@ -260,3 +261,22 @@ export async function listProviders(options?: CallOptions): Promise<Provider[]> 
     })
   ).providers;
 }
+export const getTaskExecution = (id: string, options?: CallOptions) =>
+  requestJson(
+    `/api/tasks/${encodeURIComponent(id)}/execution`,
+    TaskExecutionResponseSchema,
+    options,
+  );
+export const executeTask = (id: string, options?: CallOptions) =>
+  requestJson(`/api/tasks/${encodeURIComponent(id)}/execute`, TaskExecutionResponseSchema, {
+    method: "POST",
+    body: {},
+    timeoutMs: 25000,
+    ...options,
+  });
+export const cancelTaskExecution = (id: string, options?: CallOptions) =>
+  requestJson(
+    `/api/tasks/${encodeURIComponent(id)}/cancel-execution`,
+    TaskExecutionResponseSchema,
+    { method: "POST", body: {}, timeoutMs: 10000, ...options },
+  );

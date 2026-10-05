@@ -44,6 +44,7 @@ export interface MessageRouterOptions {
   onFatal?: () => void;
   /** Server-only watcher seam for initialization/error tests. */
   watcherFactory?: (root: string, options: ChokidarOptions) => FSWatcher;
+  controlMailbox?: boolean;
 }
 
 /** Filesystem delivery only: no runtime, PTY, shell, provider or transport imports. */
@@ -105,15 +106,23 @@ export class MessageRouter {
       for (const agent of this.options.registry.list())
         await this.options.workspaces.getMailboxPath(agent.id, "outbox");
       if (generation !== this.generation) throw new Error("ROUTER_START_CANCELLED");
-      const root = await this.options.workspaces.getAgentsPath();
+      if (this.options.controlMailbox)
+        await this.options.workspaces.getControlMailboxPath("outbox");
+      const root = this.options.controlMailbox
+        ? this.options.workspaces.hiveRoot
+        : await this.options.workspaces.getAgentsPath();
+      const partsOf = (path: string) => {
+        const parts = relative(root, path).split(sep).filter(Boolean);
+        return this.options.controlMailbox && parts[0] === "agents" ? parts.slice(1) : parts;
+      };
       const watcher = (this.options.watcherFactory ?? watch)(root, {
         persistent: true,
         ignoreInitial: true,
         followSymlinks: false,
-        depth: 2,
+        depth: this.options.controlMailbox ? 3 : 2,
         atomic: true,
         ignored: (path, stats) => {
-          const parts = relative(root, path).split(sep).filter(Boolean);
+          const parts = partsOf(path);
           if (!parts.length) return false;
           if (!AgentIdSchema.safeParse(parts[0]).success) return true;
           if (parts.length === 1) return stats ? !stats.isDirectory() : false;
@@ -129,7 +138,7 @@ export class MessageRouter {
       this.watcher = watcher;
       const handle = (path: string) => {
         if (!this.running) return;
-        const parts = relative(root, path).split(sep);
+        const parts = partsOf(path);
         const [agentId, box, filename] = parts;
         if (parts.length === 3 && agentId && box === "outbox" && filename) {
           if (this.startupScan)
@@ -220,7 +229,7 @@ export class MessageRouter {
     // Registry creation precedes workspace initialization. No router-owned workspace creation.
     for (const delay of [0, 100, 300, 1000]) {
       if (delay) await this.pause(delay);
-      if (!this.running || !this.options.registry.get(agentId)) return;
+      if (!this.running || !this.options.mailbox.hasRecipient(agentId)) return;
       try {
         const path = await this.options.workspaces.getMailboxPath(agentId, "outbox");
         this.watcher?.add(path);
@@ -237,10 +246,15 @@ export class MessageRouter {
   async rescan(): Promise<void> {
     if (!this.running) return;
     this.blocked.clear();
-    await Promise.all(this.options.registry.list().map((agent) => this.scanAgent(agent.id)));
+    await Promise.all(
+      [
+        ...this.options.registry.list().map((agent) => agent.id),
+        ...(this.options.controlMailbox ? ["system"] : []),
+      ].map((id) => this.scanAgent(id)),
+    );
   }
   private async scanAgent(agentId: string): Promise<void> {
-    if (!this.running || !this.options.registry.get(agentId)) return;
+    if (!this.running || !this.options.mailbox.hasRecipient(agentId)) return;
     const listed = await this.options.mailbox.listMessages(agentId, "outbox");
     // Backlog is sequential within a sender; live events need not preserve this order.
     for (const message of listed.messages) await this.processEntry(agentId, `${message.id}.json`);
@@ -254,7 +268,7 @@ export class MessageRouter {
     if (
       !this.running ||
       !AgentIdSchema.safeParse(agentId).success ||
-      !this.options.registry.get(agentId) ||
+      !this.options.mailbox.hasRecipient(agentId) ||
       !isMessageCandidate(filename) ||
       /[/\\\0]/.test(filename)
     )
@@ -298,7 +312,7 @@ export class MessageRouter {
     this.emit({ type: "message.detected", ...fields });
     let queued = false;
     for (let attempt = 0; attempt < 3; attempt++) {
-      if (!this.running || !this.options.registry.get(agentId)) return;
+      if (!this.running || !this.options.mailbox.hasRecipient(agentId)) return;
       try {
         const message = await this.options.mailbox.readMessage(agentId, "outbox", id);
         fields.to = message.to;
@@ -307,17 +321,18 @@ export class MessageRouter {
           this.emit({ type: "message.queued", ...fields });
           queued = true;
         }
-        if (!this.running || !this.options.registry.get(agentId)) return;
+        if (!this.running || !this.options.mailbox.hasRecipient(agentId)) return;
         const result = await this.options.mailbox.deliverInboxMessage(message.to, message);
         // Stop may arrive after publication: finish acknowledgement safely, never undo inbox.
-        if (!this.options.registry.get(agentId)) return;
+        if (!this.options.mailbox.hasRecipient(agentId)) return;
         await this.options.mailbox.acknowledgeMessage(agentId, "outbox", id, message);
         this.delivered++;
         this.emit({ type: "message.delivered", ...fields, recovered: result === "existing" });
         return;
       } catch (error) {
         const code = error instanceof MailboxError ? error.code : "MAILBOX_WRITE_FAILED";
-        if (code === "MAILBOX_MESSAGE_NOT_FOUND" || !this.options.registry.get(agentId)) return;
+        if (code === "MAILBOX_MESSAGE_NOT_FOUND" || !this.options.mailbox.hasRecipient(agentId))
+          return;
         if (isPermanentDeliveryError(code)) {
           this.emit({ type: "message.delivery_failed", ...fields, errorCode: code });
           try {

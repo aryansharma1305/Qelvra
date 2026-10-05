@@ -166,3 +166,17 @@ same registry in development/test only. Installed Ollama remains unconfigured un
 selection exists. Browser requests cannot choose executable paths, argv, cwd or environment.
 Agent provider environments replace, rather than merge, the parent server environment.
 See [ADR 0014](../adr/0014-ai-provider-layer.md) for IDs, authentication and isolation limits.
+
+## Explicit AI task execution (PR 15)
+
+Task assignment remains separate from `POST /api/tasks/:id/execute`. The execution
+coordinator dispatches a structured control task through the existing mailbox/router,
+consumes the assigned inbox request and invokes a server-owned one-shot adapter in the
+managed workspace. Results pass through agent outbox → router → system inbox before
+correlation and server-controlled Review. Interactive PTYs remain independent.
+
+Atomic `executions.json` records support status/result APIs, timeout/cancellation and
+restart recovery. A fixed IPC watchdog cleans up provider trees on normal exit and hard
+server death on macOS/Linux. Only verified Codex and development fake adapters advertise
+automation. See [ADR 0015](../adr/0015-agent-execution.md) for contracts, lifecycle and
+provider-native isolation limitations. AI success never automatically completes a task.

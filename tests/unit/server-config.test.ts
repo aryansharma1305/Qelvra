@@ -6,6 +6,7 @@ describe("server configuration", () => {
     expect(loadConfig({})).toEqual({
       host: "127.0.0.1",
       port: 3001,
+      executionTimeoutMs: 1200000,
       webOrigins: ["http://127.0.0.1:5173"],
       workspaceRoot: process.cwd(),
       dataDir: `${process.cwd()}/.qelvra`,
@@ -39,6 +40,10 @@ describe("server configuration", () => {
     [{ WEB_ORIGIN: "file:///etc/passwd" }],
     [{ WEB_ORIGIN: " , " }],
     [{ LOG_LEVEL: "loud" }],
+    [{ EXECUTION_TIMEOUT_MS: "999" }],
+    [{ EXECUTION_TIMEOUT_MS: "1800001" }],
+    [{ EXECUTION_TIMEOUT_MS: "1.5" }],
+    [{ EXECUTION_TIMEOUT_MS: "invalid" }],
   ])("rejects invalid input %o", (env) => {
     expect(() => loadConfig(env)).toThrow(ConfigError);
   });

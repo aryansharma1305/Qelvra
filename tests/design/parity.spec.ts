@@ -239,7 +239,9 @@ let activityFixture: ActivityFixture;
 
 test.beforeAll(async ({ request }) => {
   for (const agent of DESIGN_AGENTS) {
-    const res = await request.post(`${E2E_API_URL}/api/agents`, { data: agent });
+    const res = await request.post(`${E2E_API_URL}/api/agents`, {
+      data: { ...agent, ...(agent.id === "scout" ? { providerId: "fake" } : {}) },
+    });
     // Another worker may have registered it first.
     expect([201, 409]).toContain(res.status());
   }
@@ -266,6 +268,7 @@ const providers = [
     configured: true,
     capabilities: {
       interactive: true,
+      automation: false,
       local: true,
       requiresAuth: false,
       supportsWorkspace: true,
@@ -282,6 +285,7 @@ const providers = [
     configured: true,
     capabilities: {
       interactive: true,
+      automation: true,
       local: true,
       requiresAuth: false,
       supportsWorkspace: true,
@@ -298,6 +302,7 @@ const providers = [
     configured: id !== "ollama",
     capabilities: {
       interactive: true,
+      automation: false,
       local: id === "ollama",
       requiresAuth: id !== "ollama",
       supportsWorkspace: true,

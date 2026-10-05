@@ -5,3 +5,4 @@ export * from "./terminal-protocol.js";
 export * from "./message.js";
 export * from "./activity-event.js";
 export * from "./provider.js";
+export * from "./execution-result.js";

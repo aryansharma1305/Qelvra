@@ -23,6 +23,12 @@ const EnvSchema = z.object({
   DATA_DIR: z.string().trim().min(1).optional(),
   LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  EXECUTION_TIMEOUT_MS: z.coerce
+    .number()
+    .int()
+    .min(1000)
+    .max(30 * 60 * 1000)
+    .default(20 * 60 * 1000),
 });
 
 export interface ServerConfig {
@@ -33,6 +39,7 @@ export interface ServerConfig {
   dataDir: string;
   logLevel: z.infer<typeof EnvSchema>["LOG_LEVEL"];
   isProduction: boolean;
+  executionTimeoutMs: number;
 }
 
 export class ConfigError extends Error {
@@ -48,7 +55,16 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
       .join("; ");
     throw new ConfigError(`Invalid server configuration: ${details}`);
   }
-  const { HOST, PORT, WEB_ORIGIN, WORKSPACE_ROOT, DATA_DIR, LOG_LEVEL, NODE_ENV } = parsed.data;
+  const {
+    HOST,
+    PORT,
+    WEB_ORIGIN,
+    WORKSPACE_ROOT,
+    DATA_DIR,
+    LOG_LEVEL,
+    NODE_ENV,
+    EXECUTION_TIMEOUT_MS,
+  } = parsed.data;
   return {
     host: HOST,
     port: PORT,
@@ -58,6 +74,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
     dataDir: resolve(DATA_DIR ?? ".qelvra"),
     logLevel: LOG_LEVEL,
     isProduction: NODE_ENV === "production",
+    executionTimeoutMs: EXECUTION_TIMEOUT_MS,
   };
 }
 

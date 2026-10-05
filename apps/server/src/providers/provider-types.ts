@@ -7,6 +7,7 @@ export interface ProviderDefinition {
   executableCandidates: readonly string[];
   args: readonly string[];
   requiredHelp?: readonly string[];
+  execution?: { args: readonly string[]; input: "json" | "prompt"; output: "json" | "file" };
 }
 export interface ProviderDetection {
   provider: Provider;
@@ -19,8 +20,13 @@ export interface ProviderCommand {
   env: NodeJS.ProcessEnv;
   inheritEnv: false;
 }
-const capabilities = (local: boolean, requiresAuth: boolean): Provider["capabilities"] => ({
+const capabilities = (
+  local: boolean,
+  requiresAuth: boolean,
+  automation = false,
+): Provider["capabilities"] => ({
   interactive: true,
+  automation,
   local,
   requiresAuth,
   supportsWorkspace: true,
@@ -39,7 +45,8 @@ export const PROVIDER_DEFINITIONS: readonly ProviderDefinition[] = [
     id: "fake",
     name: "Fake agent (development)",
     kind: "fake",
-    capabilities: capabilities(true, false),
+    capabilities: capabilities(true, false, true),
+    execution: { args: [], input: "json", output: "json" },
     executableCandidates: [],
     args: [],
   },
@@ -55,7 +62,25 @@ export const PROVIDER_DEFINITIONS: readonly ProviderDefinition[] = [
     id: "codex",
     name: "Codex",
     kind: "cli",
-    capabilities: capabilities(false, true),
+    capabilities: capabilities(false, true, true),
+    execution: {
+      args: [
+        "--no-daemon",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--ephemeral",
+        "--color",
+        "never",
+      ],
+      input: "prompt",
+      output: "file",
+    },
     executableCandidates: ["codex"],
     args: ["--no-daemon", "--sandbox", "workspace-write", "--ask-for-approval", "on-request"],
     requiredHelp: ["--no-daemon", "--sandbox", "--ask-for-approval"],

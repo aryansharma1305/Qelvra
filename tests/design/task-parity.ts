@@ -35,6 +35,21 @@ export async function seedTasks(request: APIRequestContext) {
     });
     expect(response.status()).toBe(201);
     const { task } = TaskResponseSchema.parse(await response.json());
+    if (assignee === "scout" && status === "review") {
+      expect(
+        (await request.post(`${E2E_API_URL}/api/tasks/${task.id}/execute`, { data: {} })).status(),
+      ).toBe(202);
+      await expect
+        .poll(
+          async () =>
+            TaskResponseSchema.parse(
+              await (await request.get(`${E2E_API_URL}/api/tasks/${task.id}`)).json(),
+            ).task.status,
+          { timeout: 15000 },
+        )
+        .toBe("review");
+      continue;
+    }
     const actions =
       status === "completed"
         ? ["start", "review", "complete"]
@@ -206,5 +221,26 @@ export async function checkTaskParity(page: Page, ref: Reference, selected: stri
     /High Priority|Spinning Env|72%|18m 45s|Avg Velocity|4 \/ 5 Complete/,
   );
   await expect(page.locator("main")).toContainText("4 / 14 Completed");
+  const reviewTitle = "Multi-tenant isolated SQLite worker pool sync";
+  await page.getByRole("button", { name: `Inspect ${reviewTitle}`, exact: true }).click();
+  const result = page.getByRole("region", { name: "Task execution" });
+  await expect(result).toContainText(`Completed: ${reviewTitle}`);
+  await expect(result).toContainText("Fake agent (development)");
+  await expect(result).toContainText("fixture.txt");
+  await expect(result).toContainText("Deterministic execution fixture.");
+  same(
+    (await frames(page, "#inspector-drawer"))[0] as Frame,
+    ref.inspector,
+    ["x", "width"],
+    "result inspector",
+  );
+  // Restore the incumbent Working fixture before the existing pixel capture.
+  await page
+    .getByRole("button", {
+      name: "Inspect Implement Login API & WebAuthn Session Bridge",
+      exact: true,
+    })
+    .click();
+  await expect(page.locator("#inspector-drawer")).toHaveAttribute("data-task", selected);
 }
 export type TaskReference = Reference;

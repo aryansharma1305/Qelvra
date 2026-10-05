@@ -6,12 +6,14 @@ import { afterEach, afterAll, describe, expect, it, vi } from "vitest";
 import { createApp } from "../../../apps/server/src/app";
 import { loadConfig } from "../../../apps/server/src/config/env";
 import { AgentRegistry } from "../../../apps/server/src/agents/agent-registry";
+import { ProviderRegistry } from "../../../apps/server/src/providers";
 import {
   cleanupManagers,
   createTestManager,
   leakedPids,
   OutputBuffer,
   uniqueMarker,
+  TEST_SHELL,
 } from "../pty/helpers";
 
 const apps: FastifyInstance[] = [];
@@ -28,7 +30,15 @@ async function setup() {
   dirs.push(dir);
   const pty = createTestManager({ workspaceRoot: dir });
   const config = loadConfig({ DATA_DIR: dir, WORKSPACE_ROOT: dir });
-  const app = await createApp(config, { logger: false, ptyManager: pty });
+  // Runtime admission now selects its shell through ProviderRegistry. Keep this fixture
+  // on the same no-rc test shell as the injected PTY, rather than the user's zsh startup.
+  const app = await createApp(config, {
+    logger: false,
+    ptyManager: pty,
+    providerRegistry: new ProviderRegistry({
+      env: { ...process.env, SHELL: TEST_SHELL, HOME: dir },
+    }),
+  });
   apps.push(app);
   return { dir, app, pty, config };
 }

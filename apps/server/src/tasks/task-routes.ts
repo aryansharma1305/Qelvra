@@ -4,13 +4,18 @@ import type { FastifyInstance } from "fastify";
 import { AppError } from "../lib/errors.js";
 import { TaskError } from "./task-errors.js";
 import type { TaskRegistry } from "./task-registry.js";
+import type { AgentExecutionService } from "../execution/agent-execution-service.js";
 
 function id(raw: string) {
   if (!TaskIdSchema.safeParse(raw).success)
     throw new AppError(400, "TASK_INVALID_ID", "Task id is invalid");
   return raw;
 }
-export function registerTaskRoutes(app: FastifyInstance, tasks: TaskRegistry) {
+export function registerTaskRoutes(
+  app: FastifyInstance,
+  tasks: TaskRegistry,
+  execution?: AgentExecutionService,
+) {
   const controlled = async <T>(operation: () => Promise<T> | T): Promise<T> => {
     try {
       return await operation();
@@ -60,6 +65,12 @@ export function registerTaskRoutes(app: FastifyInstance, tasks: TaskRegistry) {
   });
   for (const action of ["start", "review", "complete", "fail"] as const) {
     app.post<{ Params: { id: string } }>(`/api/tasks/:id/${action}`, (request) => {
+      if (execution?.isActive(request.params.id))
+        throw new AppError(
+          409,
+          "TASK_ALREADY_EXECUTING",
+          "Cancel the active execution before manually changing task state",
+        );
       if (!z.strictObject({}).safeParse(request.body ?? {}).success)
         throw new AppError(400, "VALIDATION_ERROR", "This action takes no task fields");
       return controlled(async () => ({ task: await tasks[action](id(request.params.id)) }));

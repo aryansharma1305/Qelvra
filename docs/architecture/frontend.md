@@ -87,3 +87,13 @@ short debounce; activity does not pretend to measure productivity, GPU or infere
 UTC-today message counts refer to retained activity history, not lifetime totals.
 Home operative cards remain explicitly labeled DESIGN PREVIEW; orchestrator intelligence
 and the other existing mock surfaces are deferred. Agent provider startup is real (ADR 0014).
+
+## Task execution and review (PR 15)
+
+The existing task inspector exposes Execute for eligible assigned tasks, Cancel while
+active, and real execution state/provider/start time. Bounded polling updates the stored
+task and structured summary, reported changed files and notes when it reaches Review.
+Complete and Return to Working remain human actions; returning does not start a process.
+Provider discovery explicitly gates automation. Controlled failures preserve retryable
+assignment; raw provider logs and commands are never sent by the browser. See
+[ADR 0015](../adr/0015-agent-execution.md). The board and design chrome remain unchanged.

@@ -30,3 +30,26 @@ await build({
   external,
   logLevel: "info",
 });
+
+await build({
+  entryPoints: ["src/fake-agent/execution-cli.ts"],
+  outfile: "dist/fake-execution.js",
+  bundle: true,
+  platform: "node",
+  format: "esm",
+  target: "node22",
+  sourcemap: true,
+  external,
+  logLevel: "info",
+});
+await build({
+  entryPoints: ["src/execution/execution-worker.ts"],
+  outfile: "dist/execution-worker.js",
+  bundle: true,
+  platform: "node",
+  format: "esm",
+  target: "node22",
+  sourcemap: true,
+  external,
+  logLevel: "info",
+});

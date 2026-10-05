@@ -29,6 +29,7 @@ export interface MailboxManagerOptions {
   /** Server-only deterministic test seams; callers cannot select ids or timestamps. */
   uuid?: () => string;
   clock?: () => Date;
+  controlMailbox?: boolean;
 }
 
 /** Data only. No runtime, watchers, delivery, execution or network endpoints. */
@@ -37,10 +38,27 @@ export class MailboxManager {
   constructor(private readonly options: MailboxManagerOptions) {}
 
   async writeOutboxMessage(agentId: string, input: OutboxMessageInput): Promise<Message> {
+    if (agentId === "system") throw new MailboxError("MAILBOX_AGENT_NOT_FOUND");
+    return this.write(agentId, input);
+  }
+
+  /** Server-only sender; the control recipient is not a registry agent. */
+  writeControlMessage(input: OutboxMessageInput): Promise<Message> {
+    if (!this.options.controlMailbox) throw new MailboxError("MAILBOX_INVALID_RECIPIENT");
+    return this.write("system", input);
+  }
+
+  hasRecipient(id: string): boolean {
+    return (
+      (id === "system" && this.options.controlMailbox === true) || !!this.options.registry.get(id)
+    );
+  }
+
+  private async write(agentId: string, input: OutboxMessageInput): Promise<Message> {
     const directory = await this.directory(agentId, "outbox");
     const parsed = OutboxMessageInputSchema.safeParse(input);
     if (!parsed.success) throw new MailboxError("MAILBOX_INVALID_MESSAGE");
-    if (!this.options.registry.get(parsed.data.to)) {
+    if (!this.hasRecipient(parsed.data.to)) {
       throw new MailboxError("MAILBOX_INVALID_RECIPIENT");
     }
     for (let attempt = 0; attempt < 3; attempt++) {
@@ -78,8 +96,7 @@ export class MailboxManager {
     const parsed = MessageSchema.safeParse(input);
     if (!parsed.success || parsed.data.to !== recipientId)
       throw new MailboxError("MAILBOX_INVALID_MESSAGE");
-    if (!this.options.registry.get(recipientId))
-      throw new MailboxError("MAILBOX_INVALID_RECIPIENT");
+    if (!this.hasRecipient(recipientId)) throw new MailboxError("MAILBOX_INVALID_RECIPIENT");
     const message = parsed.data;
     const directory = await this.directory(recipientId, "inbox");
     try {
@@ -88,8 +105,7 @@ export class MailboxManager {
         `${message.id}.json`,
         `${JSON.stringify(message)}\n`,
         async () => {
-          if (!this.options.registry.get(recipientId))
-            throw new MailboxError("MAILBOX_INVALID_RECIPIENT");
+          if (!this.hasRecipient(recipientId)) throw new MailboxError("MAILBOX_INVALID_RECIPIENT");
           await this.directory(recipientId, "inbox");
         },
         true,
@@ -347,11 +363,13 @@ export class MailboxManager {
 
   private async directory(agentId: string, box: MailboxBox): Promise<string> {
     if (box !== "inbox" && box !== "outbox") throw new MailboxError("MAILBOX_INVALID_BOX");
-    if (!AgentIdSchema.safeParse(agentId).success || !this.options.registry.get(agentId)) {
+    if (!AgentIdSchema.safeParse(agentId).success || !this.hasRecipient(agentId)) {
       throw new MailboxError("MAILBOX_AGENT_NOT_FOUND");
     }
     try {
-      return await this.options.workspaces.getMailboxPath(agentId, box);
+      return agentId === "system"
+        ? await this.options.workspaces.getControlMailboxPath(box)
+        : await this.options.workspaces.getMailboxPath(agentId, box);
     } catch (error) {
       throw new MailboxError(
         fsCode(error) === "ENOENT" ? "MAILBOX_AGENT_NOT_FOUND" : "MAILBOX_UNSAFE_ENTRY",

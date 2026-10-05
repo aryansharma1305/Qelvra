@@ -187,6 +187,35 @@ describe("safe provider detection", () => {
         .provider.reason,
     ).toBe("DETECTION_FAILED");
   });
+  it.each(["verified", "missing", "probe-failed"])(
+    "Codex automation is explicit for %s help while preserving interactive availability",
+    async (mode) => {
+      const def = {
+        ...required(PROVIDER_DEFINITIONS.find((d) => d.id === "codex")),
+        executableCandidates: ["gemini"],
+      };
+      const probe: ProviderProbe = async (_file, args) => {
+        if (args[0] === "exec" && mode === "probe-failed") throw new Error("fixture failure");
+        const stdout =
+          args[0] === "--version"
+            ? "0.160.0"
+            : args[0] === "exec"
+              ? mode === "verified"
+                ? "--output-schema --output-last-message --ignore-user-config --ignore-rules --ephemeral --sandbox --skip-git-repo-check"
+                : "Usage: legacy exec"
+              : "Usage: codex --no-daemon --sandbox --ask-for-approval";
+        return { stdout, stderr: "", exitCode: 0 };
+      };
+      const provider = (
+        await new ProviderDetector({ env: { PATH: fixture().dir }, probe }).detect(def)
+      ).provider;
+      expect(provider.available).toBe(true);
+      expect(provider.capabilities.interactive).toBe(true);
+      expect(provider.capabilities.automation).toBe(
+        mode === "verified" && process.platform !== "win32",
+      );
+    },
+  );
   it.skipIf(process.platform === "win32")(
     "times out even when a descendant holds pipes open, and kills that group",
     async () => {

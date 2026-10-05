@@ -166,6 +166,14 @@ export class TaskRegistry {
   review(id: string) {
     return this.transition(id, "review", "task.review_requested");
   }
+  /** Server execution recovery only; preserves assignment and task content. */
+  retryExecution(id: string, agentId: string): Promise<Task> {
+    return this.enqueue(async () => {
+      const task = this.require(id);
+      if (task.assignee !== agentId || task.status !== "working") return task;
+      return this.change(task, "assigned", "task.assigned", agentId);
+    });
+  }
   complete(id: string) {
     return this.transition(id, "completed", "task.completed");
   }

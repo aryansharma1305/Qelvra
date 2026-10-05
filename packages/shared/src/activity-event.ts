@@ -3,6 +3,7 @@ import { ProviderIdSchema } from "./provider.js";
 import { AgentIdSchema, AgentNameSchema } from "./agent.js";
 import { MessageIdSchema, MessageTypeSchema } from "./message.js";
 import { TaskIdSchema, TaskTitleSchema } from "./task.js";
+import { ExecutionIdSchema } from "./execution-result.js";
 
 export const AGENT_ACTIVITY_TYPES = [
   "agent.created",
@@ -28,11 +29,18 @@ export const TASK_ACTIVITY_TYPES = [
   "task.returned_to_inbox",
 ] as const;
 export const ROUTER_ACTIVITY_TYPES = ["router.started", "router.stopped", "router.error"] as const;
+export const EXECUTION_ACTIVITY_TYPES = [
+  "execution.started",
+  "execution.completed",
+  "execution.failed",
+  "execution.cancelled",
+] as const;
 export const ACTIVITY_TYPES = [
   ...AGENT_ACTIVITY_TYPES,
   ...MESSAGE_ACTIVITY_TYPES,
   ...TASK_ACTIVITY_TYPES,
   ...ROUTER_ACTIVITY_TYPES,
+  ...EXECUTION_ACTIVITY_TYPES,
 ] as const;
 export const ActivityTypeSchema = z.enum(ACTIVITY_TYPES);
 export const ActivityIdSchema = z
@@ -51,6 +59,18 @@ const actor = z
   .optional();
 // Strict allowlists: never accept bodies, descriptions, terminal data, env or arbitrary blobs.
 export const ActivityInputSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.enum(EXECUTION_ACTIVITY_TYPES),
+    actor,
+    entity: z.strictObject({ type: z.literal("task"), id: TaskIdSchema }),
+    metadata: z.strictObject({
+      executionId: ExecutionIdSchema,
+      taskId: TaskIdSchema,
+      agentId: AgentIdSchema,
+      providerId: ProviderIdSchema,
+      errorCode: ErrorCode.optional(),
+    }),
+  }),
   z.strictObject({
     type: z.enum(AGENT_ACTIVITY_TYPES),
     actor,

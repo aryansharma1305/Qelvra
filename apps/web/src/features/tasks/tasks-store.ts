@@ -61,6 +61,9 @@ export async function createTaskInStore(input: CreateTaskRequest) {
   upsert(task);
   return task;
 }
+export async function reloadTask(id: string) {
+  upsert(await getTask(id));
+}
 export async function updateTask(id: string, action: TaskAction | "assign", agentId?: string) {
   if (state.pending[id]) return;
   publish({ ...state, pending: { ...state.pending, [id]: true } });

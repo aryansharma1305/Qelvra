@@ -28,13 +28,14 @@ export default defineConfig({
   // before each run (see tests/e2e/env.ts); never reuse a running server.
   webServer: [
     {
-      command: `node -e "require('fs').rmSync(process.env.DATA_DIR,{recursive:true,force:true})" && npm run dev -w @qelvra/server`,
+      command: `node -e "require('fs').rmSync(process.env.DATA_DIR,{recursive:true,force:true})" && npx tsx tests/fixtures/execution-server.ts`,
       url: `${E2E_API_URL}/api/health`,
       env: {
         PORT: String(E2E_API_PORT),
         WEB_ORIGIN: E2E_WEB_URL,
         DATA_DIR: E2E_DATA_DIR,
         LOG_LEVEL: "warn",
+        NODE_ENV: "test",
       },
       reuseExistingServer: false,
       timeout: 60_000,

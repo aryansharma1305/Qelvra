@@ -15,7 +15,9 @@
     "fake:smoke": "tsx scripts/fake-agent-smoke.ts",
     "task:smoke": "tsx scripts/task-smoke.ts",
     "activity:smoke": "tsx scripts/activity-smoke.ts",
-    "provider:smoke": "tsx scripts/provider-smoke.ts"
+    "provider:smoke": "tsx scripts/provider-smoke.ts",
+    "execution:smoke": "tsx scripts/execution-smoke.ts",
+    "execution:bundle-smoke": "node scripts/execution-bundle-smoke.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",

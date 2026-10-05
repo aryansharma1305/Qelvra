@@ -84,7 +84,7 @@ Production mode disables fake agents; default agents retain local shells.
 - [x] PR 12: Task system
 - [x] PR 13: Persistent activity events and live dashboard
 - [x] PR 14: Safe AI CLI provider layer
-- [ ] PR 15: Runtime telemetry
+- [x] PR 15: Explicit real AI task execution
 
 Activity is persisted in `DATA_DIR/events.jsonl` and available at `/api/activity` and
 `/ws/activity`. `/activity` and Dashboard Team Activity use this live stream.
@@ -99,3 +99,13 @@ honestly. No provider is installed or logged in automatically. See
 [provider verification report](docs/verification/pr14-ai-providers.md).
 Run `npm run provider:smoke -w @qelvra/server -- codex` for a local-only disposable
 interactive startup/cleanup check, without sending a model prompt.
+
+Task Execute now runs a verified automation adapter in the assigned agent workspace.
+Codex and development fake support one-shot execution; other providers retain terminal
+sessions. Assignment alone starts nothing. Validated mailbox results move Working to
+Review, where a human completes or returns the task. Timeout/cancel/crash interruption
+leave work retryable. See [ADR 0015](docs/adr/0015-agent-execution.md) and the
+[PR 15 verification report](docs/verification/pr15-agent-execution.md).
+Run `npm run execution:smoke -w @qelvra/server -- fake` for a disposable deterministic
+demo, or omit `-- fake` for the local authenticated Codex hello.txt check. These use
+temporary data and leave existing agents untouched.

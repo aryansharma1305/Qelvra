@@ -7,6 +7,31 @@ const input = {
   metadata: { agentName: "Nova" },
 };
 describe("canonical activity schema", () => {
+  it("execution metadata accepts only bounded correlation IDs and a controlled error code", () => {
+    const execution = {
+      type: "execution.failed",
+      entity: { type: "task", id: `task-${randomUUID()}` },
+      metadata: {
+        executionId: `exec-${randomUUID()}`,
+        taskId: `task-${randomUUID()}`,
+        agentId: "nova",
+        providerId: "fake",
+        errorCode: "EXECUTION_TIMED_OUT",
+      },
+    };
+    expect(ActivityInputSchema.safeParse(execution).success).toBe(true);
+    for (const key of ["prompt", "body", "output", "env", "secret"])
+      expect(
+        ActivityInputSchema.safeParse({
+          ...execution,
+          metadata: { ...execution.metadata, [key]: "PRIVATE" },
+        }).success,
+      ).toBe(false);
+    expect(
+      ActivityInputSchema.safeParse({ ...execution, entity: { type: "agent", id: "nova" } })
+        .success,
+    ).toBe(false);
+  });
   it("validates server-owned identity and strict metadata", () => {
     const event = { ...input, id: `evt-${randomUUID()}`, timestamp: new Date().toISOString() };
     expect(ActivityEventSchema.parse(event)).toEqual(event);
@@ -35,7 +60,7 @@ describe("canonical activity schema", () => {
     expect(
       ActivityEventSchema.safeParse({ ...event, metadata: { agentName: "x".repeat(81) } }).success,
     ).toBe(false);
-    expect(ACTIVITY_TYPES).toHaveLength(20);
+    expect(ACTIVITY_TYPES).toHaveLength(24);
   });
   it("rejects mismatched entities and arbitrary message metadata", () => {
     expect(
