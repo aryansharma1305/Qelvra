@@ -28,7 +28,7 @@ and human review. PR 16/orchestrator intelligence is not implemented.
 - `tests/unit/execution-store.test.ts`
 - `tests/unit/execution-process.test.ts`
 - `tests/e2e/execution.spec.ts`
-- `docs/adr/0015-agent-execution.md`
+- `docs/adr/0015-real-ai-execution.md`
 - This report
 
 ## 2. Files modified

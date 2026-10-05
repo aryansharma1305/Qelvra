@@ -104,7 +104,7 @@ Task Execute now runs a verified automation adapter in the assigned agent worksp
 Codex and development fake support one-shot execution; other providers retain terminal
 sessions. Assignment alone starts nothing. Validated mailbox results move Working to
 Review, where a human completes or returns the task. Timeout/cancel/crash interruption
-leave work retryable. See [ADR 0015](docs/adr/0015-agent-execution.md) and the
+leave work retryable. See [ADR 0015](docs/adr/0015-real-ai-execution.md) and the
 [PR 15 verification report](docs/verification/pr15-agent-execution.md).
 Run `npm run execution:smoke -w @qelvra/server -- fake` for a disposable deterministic
 demo, or omit `-- fake` for the local authenticated Codex hello.txt check. These use

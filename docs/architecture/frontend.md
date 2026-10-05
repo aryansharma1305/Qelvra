@@ -96,4 +96,4 @@ task and structured summary, reported changed files and notes when it reaches Re
 Complete and Return to Working remain human actions; returning does not start a process.
 Provider discovery explicitly gates automation. Controlled failures preserve retryable
 assignment; raw provider logs and commands are never sent by the browser. See
-[ADR 0015](../adr/0015-agent-execution.md). The board and design chrome remain unchanged.
+[ADR 0015](../adr/0015-real-ai-execution.md). The board and design chrome remain unchanged.

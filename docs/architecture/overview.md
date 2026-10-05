@@ -178,5 +178,5 @@ correlation and server-controlled Review. Interactive PTYs remain independent.
 Atomic `executions.json` records support status/result APIs, timeout/cancellation and
 restart recovery. A fixed IPC watchdog cleans up provider trees on normal exit and hard
 server death on macOS/Linux. Only verified Codex and development fake adapters advertise
-automation. See [ADR 0015](../adr/0015-agent-execution.md) for contracts, lifecycle and
+automation. See [ADR 0015](../adr/0015-real-ai-execution.md) for contracts, lifecycle and
 provider-native isolation limitations. AI success never automatically completes a task.
