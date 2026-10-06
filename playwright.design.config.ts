@@ -10,7 +10,9 @@ export default defineConfig({
   use: {
     ...baseConfig.use,
     // Use fractional font advances on Linux as on macOS, including the original reference.
-    launchOptions: { args: ["--font-render-hinting=none"] },
+    launchOptions: {
+      args: process.platform === "linux" ? ["--font-render-hinting=none"] : [],
+    },
   },
   // Keep reference/app captures serial to reduce Chromium text-rasterization variance.
   workers: 1,
