@@ -1,34 +1,22 @@
 // Ported from the Stitch export (agent_hive_ai_studio/code.html). Keep visually identical to the design.
-import { ZOOM_DEFAULT, type Perspective, type StudioView } from "./studioOperatives";
+import { ZOOM_DEFAULT } from "./studioOperatives";
 
 const VIEW_ACTIVE =
-  "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-label-md text-label-md transition-all bg-primary/20 text-primary shadow-sm";
+  "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-label-md text-label-md disabled:opacity-50 disabled:cursor-not-allowed transition-all bg-primary/20 text-primary shadow-sm";
 const VIEW_INACTIVE =
-  "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all";
+  "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-label-md text-label-md text-on-surface-variant disabled:opacity-50 cursor-not-allowed";
 const PERSPECTIVE_ACTIVE =
-  "px-2.5 py-1 rounded font-code-sm text-code-sm text-secondary bg-surface-container-high transition-colors";
+  "px-2.5 py-1 rounded font-code-sm text-code-sm text-secondary bg-surface-container-high disabled:opacity-50 disabled:cursor-not-allowed transition-colors";
 const PERSPECTIVE_INACTIVE =
-  "px-2.5 py-1 rounded font-code-sm text-code-sm text-on-surface-variant hover:text-on-surface transition-colors";
+  "px-2.5 py-1 rounded font-code-sm text-code-sm text-on-surface-variant disabled:opacity-50 cursor-not-allowed";
 const ZOOM_STEP = 10;
 
 interface StudioToolbarProps {
-  view: StudioView;
-  onViewChange: (view: StudioView) => void;
-  perspective: Perspective;
-  onPerspectiveChange: (perspective: Perspective) => void;
   zoom: number;
   onZoomChange: (zoom: number) => void;
 }
 
-// TODO: "Command View" has no separate design yet; the toggle only switches state.
-export function StudioToolbar({
-  view,
-  onViewChange,
-  perspective,
-  onPerspectiveChange,
-  zoom,
-  onZoomChange,
-}: StudioToolbarProps) {
+export function StudioToolbar({ zoom, onZoomChange }: StudioToolbarProps) {
   return (
     <div className="px-6 py-4 bg-surface-container-lowest flex flex-wrap items-center justify-between gap-4">
       <div className="flex flex-col">
@@ -47,21 +35,23 @@ export function StudioToolbar({
       </div>
       <div className="flex items-center bg-surface-container-low p-1 rounded-full">
         <button
-          className={view === "studio" ? VIEW_ACTIVE : VIEW_INACTIVE}
+          className={VIEW_ACTIVE}
           id="viewBtnStudio"
           type="button"
-          aria-pressed={view === "studio"}
-          onClick={() => onViewChange("studio")}
+          disabled
+          aria-label="Studio View — fixed visual preview"
+          title="The beta provides a fixed Studio preview."
         >
           <span className="material-symbols-outlined text-[15px]">deployed_code</span>
           <span>Studio View</span>
         </button>
         <button
-          className={view === "command" ? VIEW_ACTIVE : VIEW_INACTIVE}
+          className={VIEW_INACTIVE}
           id="viewBtnCommand"
           type="button"
-          aria-pressed={view === "command"}
-          onClick={() => onViewChange("command")}
+          disabled
+          aria-label="Command View — coming later"
+          title="Command View is planned for a future release."
         >
           <span className="material-symbols-outlined text-[15px]">grid_view</span>
           <span>Command View</span>
@@ -70,28 +60,31 @@ export function StudioToolbar({
       <div className="flex items-center gap-3">
         <div className="flex items-center bg-surface-container-low rounded-lg p-0.5">
           <button
-            className={perspective === "iso" ? PERSPECTIVE_ACTIVE : PERSPECTIVE_INACTIVE}
+            className={PERSPECTIVE_ACTIVE}
             id="perspIso"
             type="button"
-            aria-pressed={perspective === "iso"}
-            onClick={() => onPerspectiveChange("iso")}
+            disabled
+            aria-label="Isometric 3D — fixed visual preview"
+            title="The Studio preview uses a fixed isometric drawing."
           >
             Isometric 3D
           </button>
           <button
-            className={perspective === "ortho" ? PERSPECTIVE_ACTIVE : PERSPECTIVE_INACTIVE}
+            className={PERSPECTIVE_INACTIVE}
             id="perspOrtho"
             type="button"
-            aria-pressed={perspective === "ortho"}
-            onClick={() => onPerspectiveChange("ortho")}
+            disabled
+            aria-label="Plan 2D — coming later"
+            title="A top-down Plan 2D view is planned for a future release."
           >
             Plan 2D
           </button>
         </div>
         <div className="flex items-center bg-surface-container-low rounded-lg px-1.5 py-1 gap-1">
           <button
-            className="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-high transition-colors"
+            className="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-high disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="Zoom Out"
+            aria-label="Zoom Out"
             type="button"
             onClick={() => onZoomChange(zoom - ZOOM_STEP)}
           >
@@ -105,8 +98,9 @@ export function StudioToolbar({
             {zoom}%
           </span>
           <button
-            className="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-high transition-colors"
+            className="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-high disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title="Zoom In"
+            aria-label="Zoom In"
             type="button"
             onClick={() => onZoomChange(zoom + ZOOM_STEP)}
           >
@@ -114,8 +108,9 @@ export function StudioToolbar({
             <span className="material-symbols-outlined text-[15px]">add</span>{" "}
           </button>
           <button
-            className="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-high transition-colors"
-            title="Fit to bounds"
+            className="p-1 text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container-high disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            title="Reset Zoom"
+            aria-label="Reset Zoom"
             type="button"
             onClick={() => onZoomChange(ZOOM_DEFAULT)}
           >
@@ -123,7 +118,10 @@ export function StudioToolbar({
             <span className="material-symbols-outlined text-[15px]">crop_free</span>{" "}
           </button>
         </div>
-        <div className="hidden lg:flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg">
+        <div
+          aria-label="Decorative atmosphere: Midnight Pulse"
+          className="hidden lg:flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-lg"
+        >
           <span className="w-2 h-2 rounded-full bg-secondary animate-ping" />
           <div className="flex flex-col">
             <span className="font-label-sm text-label-sm text-on-surface-variant leading-none">

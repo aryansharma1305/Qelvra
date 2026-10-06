@@ -1,6 +1,6 @@
 # PR17 file inventory
 
-Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, image/font bytes, DESIGN.md and design tokens were not modified.
+Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. The original hardening inventory below precedes the owner-approved blocker cleanup. That cleanup updates export image URLs and retires seven unverified artwork files; font bytes, DESIGN.md and tokens remain unchanged.
 
 ## Created (49)
 
@@ -148,3 +148,7 @@ Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, ima
 - `tests/integration/server/message-router.test.ts`
 - `tests/unit/mailbox-manager.test.ts`
 - `vitest.config.ts`
+
+## Release-blocker cleanup delta
+
+Six original SVG assets under apps/web/public/artwork replace the five public/stitch portraits and two logos (all seven old files deleted). New asset-audit.md/json, pr17-blocker-cleanup.md, ui-control-audit-2026-10-06.md, check-release-assets.mjs, ui-honesty.spec.ts and release-captures.ts record provenance, honest states and regression evidence. Existing release reports/notices, favicon, headers, roster/Terminal preview, Home/Workspace/Studio controls, reference exports/helpers and browser checks are updated. No font, dependency license, token or persisted developer data is changed. Exact cleanup paths are visible in the final commit diff.

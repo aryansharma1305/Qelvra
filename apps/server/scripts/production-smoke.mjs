@@ -4,6 +4,7 @@ import { spawn } from "node:child_process";
 import { mkdtemp, rm, readdir, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import "../../../scripts/check-release-assets.mjs";
 const data = await mkdtemp(join(tmpdir(), "qelvra-production-"));
 const children = [];
 async function start(args, env = {}) {
@@ -106,6 +107,21 @@ try {
       notices.includes(await readFile(resolve("../../third-party/licenses", file), "utf8")),
     );
   assert.equal(await readFile(resolve("dist/THIRD_PARTY_NOTICES.txt"), "utf8"), notices);
+  const artwork = JSON.parse(
+    await readFile(resolve("../../docs/release/asset-audit.json"), "utf8"),
+  );
+  for (const asset of artwork.assets) {
+    const publicPath = asset.replacementPath.replace("apps/web/public/", "");
+    const response = await fetch("http://127.0.0.1:5198/" + publicPath);
+    assert.match(response.headers.get("content-type"), /image\/svg\+xml/);
+    assert.equal(
+      await response.text(),
+      await readFile(resolve("../web/public", publicPath), "utf8"),
+    );
+    await assert.rejects(
+      readFile(resolve("../web/dist", asset.originalPath.replace("apps/web/public/", ""))),
+    );
+  }
   const assets = await readdir(resolve("../web/dist/assets"));
   assert.equal(
     assets.some((f) => f.endsWith(".map")),

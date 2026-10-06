@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-06",
+  "assets": [
+    {
+      "originalPath": "apps/web/public/stitch/avatar-michael.jpg",
+      "originalSha256": "d735c3655d4ab01fde509d426a20eef33e9249575c46954a8e6e6a9da2af3853",
+      "origin": "Imported Stitch export; Googleusercontent download recorded in ADR 0002",
+      "screens": ["Onboarding sample team"],
+      "required": false,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/avatar-michael.svg",
+      "replacementSha256": "89ba575008362d981a6d0036893236afa2174ffb41c997be4a09627689b4786c",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original vector geometry authored in the Qelvra repository for the owner-requested October 6, 2026 cleanup; no imported artwork, tracing, external images or fonts."
+    },
+    {
+      "originalPath": "apps/web/public/stitch/avatar-nova-portrait.jpg",
+      "originalSha256": "155b142aa0dd43657c97c12dd5e89f4318317493b6429f35adebcd4f4d1df02c",
+      "origin": "Imported Stitch export; Googleusercontent download recorded in ADR 0002",
+      "screens": ["Onboarding sample team"],
+      "required": false,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/avatar-nova.svg",
+      "replacementSha256": "c6f1ee874394ed4929e7475a98acbd08a3210fc81229a8295f2204c72d986f4d",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original vector geometry authored in the Qelvra repository for the owner-requested October 6, 2026 cleanup; no imported artwork, tracing, external images or fonts."
+    },
+    {
+      "originalPath": "apps/web/public/stitch/avatar-atlas.jpg",
+      "originalSha256": "6df9714ffcd293ee3304001251e0796cf70de03823192246995c47565f2bda41",
+      "origin": "Imported Stitch export; Googleusercontent download recorded in ADR 0002",
+      "screens": ["Onboarding sample team"],
+      "required": false,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/avatar-atlas.svg",
+      "replacementSha256": "7efe11a678fbafe814c4367c7cf3fa8af8a8a777296ff73868163a9568136acc",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original vector geometry authored in the Qelvra repository for the owner-requested October 6, 2026 cleanup; no imported artwork, tracing, external images or fonts."
+    },
+    {
+      "originalPath": "apps/web/public/stitch/avatar-scout.jpg",
+      "originalSha256": "5af35f0ae51d4287465ce46beb2077053ff90ebb7dc59dc31022a7a2a4d4935c",
+      "origin": "Imported Stitch export; Googleusercontent download recorded in ADR 0002",
+      "screens": ["Onboarding sample team"],
+      "required": false,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/avatar-scout.svg",
+      "replacementSha256": "edf92ab5e1711045d47cba0657b6f533c056dba281d0014e4c915373ff35e1ab",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original vector geometry authored in the Qelvra repository for the owner-requested October 6, 2026 cleanup; no imported artwork, tracing, external images or fonts."
+    },
+    {
+      "originalPath": "apps/web/public/stitch/avatar-user.jpg",
+      "originalSha256": "18e7390ea4000e661971a3c0a61f2a397c900dfdae6d6bef7ca5e64ac0d2afa1",
+      "origin": "Imported Stitch export; Googleusercontent download recorded in ADR 0002",
+      "screens": ["App header", "Onboarding header", "Terminal preview panel"],
+      "required": false,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/avatar-user.svg",
+      "replacementSha256": "6bf37ac544eafec37eb4e0f0165a3ae47e7d9b96fb0477ca3394122fe48e5445",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original vector geometry authored in the Qelvra repository for the owner-requested October 6, 2026 cleanup; no imported artwork, tracing, external images or fonts."
+    },
+    {
+      "originalPath": "apps/web/public/stitch/brand-mark.png",
+      "originalSha256": "353decbf5c4dd06d8b0e7bd20539244072b3038e314ffe47952a6465475374c7",
+      "origin": "Imported Stitch brand export / downloaded brand image; ADR 0002",
+      "screens": [
+        "App header",
+        "Onboarding header",
+        "Browser favicon",
+        "Standalone brand reference"
+      ],
+      "required": true,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/qelvra-mark.svg",
+      "replacementSha256": "afecaf056ac08a88671b8aa1274ebc73c64c64448a9883bb3e417f95ed3b6ce3",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original Q-shaped circle-and-tail vector geometry authored for Qelvra on October 6, 2026. The prior hexagonal mark was not copied or traced."
+    },
+    {
+      "originalPath": "apps/web/public/stitch/brand-mark.svg",
+      "originalSha256": "4ca6ec6212dc104f45f66149ca3eeaecca6491c0a2d16ac9f9ac405368886205",
+      "origin": "Imported Stitch brand export / downloaded brand image; ADR 0002",
+      "screens": [
+        "App header",
+        "Onboarding header",
+        "Browser favicon",
+        "Standalone brand reference"
+      ],
+      "required": true,
+      "status": "REPLACED",
+      "replacementPath": "apps/web/public/artwork/qelvra-mark.svg",
+      "replacementSha256": "afecaf056ac08a88671b8aa1274ebc73c64c64448a9883bb3e417f95ed3b6ce3",
+      "copyright": "Copyright 2026 Aryan Sharma and Qelvra contributors",
+      "license": "Apache-2.0",
+      "evidence": "Original Q-shaped circle-and-tail vector geometry authored for Qelvra on October 6, 2026. The prior hexagonal mark was not copied or traced."
+    }
+  ]
+}

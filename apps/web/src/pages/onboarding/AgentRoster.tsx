@@ -42,7 +42,7 @@ export function AgentRoster({ selectedIndex, onSelect }: AgentRosterProps) {
             <img
               className="w-14 h-14 rounded-lg object-cover bg-surface-container-high"
               data-alt="High tech minimal cybernetic avatar portrait representing an analytical system orchestrator named Michael, moody ambient violet volumetric lighting, ultra detailed obsidian finish, cinematic studio render"
-              src="/stitch/avatar-michael.jpg"
+              src="/artwork/avatar-michael.svg"
             />
             <div>
               <h3 className="font-headline-md text-headline-md text-on-surface">Michael</h3>
@@ -102,7 +102,7 @@ export function AgentRoster({ selectedIndex, onSelect }: AgentRosterProps) {
             <img
               className="w-14 h-14 rounded-lg object-cover bg-surface-container-high"
               data-alt="High tech minimalist synthetic agent portrait named Nova, representing a front-end UI engineer, cyan telemetry lighting, geometric obsidian accents, refined futuristic portrait"
-              src="/stitch/avatar-nova-portrait.jpg"
+              src="/artwork/avatar-nova.svg"
             />
             <div>
               <h3 className="font-headline-md text-headline-md text-on-surface">Nova</h3>
@@ -166,7 +166,7 @@ export function AgentRoster({ selectedIndex, onSelect }: AgentRosterProps) {
             <img
               className="w-14 h-14 rounded-lg object-cover bg-surface-container-high"
               data-alt="High tech minimalist synthetic human agent portrait named Atlas, representing backend systems architect, warm amber and violet side lighting, sharp precision cyberware, dark background"
-              src="/stitch/avatar-atlas.jpg"
+              src="/artwork/avatar-atlas.svg"
             />
             <div>
               <h3 className="font-headline-md text-headline-md text-on-surface">Atlas</h3>
@@ -228,7 +228,7 @@ export function AgentRoster({ selectedIndex, onSelect }: AgentRosterProps) {
             <img
               className="w-14 h-14 rounded-lg object-cover bg-surface-container-high"
               data-alt="High tech minimalist synthetic human agent portrait named Scout, representing QA E2E and security tester, subtle green radar glow, sleek dark headset, focused expression"
-              src="/stitch/avatar-scout.jpg"
+              src="/artwork/avatar-scout.svg"
             />
             <div>
               <h3 className="font-headline-md text-headline-md text-on-surface">Scout</h3>

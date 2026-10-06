@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { captureReleaseUI } from "./release-captures";
 
 test("continue buttons walk through every step into the workspace", async ({ page }) => {
   await page.goto("/onboarding");
@@ -6,6 +7,18 @@ test("continue buttons walk through every step into the workspace", async ({ pag
   await expect(page).toHaveURL("/onboarding/goal");
   await page.locator("#continue-btn").click();
   await expect(page).toHaveURL("/onboarding/team");
+  for (const name of ["michael", "nova", "atlas", "scout"]) {
+    const avatar = page.locator(`#agent-roster img[src="/artwork/avatar-${name}.svg"]`);
+    await expect(avatar).toBeVisible();
+    await expect
+      .poll(() =>
+        avatar.evaluate(
+          (image) => image instanceof HTMLImageElement && image.complete && image.naturalWidth > 0,
+        ),
+      )
+      .toBe(true);
+  }
+  await captureReleaseUI(page, "avatars");
   await page.getByRole("button", { name: /Confirm Squad/ }).click();
   await expect(page).toHaveURL("/onboarding/engines");
   await page.getByRole("button", { name: /Assemble Workspace/ }).click();

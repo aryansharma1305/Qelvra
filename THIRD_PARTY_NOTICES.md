@@ -47,18 +47,12 @@ The twelve existing Google Fonts WOFF2 files, their names and bytes are unchange
 | jetbrains-mono-b87346fd.woff2            | `2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4` |
 | material-symbols-outlined-09b1d610.woff2 | `d3e74bde14bcb6e6619f86ec64c78b52f0c942982388ea4c521933e979361473` |
 
-## Stitch-exported artwork — owner confirmation pending
+## First-party replacement artwork — resolved
 
-The five portraits and two logo files below were supplied in the existing Stitch design and downloaded from Googleusercontent URLs (ADR0002). The repository contains no independent license/permission record for these images. A hosting URL does not establish redistribution permission. The original export, local bytes and design parity are preserved; they are not silently assigned a third-party license or replaced. Owner confirmation of generated/owned assets or documented permission is required before publication. This is a FAIL release gate until resolved.
+All seven previously unverified Stitch artwork files have been replaced and removed from the current source/build distribution. The five portrait slots now use original abstract SVG avatars. Both legacy logo files resolve to one original Qelvra circle-and-tail mark. The standalone brand reference and all reference-image URLs use these replacements too.
 
-| Existing file            | SHA-256                                                            |
-| ------------------------ | ------------------------------------------------------------------ |
-| avatar-atlas.jpg         | `6df9714ffcd293ee3304001251e0796cf70de03823192246995c47565f2bda41` |
-| avatar-michael.jpg       | `d735c3655d4ab01fde509d426a20eef33e9249575c46954a8e6e6a9da2af3853` |
-| avatar-nova-portrait.jpg | `155b142aa0dd43657c97c12dd5e89f4318317493b6429f35adebcd4f4d1df02c` |
-| avatar-scout.jpg         | `5af35f0ae51d4287465ce46beb2077053ff90ebb7dc59dc31022a7a2a4d4935c` |
-| avatar-user.jpg          | `18e7390ea4000e661971a3c0a61f2a397c900dfdae6d6bef7ca5e64ac0d2afa1` |
-| brand-mark.png           | `353decbf5c4dd06d8b0e7bd20539244072b3038e314ffe47952a6465475374c7` |
-| brand-mark.svg           | `4ca6ec6212dc104f45f66149ca3eeaecca6491c0a2d16ac9f9ac405368886205` |
+The six retained SVGs in apps/web/public/artwork were authored directly for Qelvra on October 6, 2026, without imported images, tracing or external artwork. Copyright 2026 Aryan Sharma and Qelvra contributors; Apache-2.0. Each file contains the corresponding copyright/SPDX notice. No additional third-party image attribution is required by these first-party materials, and no rights are claimed for the retired images.
 
-The original reference HTML links to Tailwind CDN and Google Fonts; those remote services are not vendored by the source archive. Their network-served code/assets are not covered by Qelvra's copyright notice. Original SVG icon/layout code supplied with the design is preserved. No third-party dependency license file in node_modules was modified.
+The [release asset audit](docs/release/asset-audit.md) inventories each original path, origin, usage, need, ownership evidence and final REPLACED decision. [Machine-readable provenance](docs/release/asset-audit.json) records exact original/replacement SHA-256 values. Publication and production checks verify all seven decisions and the distributed replacement bytes. Historical Git commits are not rewritten.
+
+The original reference HTML links to Tailwind CDN and Google Fonts; those remote services are not vendored by the source archive. Their network-served code/assets are not covered by Qelvra's copyright notice. The original layout/icon code and licensed font bytes are preserved; the unverified standalone brand drawing is replaced. No third-party dependency license file in node_modules was modified.

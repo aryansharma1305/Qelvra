@@ -21,7 +21,7 @@ export function AppHeader() {
           {...homeLink}
           alt="Qelvra Brand Mark"
           className="h-6 w-auto object-contain"
-          src="/stitch/brand-mark.png"
+          src="/artwork/qelvra-mark.svg"
         />
         <div className="flex items-center gap-space-xs">
           <span className="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight">
@@ -32,10 +32,9 @@ export function AppHeader() {
           </span>
         </div>
         <div className="h-4 w-px bg-outline-variant/30 mx-1" />
-        <div className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface">
+        <div className="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded bg-surface-container-low border border-outline-variant/30 text-on-surface-variant">
           <span className="material-symbols-outlined text-[16px] text-secondary">hub</span>
           <span className="font-code-sm text-code-sm font-medium">Local workspace</span>
-          <span className="material-symbols-outlined text-[14px]">expand_more</span>
         </div>
         <div className="hidden lg:flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-lowest border border-outline-variant/20 font-label-sm text-label-sm text-on-surface-variant">
           <span className="material-symbols-outlined text-[13px] text-tertiary">commit</span>
@@ -105,11 +104,8 @@ export function AppHeader() {
           <img
             alt="Preview profile"
             className="w-7 h-7 rounded-full object-cover ring-1 ring-outline-variant/40"
-            src="/stitch/avatar-user.jpg"
+            src="/artwork/avatar-user.svg"
           />
-          <span className="material-symbols-outlined text-[16px] text-on-surface-variant">
-            arrow_drop_down
-          </span>
         </div>
       </div>
     </header>

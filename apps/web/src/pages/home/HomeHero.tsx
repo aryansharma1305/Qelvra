@@ -78,12 +78,19 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
           />
         </div>
         <div className="flex flex-wrap items-center justify-between gap-3 pt-3 mt-2 border-t border-outline-variant/20">
+          <p id="goal-attachments-help" className="sr-only">
+            File attachments are coming in a future release.
+          </p>
+          <p id="goal-voice-help" className="sr-only">
+            Voice input is planned for a future release.
+          </p>
           <div className="flex flex-wrap items-center gap-2">
             <button
               disabled
-              title="Coming later — this control is not available in the beta"
-              aria-label="attach file — coming later"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-body-sm font-body-sm transition-all duration-150"
+              title="File attachments are coming in a future release."
+              aria-label="Attach context or files — coming later"
+              aria-describedby="goal-attachments-help"
+              className="disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-body-sm font-body-sm transition-all duration-150"
               type="button"
             >
               <span className="material-symbols-outlined text-[16px] text-outline">
@@ -91,20 +98,17 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
               </span>
               <span>Attach context / files</span>
             </button>
-            <div className="relative group">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-all duration-150">
+            <div className="relative">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-body-sm font-body-sm text-on-surface-variant">
                 <span className="material-symbols-outlined text-[15px] text-secondary">bolt</span>
                 <span>
                   Project:{" "}
                   <strong className="text-on-surface font-medium">Isolated workspaces</strong>
                 </span>
-                <span className="material-symbols-outlined text-[14px] text-outline">
-                  arrow_drop_down
-                </span>
               </div>
             </div>
-            <div className="relative group">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-all duration-150">
+            <div className="relative">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-body-sm font-body-sm text-on-surface-variant">
                 <span className="material-symbols-outlined text-[15px] text-primary">
                   psychology
                 </span>
@@ -112,18 +116,16 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
                   Orchestrator:{" "}
                   <strong className="text-on-surface font-medium">Choose in Goals</strong>
                 </span>
-                <span className="material-symbols-outlined text-[14px] text-outline">
-                  arrow_drop_down
-                </span>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-2.5 ml-auto">
             <button
               disabled
-              title="Coming later — this control is not available in the beta"
-              aria-label="Voice input"
-              className="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-outline hover:text-primary transition-colors"
+              title="Voice input is planned for a future release."
+              aria-label="Voice input — coming later"
+              aria-describedby="goal-voice-help"
+              className="disabled:opacity-50 disabled:cursor-not-allowed p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-outline hover:text-primary transition-colors"
               type="button"
             >
               {" "}

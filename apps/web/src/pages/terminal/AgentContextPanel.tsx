@@ -10,7 +10,7 @@ export function AgentContextPanel() {
               <img
                 alt="Preview Agent Avatar"
                 className="w-10 h-10 rounded-lg object-cover ring-1 ring-primary/40 shadow-sm"
-                src="/stitch/avatar-user.jpg"
+                src="/artwork/avatar-user.svg"
               />{" "}
               <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-secondary ring-2 ring-surface-container-low flex items-center justify-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-on-secondary" />

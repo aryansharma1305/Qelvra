@@ -15,7 +15,7 @@ export function OnboardingHeader() {
           <img
             alt="Qelvra Brand Mark"
             className="h-8 w-auto object-contain"
-            src="/stitch/brand-mark.png"
+            src="/artwork/qelvra-mark.svg"
           />
           <div className="flex items-center gap-space-xs">
             <span className="font-headline-sm text-headline-sm text-on-surface tracking-tight">
@@ -51,7 +51,7 @@ export function OnboardingHeader() {
           <img
             alt="Profile"
             className="w-8 h-8 rounded-full object-cover ring-1 ring-surface-variant"
-            src="/stitch/avatar-user.jpg"
+            src="/artwork/avatar-user.svg"
           />
         </div>
       </div>

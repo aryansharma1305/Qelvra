@@ -1,5 +1,5 @@
 // Ported from the Stitch export (agent_hive_ai_studio/code.html). Keep visually identical to the design.
-import { ZOOM_DEFAULT, type OperativeKey, type Perspective } from "./studioOperatives";
+import { ZOOM_DEFAULT, type OperativeKey } from "./studioOperatives";
 import { IsometricScene } from "./IsometricScene";
 
 const QUICK_PAN: readonly { key: OperativeKey; label: string; dot: string; activeText: string }[] =
@@ -11,24 +11,13 @@ const QUICK_PAN: readonly { key: OperativeKey; label: string; dot: string; activ
 
 interface StudioCanvasProps {
   zoom: number;
-  perspective: Perspective;
   operative: OperativeKey;
   onSelectOperative: (operative: OperativeKey) => void;
 }
 
-export function StudioCanvas({
-  zoom,
-  perspective,
-  operative,
-  onSelectOperative,
-}: StudioCanvasProps) {
+export function StudioCanvas({ zoom, operative, onSelectOperative }: StudioCanvasProps) {
   // Leave transform unset at the default view so the scene renders exactly as designed.
-  const transform =
-    zoom === ZOOM_DEFAULT && perspective === "iso"
-      ? undefined
-      : perspective === "ortho"
-        ? `scale(${zoom / 100}) rotateX(0deg) rotateZ(0deg)`
-        : `scale(${zoom / 100})`;
+  const transform = zoom === ZOOM_DEFAULT ? undefined : `scale(${zoom / 100})`;
 
   return (
     <div
@@ -47,7 +36,7 @@ export function StudioCanvas({
       <div className="absolute top-6 right-6 z-10 hidden sm:flex items-center gap-2 bg-surface-container-low/90 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm font-label-sm text-label-sm text-on-surface-variant">
         <span className="material-symbols-outlined text-[14px] text-tertiary">check_circle</span>
         <span>
-          Mesh Fabric: <strong className="text-tertiary">Healthy</strong>
+          Mesh Fabric: <strong className="text-tertiary">Not measured</strong>
         </span>
         <span className="text-outline">•</span>
         <span>

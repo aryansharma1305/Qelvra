@@ -336,14 +336,11 @@ function staticDesignFile(screen: string, outDir: string): string {
     );
   html = html.replace(/<link[^>]*href="https:\/\/fonts\.googleapis\.com\/[^>]*>/g, "");
   html = html.replace("</head>", `<style>${fonts}</style></head>`);
-  // The original remote brand URL has expired; ADR 0002 retained this exact artwork.
+  // Owner-approved release replacements: compare the same first-party artwork.
   html = html.replace(
-    /https:\/\/lh3\.googleusercontent\.com\/aida\/(?:AEtjO1XPInVhy3rS6tZTmZQ0bOK1tl|AEtjO1UNVnzaUQYxTYZFNl56FCT9u2h7gRt05hx)[^"\s<>]*/g,
-    pathToFileURL(path.resolve("apps/web/public/stitch/brand-mark.png")).href,
-  );
-  html = html.replace(
-    /https:\/\/lh3\.googleusercontent\.com\/aida\/AEtjO1X-gWG5cUbKyle7KnRgx_mkiMuaciOj5eaeAdDtCQcZT[^"\s<>]*/g,
-    pathToFileURL(path.resolve("apps/web/public/stitch/avatar-user.jpg")).href,
+    /src="(\/artwork\/[^"<>]+)"/g,
+    (_match, file: string) =>
+      `src="${pathToFileURL(path.resolve("apps/web/public", file.slice(1))).href}"`,
   );
   // User-approved product rename; compare the same Qelvra copy without altering exports.
   html = html.replaceAll("Agent Hive", "Qelvra");

@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import "./check-release-assets.mjs";
 assert.ok(
   ["LICENSE", "LICENSE.md", "LICENSE.txt"].some(
     (file) => existsSync(file) && readFileSync(file, "utf8").trim(),

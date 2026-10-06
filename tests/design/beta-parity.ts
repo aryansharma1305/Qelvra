@@ -42,6 +42,86 @@ export async function prepareBetaReference(page: Page, route: string) {
         for (const el of document.querySelectorAll<HTMLElement>("[style]"))
           if (el.style.width.endsWith("%") && el.style.width !== "0%") el.style.width = "0%";
       }
+      // Owner-approved blocker cleanup (docs/release/pr17-blocker-cleanup.md).
+      // Render the same intentional control states; do not mask these changes.
+      const removeArrows = (root: Element) => {
+        for (const el of root.querySelectorAll(".material-symbols-outlined"))
+          if (["arrow_drop_down", "expand_more"].includes(normalize(el.textContent ?? "")))
+            el.remove();
+      };
+      for (const header of document.querySelectorAll("body > header")) {
+        removeArrows(header);
+        for (const el of header.querySelectorAll("div"))
+          if (normalize(el.textContent ?? "").includes("Local workspace"))
+            el.classList.remove("cursor-pointer", "hover:text-on-surface");
+      }
+      if (section === "home") {
+        for (const button of document.querySelectorAll<HTMLButtonElement>("main button"))
+          if (
+            ["attach_file", "graphic_eq"].some((icon) =>
+              normalize(button.textContent ?? "").includes(icon),
+            )
+          ) {
+            button.disabled = true;
+            button.classList.add("disabled:opacity-50", "disabled:cursor-not-allowed");
+          }
+        for (const span of document.querySelectorAll("span")) {
+          const text = normalize(span.textContent ?? "");
+          if (text.startsWith("Project:") || text.startsWith("Orchestrator:")) {
+            const chip = span.parentElement;
+            if (chip) {
+              removeArrows(chip);
+              chip.classList.remove(
+                "hover:bg-surface-container-high",
+                "hover:text-on-surface",
+                "transition-all",
+                "duration-150",
+              );
+            }
+          }
+        }
+      }
+      if (section === "studio") {
+        for (const selector of [
+          "#viewBtnStudio",
+          "#viewBtnCommand",
+          "#perspIso",
+          "#perspOrtho",
+          "#playAudioBtn",
+          'input[type="range"]',
+        ]) {
+          const el = document.querySelector<HTMLButtonElement | HTMLInputElement>(selector);
+          if (el) {
+            el.disabled = true;
+            if (el.tagName === "BUTTON")
+              el.classList.add("disabled:opacity-50", "disabled:cursor-not-allowed");
+          }
+        }
+        const audioBar = document.querySelector("#playAudioBtn")?.parentElement?.parentElement;
+        audioBar?.classList.remove("h-12");
+        audioBar?.classList.add("min-h-12", "py-2");
+        for (const button of document.querySelectorAll(".zone-pill")) {
+          const label = document.createElement("span");
+          label.className = "zone-pill px-2.5 py-1 text-on-surface-variant text-xs";
+          label.textContent = button.textContent;
+          button.replaceWith(label);
+        }
+        for (const el of document.querySelectorAll("span"))
+          if (normalize(el.textContent ?? "") === "Zones:") el.textContent = "Sample zones:";
+        for (const el of document.querySelectorAll("strong"))
+          if (["Healthy", "Optimal"].includes(normalize(el.textContent ?? "")))
+            el.textContent = "Not measured";
+      }
+      if (section === "create-agent") {
+        for (const el of document.querySelectorAll("div"))
+          if (
+            normalize(el.textContent ?? "") ===
+            "Coming later. Goals assign registered agents after you approve a plan."
+          ) {
+            el.textContent =
+              "Per-agent autonomous delegation is planned for a future release. Goals still coordinate agents after you approve a plan.";
+          }
+      }
       if (section === "onboarding") {
         for (const input of document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')) {
           input.checked = false;

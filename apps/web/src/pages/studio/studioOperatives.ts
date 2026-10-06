@@ -26,6 +26,3 @@ export const ZOOM_DEFAULT = 100;
 export function clampZoom(value: number): number {
   return Math.min(Math.max(value, ZOOM_MIN), ZOOM_MAX);
 }
-
-export type StudioView = "studio" | "command";
-export type Perspective = "iso" | "ortho";
