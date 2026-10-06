@@ -42,7 +42,7 @@ export function CommandBar() {
         <button
           disabled
           title="Coming later — this control is not available in the beta"
-          aria-label="subdirectory arrow left — coming later"
+          aria-label="Execute — coming later"
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary font-headline-sm text-headline-sm font-medium hover:bg-primary-container transition-all shadow-md active:scale-95"
           type="submit"
         >
@@ -56,7 +56,7 @@ export function CommandBar() {
           <button
             disabled
             title="Coming later — this control is not available in the beta"
-            aria-label="Coming later — coming later"
+            aria-label="Revert last AST — coming later"
             className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors"
             type="button"
           >
@@ -66,7 +66,7 @@ export function CommandBar() {
           <button
             disabled
             title="Coming later — this control is not available in the beta"
-            aria-label="Coming later — coming later"
+            aria-label="Analyze chunks — coming later"
             className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors"
             type="button"
           >
@@ -76,7 +76,7 @@ export function CommandBar() {
           <button
             disabled
             title="Coming later — this control is not available in the beta"
-            aria-label="Coming later — coming later"
+            aria-label="Fix WebKit blur — coming later"
             className="px-2 py-0.5 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm transition-colors"
             type="button"
           >

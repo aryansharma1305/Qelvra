@@ -7,3 +7,8 @@ test-results
 playwright-report
 .impeccable/review
 .qelvra*
+
+# Preserve verbatim upstream legal texts
+LICENSE
+NOTICE
+third-party/licenses/

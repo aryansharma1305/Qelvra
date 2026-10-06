@@ -316,7 +316,10 @@ test("the agents directory shows real runtime status", async ({ page, request })
   await expect(card).not.toContainText("Working");
 
   await card.click();
-  await page.locator("#agent-drawer").getByRole("button", { name: "Stop", exact: true }).click();
+  await page
+    .locator("#agent-drawer")
+    .getByRole("button", { name: /^stop Stop$/ })
+    .click();
   await expect(card).toContainText("Stopped");
 });
 

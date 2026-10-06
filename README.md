@@ -72,4 +72,4 @@ Design parity uses the original Stitch exports and needs network access for thei
 
 The React/Vite frontend talks to Fastify; shared Zod contracts validate API and persisted state. Filesystem registries, PTY/runtime managers, mailbox/router, execution and orchestration form the backend. See [architecture](docs/architecture.md), [CONTRIBUTING.md](CONTRIBUTING.md), [changelog](CHANGELOG.md) and [release notes](docs/release/v0.1.0-beta.1.md).
 
-The repository's license is awaiting its owner's decision. Public beta publication is blocked until that decision is recorded.
+Qelvra is licensed under [Apache-2.0](LICENSE), Copyright 2026 Aryan Sharma and Qelvra contributors. Third-party materials retain their original terms; see [notices and distribution audit](THIRD_PARTY_NOTICES.md). The release checklist tracks remaining publication gates.

@@ -1,15 +1,18 @@
 # PR17 file inventory
 
-Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, assets, DESIGN.md and design tokens were not modified.
+Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, image/font bytes, DESIGN.md and design tokens were not modified.
 
-## Created (29)
+## Created (47)
 
 - `.env.example`
 - `.github/workflows/release.yml`
 - `.npmrc`
 - `CHANGELOG.md`
 - `CONTRIBUTING.md`
+- `LICENSE`
+- `NOTICE`
 - `SECURITY.md`
+- `THIRD_PARTY_NOTICES.md`
 - `apps/server/scripts/production-smoke.mjs`
 - `apps/server/scripts/release-smoke.ts`
 - `apps/server/src/plugins/local-security.ts`
@@ -26,6 +29,7 @@ Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, ass
 - `docs/verification/pr17-release-hardening.md`
 - `playwright.release.config.ts`
 - `scripts/check-release.mjs`
+- `scripts/copy-release-notices.mjs`
 - `tests/design/beta-copy-edits.json`
 - `tests/design/beta-parity.ts`
 - `tests/integration/server/release-http.test.ts`
@@ -33,8 +37,22 @@ Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, ass
 - `tests/release/large-data.spec.ts`
 - `tests/release/release.spec.ts`
 - `tests/unit/quarantine-limit.test.ts`
+- `third-party/external-dependencies.json`
+- `third-party/licenses/cookie-LICENSE.txt`
+- `third-party/licenses/geist-LICENSE.txt`
+- `third-party/licenses/geist-OFL.txt`
+- `third-party/licenses/jetbrains-mono-OFL.txt`
+- `third-party/licenses/material-symbols-LICENSE.txt`
+- `third-party/licenses/react-LICENSE.txt`
+- `third-party/licenses/react-dom-LICENSE.txt`
+- `third-party/licenses/react-router-LICENSE.txt`
+- `third-party/licenses/scheduler-LICENSE.txt`
+- `third-party/licenses/set-cookie-parser-LICENSE.txt`
+- `third-party/licenses/xterm-addon-fit-LICENSE.txt`
+- `third-party/licenses/xterm-xterm-LICENSE.txt`
+- `third-party/licenses/zod-LICENSE.txt`
 
-## Modified (88)
+## Modified (89)
 
 - `.github/workflows/ci.yml`
 - `.gitignore`
@@ -118,6 +136,7 @@ Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, ass
 - `tests/e2e/agent-terminal.spec.ts`
 - `tests/e2e/navigation.spec.ts`
 - `tests/e2e/server-connection.spec.ts`
+- `tests/e2e/workspace.spec.ts`
 - `tests/integration/providers/provider-runtime.test.ts`
 - `tests/integration/server/app.test.ts`
 - `tests/integration/server/fake-agent.test.ts`

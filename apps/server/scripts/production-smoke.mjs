@@ -93,6 +93,19 @@ try {
     await new Promise((r) => setTimeout(r, 50));
   }
   assert.match(await (await fetch("http://127.0.0.1:5198")).text(), /Qelvra/);
+  const license = await readFile(resolve("../../LICENSE"), "utf8");
+  assert.equal(await (await fetch("http://127.0.0.1:5198/LICENSE")).text(), license);
+  assert.equal(await readFile(resolve("dist/LICENSE"), "utf8"), license);
+  assert.match(
+    await (await fetch("http://127.0.0.1:5198/NOTICE")).text(),
+    /Copyright 2026 Aryan Sharma and Qelvra contributors/,
+  );
+  const notices = await (await fetch("http://127.0.0.1:5198/THIRD_PARTY_NOTICES.txt")).text();
+  for (const file of await readdir(resolve("../../third-party/licenses")))
+    assert.ok(
+      notices.includes(await readFile(resolve("../../third-party/licenses", file), "utf8")),
+    );
+  assert.equal(await readFile(resolve("dist/THIRD_PARTY_NOTICES.txt"), "utf8"), notices);
   const assets = await readdir(resolve("../web/dist/assets"));
   assert.equal(
     assets.some((f) => f.endsWith(".map")),
@@ -116,6 +129,7 @@ try {
       origins: true,
       headers: true,
       builtWeb: true,
+      distributionNotices: true,
       webSourceMaps: false,
       testRoutes: false,
       result: "PASS",

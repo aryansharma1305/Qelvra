@@ -13,3 +13,9 @@ External AI provider data handling depends on the chosen provider. Qelvra does n
 Server source maps are retained alongside local server bundles for debugging and are not served over HTTP. The web build does not publish source maps. Test fixtures and reset routes are not production features; Fake agent is disabled in production.
 
 For suspected vulnerabilities, use the repository's GitHub **private vulnerability reporting** feature if enabled. If unavailable, contact the repository owner privately through an existing channel. No dedicated security mailbox has been configured; do not put credentials, sensitive reproductions or exploit details in a public issue. Report the affected commit, platform and a minimal disposable reproduction. This focused release audit is not a penetration-test certification or a guarantee against unknown vulnerabilities.
+
+## Development dependency advisory
+
+The October 6 audit reports five high-severity dependency entries, all arising from one unpatched `braces` issue in the pinned Tailwind 3 development toolchain: [GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm). The advisory lists no patched braces version. Deeply nested attacker-supplied glob patterns can exhaust the stack. Qelvra's Tailwind content globs are fixed in the checked-in configuration; tasks, goal text and workspace files do not supply those patterns. The runtime server uses Chokidar 4, which has no braces dependency. `npm audit --omit=dev` reports zero advisories on this candidate.
+
+This is a P2 development-tooling limitation, not a clean full-audit claim. Only run builds with trusted configuration. A Tailwind major migration is deferred because it changes the approved rendering toolchain; no blind `npm audit fix --force` or unsupported dependency override is applied. Reassess when an upstream compatible fix exists.

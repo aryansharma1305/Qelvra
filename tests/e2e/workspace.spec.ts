@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-test("terminal: single/split layout and quick prompts", async ({ page }) => {
+test("terminal: single/split layout and unavailable quick prompts", async ({ page }) => {
   await page.goto("/terminal");
   await expect(page.locator("#dev-shell-pane")).toBeVisible();
   await page.locator("#btn-single-view").click();
@@ -8,12 +8,11 @@ test("terminal: single/split layout and quick prompts", async ({ page }) => {
   await page.locator("#btn-split-view").click();
   await expect(page.locator("#dev-shell-pane")).toBeVisible();
 
-  await page.getByRole("button", { name: "Analyze chunks" }).click();
-  await expect(page.locator("#terminal-input")).toHaveValue(
-    "Run bundle analyzer and report chunk weights",
-  );
-  // Submitting must not reload the page until the PTY bridge exists.
-  await page.locator("#terminal-input").press("Enter");
+  const quickPrompt = page.getByRole("button", { name: "Analyze chunks — coming later" });
+  await expect(quickPrompt).toBeDisabled();
+  await expect(quickPrompt).toHaveAttribute("title", /Coming later/);
+  await expect(page.locator("#terminal-input")).toBeDisabled();
+  await expect(page.locator("#terminal-input")).toHaveValue("");
   await expect(page).toHaveURL("/terminal");
 });
 
