@@ -99,7 +99,10 @@ export async function checkTerminalGeometry(
     const expected = reference.geometry[index];
     if (!expected) throw new Error("Missing terminal geometry");
     for (const key of ["x", "y", "width", "height"] as const)
-      expect(Math.abs(actual[key] - expected[key]), `${selector} ${key}`).toBeLessThanOrEqual(0.5);
+      expect(
+        Math.abs(actual[key] - expected[key]),
+        `${selector} ${key} (app ${actual[key]}, design ${expected[key]})`,
+      ).toBeLessThanOrEqual(0.5);
     // Container/pane padding and grid gaps remain independent design assertions.
     expect(actual.padding, `${selector} padding`).toBe(expected.padding);
     if (selector.includes("terminals-container")) {

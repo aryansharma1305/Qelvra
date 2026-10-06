@@ -60,4 +60,12 @@ export async function prepareBetaReference(page: Page, route: string) {
     },
     { filtered, section },
   );
+  // The Play CDN observes these DOM edits and rebuilds reference styles asynchronously.
+  // Measure the reference only after its updated styles and fonts have rendered.
+  await page.evaluate(async () => {
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    await document.fonts.ready;
+  });
 }
