@@ -54,28 +54,7 @@ async function geometry(page: Page, selector: string): Promise<Geometry> {
     };
   });
 }
-async function logTerminalTabs(page: Page, selector: string) {
-  if (!process.env.QELVRA_TERMINAL_GEOMETRY_DIAGNOSTIC) return;
-  console.log(
-    "[DEBUG-pr17-linux]",
-    JSON.stringify(
-      await page.locator(selector).evaluate((root) => ({
-        platform: navigator.platform,
-        fonts: document.fonts.status,
-        tabs: [...root.children].map((el) => ({
-          box: el.getBoundingClientRect().toJSON(),
-          parts: [...el.querySelectorAll("span")].map((s) => ({
-            text: s.textContent?.trim(),
-            box: s.getBoundingClientRect().toJSON(),
-            font: getComputedStyle(s).font,
-          })),
-        })),
-      })),
-    ),
-  );
-}
 export async function readTerminalReference(page: Page): Promise<TerminalReference> {
-  await logTerminalTabs(page, "main > div > div > :nth-child(2)");
   const measured = [];
   for (const [selector] of TERMINAL_GEOMETRY) measured.push(await geometry(page, selector));
   const content = await page.evaluate(() => {
@@ -115,7 +94,6 @@ export async function checkTerminalGeometry(
   page: Page,
   reference: TerminalReference,
 ): Promise<void> {
-  await logTerminalTabs(page, "[role=tablist]");
   for (const [index, [, selector]] of TERMINAL_GEOMETRY.entries()) {
     const actual = await geometry(page, selector);
     const expected = reference.geometry[index];

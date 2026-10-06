@@ -2,7 +2,7 @@
 
 Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, image/font bytes, DESIGN.md and design tokens were not modified.
 
-## Created (47)
+## Created (49)
 
 - `.env.example`
 - `.github/workflows/release.yml`
@@ -48,11 +48,13 @@ Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, ima
 - `third-party/licenses/react-router-LICENSE.txt`
 - `third-party/licenses/scheduler-LICENSE.txt`
 - `third-party/licenses/set-cookie-parser-LICENSE.txt`
+- `third-party/licenses/tailwindcss-LICENSE.txt`
+- `third-party/licenses/vite-LICENSE.md.txt`
 - `third-party/licenses/xterm-addon-fit-LICENSE.txt`
 - `third-party/licenses/xterm-xterm-LICENSE.txt`
 - `third-party/licenses/zod-LICENSE.txt`
 
-## Modified (89)
+## Modified (92)
 
 - `.github/workflows/ci.yml`
 - `.gitignore`
@@ -131,12 +133,15 @@ Baseline: d3bd9c5bf019b1e5d96ae3092459b12c19034fc5. Original Stitch exports, ima
 - `package.json`
 - `packages/shared/package.json`
 - `playwright.config.ts`
+- `playwright.design.config.ts`
 - `tests/design/activity-parity.ts`
 - `tests/design/parity.spec.ts`
+- `tests/design/terminal-parity.ts`
 - `tests/e2e/agent-terminal.spec.ts`
 - `tests/e2e/navigation.spec.ts`
 - `tests/e2e/server-connection.spec.ts`
 - `tests/e2e/workspace.spec.ts`
+- `tests/integration/orchestration/orchestration.test.ts`
 - `tests/integration/providers/provider-runtime.test.ts`
 - `tests/integration/server/app.test.ts`
 - `tests/integration/server/fake-agent.test.ts`
