@@ -22,6 +22,8 @@ Full, unmodified upstream copyright and license texts are in third-party/license
 | cookie            | 1.1.1          | MIT     | [text](third-party/licenses/cookie-LICENSE.txt)            |
 | set-cookie-parser | 2.7.2          | MIT     | [text](third-party/licenses/set-cookie-parser-LICENSE.txt) |
 
+Tailwind CSS utility styles and Vite-generated browser bootstrap helpers also retain their upstream MIT notices. Verbatim tool license texts, including Vite's accompanying third-party notices, are included in third-party/licenses. These are attribution additions; no tool/dependency license is modified.
+
 ## Self-hosted fonts
 
 - Geist: SIL OFL 1.1. Preserve both upstream copyright notices: the Geist Project Authors (2024) and Vercel in collaboration with basement.studio (2023). Sources: https://github.com/vercel/geist-font/blob/main/OFL.txt and LICENSE.txt. Both verbatim texts are included.

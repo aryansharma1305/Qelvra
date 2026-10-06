@@ -27,7 +27,8 @@ async function openApp(limits: { maxConcurrent?: number; timeoutMs?: number } = 
       orchestrationOptions: limits,
       providerRegistry: new ProviderRegistry({
         allowFake: true,
-        definitions: PROVIDER_DEFINITIONS.map((d) =>
+        // This fake-only suite must not depend on installed/authenticated host CLIs.
+        definitions: PROVIDER_DEFINITIONS.filter((d) => d.id === "fake").map((d) =>
           d.id === "fake"
             ? {
                 ...d,
