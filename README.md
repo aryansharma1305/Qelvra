@@ -1,6 +1,6 @@
 # Qelvra
 
-Qelvra is a local workspace for running AI agents, inspecting their terminals, assigning tasks and coordinating goals through plans, review and rework. Version `0.1.0-beta.1` is a **release candidate**; see the [release checklist](docs/release/v0.1-beta-checklist.md) before publishing it.
+Qelvra is a local workspace for running AI agents, inspecting their terminals, assigning tasks and coordinating goals through plans, review and rework. Version `0.1.0-beta.1` is a **local-first beta**; see the [release checklist](docs/release/v0.1-beta-checklist.md) for its verification and release gates.
 
 Agents currently operate in isolated workspaces. Qelvra coordinates their tasks and results but does not yet automatically merge edits into one shared project repository.
 
