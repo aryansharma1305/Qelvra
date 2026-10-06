@@ -47,3 +47,17 @@ jobs:
           name: playwright-report
           path: test-results/
           retention-days: 7
+
+  terminal-geometry-diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:design -- --grep '1280px /terminal' --retries=0
+        env:
+          QELVRA_TERMINAL_GEOMETRY_DIAGNOSTIC: "1"
