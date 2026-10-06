@@ -90,12 +90,12 @@ export function CreateAgentPage() {
                       OPERATIVE_PROVISIONING_PIPELINE
                     </span>
                     <span className="font-label-sm text-label-sm px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant uppercase">
-                      Enclave-4
+                      Local beta
                     </span>
                   </div>
                   <span className="text-outline-variant/60 text-xs">•</span>
                   <span className="font-label-sm text-label-sm text-outline">
-                    PROTOCOL: ISO-9042 SYNAPSE MATRIX
+                    Provider-owned permissions
                   </span>
                 </div>
                 <div className="flex items-center gap-3">

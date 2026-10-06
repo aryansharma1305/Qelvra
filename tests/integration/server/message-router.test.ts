@@ -14,6 +14,7 @@ import {
 } from "../../../apps/server/src/mailbox";
 import {
   MessageRouter,
+  createRouterWatcher,
   type RouterEvent,
   type MessageRouterOptions,
 } from "../../../apps/server/src/router";
@@ -462,4 +463,34 @@ describe("MessageRouter with real chokidar", () => {
     ).toEqual(expected.map((message) => message.id));
     expect((await mailbox.listMessages("atlas", "inbox")).messages).toHaveLength(messages.length);
   });
+});
+
+it("releases deleted owners' watchers while preserving their workspace and observing recreation", async () => {
+  let watched: ReturnType<typeof createRouterWatcher> | undefined;
+  router = new MessageRouter({
+    registry,
+    workspaces,
+    mailbox,
+    watcherFactory: (root, options) => (watched = createRouterWatcher(root, options)),
+  });
+  await router.start();
+  for (let i = 0; i < 12; i++) {
+    const id = `temporary-${i}`;
+    await addAgent(id);
+    await registry.delete(id);
+    await vi.waitFor(() =>
+      expect(
+        Object.entries(watched?.getWatched() ?? {}).some(
+          ([p, children]) => p.includes(`/temporary-${i}`) && children.length > 0,
+        ),
+      ).toBe(false),
+    );
+    expect(await workspaces.exists(id)).toBe(true);
+  }
+  await addAgent("temporary-0");
+  const message = await mailbox.writeOutboxMessage("temporary-0", input);
+  await waitInbox("atlas", 1);
+  expect(await mailbox.readMessage("atlas", "inbox", message.id)).toEqual(message);
+  await router.stop();
+  expect(watched?.getWatched()).toEqual({});
 });

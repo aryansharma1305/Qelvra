@@ -102,7 +102,11 @@ describe("provider API to actual PTY", () => {
         env: {},
       },
     });
-    expect(start.statusCode).toBe(200);
+    expect(start.statusCode).toBe(400);
+    expect(app.runtime.get("fixture")).toBeUndefined();
+    expect(
+      (await app.inject({ method: "POST", url: "/api/agents/fixture/start" })).statusCode,
+    ).toBe(200);
     const runtime = required(app.runtime.get("fixture"));
     const session = required(app.pty.get(runtime.sessionId));
     expect(session.shell).toBe(process.execPath);

@@ -60,7 +60,7 @@ export function AgentRoster({ selectedIndex, onSelect }: AgentRosterProps) {
             </div>
             <div className="flex justify-between items-center font-code-sm text-code-sm">
               <span className="text-on-surface-variant">Throughput</span>
-              <span className="text-on-surface font-mono">148 tps</span>
+              <span className="text-on-surface font-mono">Not measured</span>
             </div>
           </div>
           <div className="space-y-space-xs">

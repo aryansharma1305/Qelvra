@@ -12,6 +12,8 @@ export function NodeTelemetryPanel() {
         </div>
         <div className="flex items-center gap-1">
           <button
+            disabled
+            aria-label="dock to right — coming later"
             className="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors"
             title="Minimize Panel"
             type="button"
@@ -48,13 +50,13 @@ export function NodeTelemetryPanel() {
           <div className="bg-surface-container-low p-2 rounded-lg flex flex-col">
             <span className="font-label-sm text-label-sm text-outline">Context Window</span>
             <span className="font-code-sm text-code-sm font-semibold text-on-surface">
-              128,490 / 1M
+              Not measured
             </span>
           </div>
           <div className="bg-surface-container-low p-2 rounded-lg flex flex-col">
             <span className="font-label-sm text-label-sm text-outline">Throughput</span>
             <span className="font-code-sm text-code-sm font-semibold text-secondary">
-              42.8 tok/s
+              Not measured
             </span>
           </div>
         </div>
@@ -62,34 +64,34 @@ export function NodeTelemetryPanel() {
       <div className="bg-surface-container p-space-md rounded-xl flex flex-col gap-2">
         <div className="flex items-center justify-between font-label-sm text-label-sm">
           <span className="text-outline uppercase tracking-wider">Channel Throughput</span>
-          <span className="text-secondary font-code-sm">1.8 MB Total (Last 10m)</span>
+          <span className="text-secondary font-code-sm">Not measured</span>
         </div>
         <div className="flex flex-col gap-2 pt-1 font-code-sm text-code-sm">
           <div>
             <div className="flex justify-between text-on-surface-variant pb-1">
               <span>Inbound (Michael OP-00)</span>
-              <span className="text-on-surface">68 pkts/s</span>
+              <span className="text-on-surface">Not measured</span>
             </div>
             <div className="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-              <div className="h-full bg-primary w-[82%]" />
+              <div className="h-full bg-primary w-0" />
             </div>
           </div>
           <div>
             <div className="flex justify-between text-on-surface-variant pb-1">
               <span>Outbound (Scout OP-05)</span>
-              <span className="text-on-surface">24 pkts/s</span>
+              <span className="text-on-surface">Not measured</span>
             </div>
             <div className="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-              <div className="h-full bg-secondary w-[34%]" />
+              <div className="h-full bg-secondary w-0" />
             </div>
           </div>
           <div>
             <div className="flex justify-between text-on-surface-variant pb-1">
               <span>Token Sync (Pixel OP-04)</span>
-              <span className="text-on-surface">12 pkts/s</span>
+              <span className="text-on-surface">Not measured</span>
             </div>
             <div className="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-              <div className="h-full bg-tertiary w-[18%]" />
+              <div className="h-full bg-tertiary w-0" />
             </div>
           </div>
         </div>
@@ -97,7 +99,7 @@ export function NodeTelemetryPanel() {
       <div className="bg-surface-container p-space-md rounded-xl flex flex-col gap-2">
         <div className="flex items-center justify-between font-label-sm text-label-sm">
           <span className="text-outline uppercase tracking-wider">Shared DAG Keys</span>
-          <span className="font-code-sm text-outline">3 Locked</span>
+          <span className="font-code-sm text-outline">Coming later</span>
         </div>
         <div className="flex flex-col gap-1.5 font-code-sm text-code-sm">
           <div className="flex items-center justify-between p-1.5 rounded bg-surface-container-low text-on-surface-variant">
@@ -128,6 +130,8 @@ export function NodeTelemetryPanel() {
             type="text"
           />{" "}
           <button
+            disabled
+            aria-label="arrow upward — coming later"
             className="absolute right-1.5 top-1.5 p-1 rounded bg-primary-container text-on-primary-container hover:bg-primary transition-colors flex items-center justify-center"
             title="Send Directive"
             type="button"

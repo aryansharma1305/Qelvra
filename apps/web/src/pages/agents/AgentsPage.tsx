@@ -92,7 +92,7 @@ export function AgentsPage() {
                 your local cluster.
               </p>
             </div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
               <button
                 className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-all shadow-sm"
                 type="button"

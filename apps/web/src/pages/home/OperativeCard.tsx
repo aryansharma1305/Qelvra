@@ -3,7 +3,7 @@ import type { HomeOperativeMock } from "../../mocks/agents";
 
 // Worker card from the Stitch home design; opens the agent's profile.
 export function OperativeCard({ operative }: { operative: HomeOperativeMock }) {
-  const link = useLinkBehavior(`/agents/${operative.id}`);
+  const link = useLinkBehavior("/agents");
   return (
     <div
       {...link}
@@ -32,7 +32,7 @@ export function OperativeCard({ operative }: { operative: HomeOperativeMock }) {
           </span>
         </div>
         <div className="mt-3.5 flex flex-col gap-1">
-          <span className="font-label-sm text-label-sm text-outline uppercase">Task</span>
+          <span className="font-label-sm text-label-sm text-outline uppercase">Sample task</span>
           <p className="font-body-md text-body-md text-on-surface">{operative.task}</p>
         </div>
         {operative.alert && (

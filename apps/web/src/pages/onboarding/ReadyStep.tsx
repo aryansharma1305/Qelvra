@@ -80,7 +80,7 @@ export function ReadyStep() {
               </span>
               <span className="text-outline-variant font-code-sm text-code-sm">•</span>
               <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-                Sync State: Nominal
+                Not available yet
               </span>
             </div>
             <div className="text-center max-w-2xl mx-auto flex flex-col items-center">
@@ -136,7 +136,7 @@ export function ReadyStep() {
                       hub
                     </span>
                     <span className="font-code-sm text-code-sm text-tertiary font-medium tracking-tighter">
-                      4/4 SYNC
+                      Coming later
                     </span>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export function ReadyStep() {
                     verified
                   </span>
                   <span className="text-on-surface">Enclave Security:</span>
-                  <span className="text-tertiary font-medium">Zero Egress Verified</span>
+                  <span className="text-tertiary font-medium">Workspace per agent</span>
                 </div>
                 <div className="hidden lg:block w-px h-4 bg-surface-variant" />
                 <div className="flex items-center gap-space-sm w-full lg:w-auto justify-start">
@@ -166,9 +166,7 @@ export function ReadyStep() {
                 <div className="flex items-center gap-space-sm w-full lg:w-auto justify-start">
                   <span className="material-symbols-outlined text-primary text-[18px]">speed</span>
                   <span className="text-on-surface">Telemetry:</span>
-                  <span className="text-primary-fixed-dim">
-                    14.8 GB allocated / 0 dropped frames
-                  </span>
+                  <span className="text-primary-fixed-dim">Not measured</span>
                 </div>
               </div>
             </div>

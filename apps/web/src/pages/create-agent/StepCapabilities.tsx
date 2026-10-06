@@ -17,13 +17,13 @@ export function StepCapabilities({ active }: { active: boolean }) {
               {"Capability Chips & Tool Matrix"}
             </h2>
             <p className="font-body-sm text-body-sm text-on-surface-variant">
-              Authorize low-level host capabilities and synthetic tools for Kite's execution loop.
+              Preview only — these selections do not change provider permissions or tools.
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-label-sm text-label-sm text-outline">MATRIX HEALTH:</span>
+            <span className="font-label-sm text-label-sm text-outline">TOOL CONFIG:</span>
             <span className="font-label-sm text-label-sm px-2 py-0.5 rounded bg-tertiary-container/30 text-tertiary font-mono">
-              NOMINAL
+              COMING LATER
             </span>
           </div>
         </div>
@@ -45,11 +45,9 @@ export function StepCapabilities({ active }: { active: boolean }) {
         <div className="p-3 bg-surface-container rounded-lg flex items-center justify-between text-on-surface-variant font-code-sm text-code-sm">
           <span className="flex items-center gap-2">
             <span className="material-symbols-outlined text-tertiary text-[18px]">lock</span>
-            All activated capabilities run inside transient seccomp-bpf Linux namespaces.
+            Provider-owned permissions; Qelvra does not enforce an OS sandbox.
           </span>
-          <span className="font-label-sm text-label-sm text-outline font-mono">
-            ENCLAVE_PIDS: MAX 32
-          </span>
+          <span className="font-label-sm text-label-sm text-outline font-mono">PREVIEW ONLY</span>
         </div>
       </div>
     </section>

@@ -3,7 +3,7 @@ import type { SwarmOperativeMock } from "../../mocks/agents";
 
 // Operative card from the Stitch swarm design; opens the agent's profile.
 export function SwarmOperativeCard({ operative }: { operative: SwarmOperativeMock }) {
-  const link = useLinkBehavior(`/agents/${operative.id}`);
+  const link = useLinkBehavior("/agents");
   return (
     <div
       {...link}
@@ -81,6 +81,9 @@ export function SwarmOperativeCard({ operative }: { operative: SwarmOperativeMoc
       ) : (
         <div className="pt-3 mt-1 flex items-center justify-between border-t border-outline-variant/20">
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="add — coming later"
             className="w-full py-1.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-code-sm text-code-sm flex items-center justify-center gap-1.5 border border-outline-variant/30 transition-colors"
             type="button"
           >

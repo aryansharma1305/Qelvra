@@ -42,9 +42,7 @@ export function StudioCanvas({
           <span className="material-symbols-outlined text-[16px] text-primary">view_in_ar</span>
           <span>HYPERION_SWARM_OFFICE // SECTOR-07</span>
         </div>
-        <span className="font-label-sm text-label-sm text-outline">
-          COORDINATES: X: 42.8 Y: -19.4 Z: 104.2 • 60 FPS SYNCED
-        </span>
+        <span className="font-label-sm text-label-sm text-outline">Coordinates: not measured</span>
       </div>
       <div className="absolute top-6 right-6 z-10 hidden sm:flex items-center gap-2 bg-surface-container-low/90 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-sm font-label-sm text-label-sm text-on-surface-variant">
         <span className="material-symbols-outlined text-[14px] text-tertiary">check_circle</span>
@@ -53,7 +51,7 @@ export function StudioCanvas({
         </span>
         <span className="text-outline">•</span>
         <span>
-          IPC Bus: <strong className="text-secondary">0.08ms latency</strong>
+          IPC Bus: <strong className="text-secondary">Not measured</strong>
         </span>
       </div>
       <div
@@ -82,6 +80,8 @@ export function StudioCanvas({
         ))}
         <div className="w-px h-4 bg-outline-variant/30 mx-0.5" />
         <button
+          disabled
+          aria-label="cell tower — coming later"
           className="px-2 py-1 rounded hover:bg-surface-container-high text-xs font-code-sm text-primary flex items-center gap-1 transition-colors"
           title="Swarm Broadcast"
         >

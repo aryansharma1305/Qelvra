@@ -89,7 +89,7 @@ export function TeamPreview() {
           cy="225"
           fill="#4cd7f6"
           r="2.5"
-          style={{ animationDelay: "400ms" }}
+          style={{ animationDelay: "Not measured" }}
         />{" "}
         <circle
           className="animate-ping"
@@ -97,7 +97,7 @@ export function TeamPreview() {
           cy="365"
           fill="#4edea3"
           r="2.5"
-          style={{ animationDelay: "800ms" }}
+          style={{ animationDelay: "Not measured" }}
         />{" "}
         <circle
           className="animate-ping"
@@ -105,7 +105,7 @@ export function TeamPreview() {
           cy="360"
           fill="#ffb4ab"
           r="2.5"
-          style={{ animationDelay: "1200ms" }}
+          style={{ animationDelay: "Not measured" }}
         />{" "}
       </svg>
       <div className="relative z-20 flex flex-col items-center text-center p-space-md rounded-2xl bg-surface-container-high/90 backdrop-blur-md shadow-xl group cursor-default">

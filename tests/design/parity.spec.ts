@@ -1,3 +1,4 @@
+import { prepareBetaReference } from "./beta-parity";
 import {
   readActivityFixture,
   prepareHomeReference,
@@ -365,6 +366,10 @@ async function capture(page: Page, url: string, prepare?: () => Promise<void>): 
     }
   });
   await page.waitForTimeout(500);
+  if (url.startsWith("file://")) {
+    const screen = SCREENS.find((s) => url.includes(s.screen + ".html"));
+    if (screen) await prepareBetaReference(page, screen.route);
+  }
   await prepare?.();
   return PNG.sync.read(await page.screenshot({ fullPage: true }));
 }
@@ -561,6 +566,12 @@ for (const width of [1280, 1440, 1920]) {
             threshold: 0.1,
           });
           if (mismatched > MAX_MISMATCHED_PIXELS) {
+            fs.writeFileSync(
+              testInfo.outputPath(`${region.name}-design.png`),
+              PNG.sync.write(expected),
+            );
+            fs.writeFileSync(testInfo.outputPath(`${region.name}-app.png`), PNG.sync.write(actual));
+            fs.writeFileSync(testInfo.outputPath(`${region.name}-diff.png`), PNG.sync.write(diff));
             await testInfo.attach(`${region.name}-design.png`, {
               body: PNG.sync.write(expected),
               contentType: "image/png",

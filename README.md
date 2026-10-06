@@ -1,129 +1,75 @@
 # Qelvra
 
-A local, desktop-first multi-agent AI workspace: create agents, run each one in a
-terminal, let them message each other through a filesystem mailbox, and track
-their work as tasks.
+Qelvra is a local workspace for running AI agents, inspecting their terminals, assigning tasks and coordinating goals through plans, review and rework. Version `0.1.0-beta.1` is a **release candidate**; see the [release checklist](docs/release/v0.1-beta-checklist.md) before publishing it.
 
-## Requirements
+Agents currently operate in isolated workspaces. Qelvra coordinates their tasks and results but does not yet automatically merge edits into one shared project repository.
 
-- Node.js 22+ (see `.nvmrc`)
+## Quick start
 
-## Getting started
+Use **Node.js 22** and npm. On macOS/Linux, have Python 3 and your platform's C/C++ build tools available if `node-pty` needs to compile. Windows has not been release-verified. A provider CLI is optional for exploring the UI, but real automated work requires a compatible, signed-in Codex installation.
 
 ```sh
-npm install
-npm run dev        # server on http://127.0.0.1:3001 + web UI on http://127.0.0.1:5173
+git clone https://github.com/aryansharma1305/Qelvra.git
+cd Qelvra
+npm ci
+npm run dev
 ```
 
-Configuration: copy `apps/server/.env.example` to `apps/server/.env` and
-`apps/web/.env.example` to `apps/web/.env.local` to override the defaults.
+Open [Qelvra on localhost](http://127.0.0.1:5173). The API listens on `127.0.0.1:3001`. Ctrl+C stops both processes. No cloud account or Qelvra credentials are required. If you use nvm, run `nvm use` before installing.
 
-Manual PTY check (developer-only, no API): `npm run pty:smoke -w @qelvra/server`.
+No configuration file is needed for defaults. For customization, copy `.env.example` to **`apps/server/.env`**. Server paths resolve from that workspace. Put `VITE_API_URL` in `apps/web/.env.local` only when changing the API URL; restart the frontend after changes. See [configuration and storage](docs/architecture.md).
 
-First-time e2e setup: `npx playwright install chromium`. The app needs no network access;
-fonts and images are bundled.
+## Your first work
 
-## Scripts
+1. **Agents → Create Agent.** Enter a name and role, choose a detected provider, then Create Agent. Creation saves a stopped agent and its workspace. Start opens its interactive terminal; Stop ends that runtime. A running terminal and an automated Execution are separate processes.
+2. **Tasks → Create Task.** Enter the task and assign an automation-capable agent. Inspect it and choose **Execute**. A successful Execution supplies a structured result and moves the task to Review. Inspect changed-file claims and tests, then choose Complete yourself.
+3. **Tasks → Goals → New Goal.** Choose an automation-capable orchestrator. Generate Plan, inspect its task breakdown, then explicitly choose Run Plan. The orchestrator assigns workers, reviews their results, requests bounded rework if needed and produces a final summary. Configure suitable worker roles before running.
 
-| Command                | What it does                                       |
-| ---------------------- | -------------------------------------------------- |
-| `npm run dev`          | Start the API server and web app together          |
-| `npm run dev:server`   | Start only the API server (watch mode)             |
-| `npm run dev:web`      | Start only the web app                             |
-| `npm run build`        | Typecheck and build every workspace                |
-| `npm run start:server` | Run the built server (`apps/server/dist/index.js`) |
-| `npm run typecheck`    | Typecheck every workspace and the tests            |
-| `npm test`             | Unit and integration tests (Vitest)                |
-| `npm run test:e2e`     | End-to-end tests; starts server and web            |
-| `npm run test:design`  | Pixel parity vs the Stitch design (needs network)  |
-| `npm run lint`         | ESLint                                             |
-| `npm run format`       | Prettier (write)                                   |
+The Home draft opens the Goal form; it does not execute work. Studio, Network, Swarm and the older onboarding tour are marked visual previews. Hardware/context telemetry and terminal steering are coming later. Real activity, tasks, agents, terminals, executions and goals use server data.
 
-## Layout
+For a cost-free development demonstration, choose **Fake agent (development)**. It returns deterministic fixture results and is not AI. It is disabled under `NODE_ENV=production`. See [providers](docs/providers.md) for support levels, installation/login guidance and controlled errors.
 
-```
-apps/web          React + Vite + Tailwind UI (ported from design/stitch)
-design/stitch     Approved Stitch export: source of truth for visuals
-apps/server       Fastify API server (127.0.0.1:3001)
-packages/shared   Zod schemas and types shared by web and server
-tests/            unit / integration / e2e / fixtures
-docs/             architecture notes and ADRs
+## Build and production-like local run
+
+```sh
+npm run build
+NODE_ENV=production WEB_ORIGIN=http://127.0.0.1:4173 npm run start:server
 ```
 
-Agent shells start in `DATA_DIR/hive/agents/<id>/workspace`. Each agent also has
-`inbox/`, `outbox/`, `agent.md` and `memory.md`. Deleting an agent preserves these
-files; recreating its ID reuses them. The developer shell retains `WORKSPACE_ROOT`.
-See [ADR 0008](docs/adr/0008-agent-workspaces.md) for initialization and safety limits.
+In another terminal, from the repository:
 
-The internal mailbox writes validated messages atomically into the sender's outbox;
-the router automatically delivers them to registered recipients, including stopped agents. Run the disposable check with
-`npm run mailbox:smoke -w @qelvra/server` (mailbox alone) or
-`npm run router:smoke -w @qelvra/server` (automatic routing and recovery).
-See [ADR 0009](docs/adr/0009-mailbox-layer.md) and [ADR 0010](docs/adr/0010-message-router.md).
+```sh
+npm run preview -w @qelvra/web -- --host 127.0.0.1 --port 4173 --strictPort
+```
 
-Development/test agents can opt into the fixed `providerId: "fake"` Node CLI. It supports
-PING, ECHO, STATUS, SEND, SEND_TASK, CHECK_INBOX, RESPOND and AUTO_RESPOND ON/OFF.
-Run `npm run fake:smoke -w @qelvra/server` for a disposable real PTY round-trip demo.
-See [ADR 0011](docs/adr/0011-fake-agent.md) and the
-[manual demo and verification](docs/verification/pr11-fake-agent.md).
-Production mode disables fake agents; default agents retain local shells.
+Open [the built web app](http://127.0.0.1:4173). The default frontend build targets API port 3001. Set `VITE_API_URL` **before building** if using a different API port. These commands run the built server and web assets locally; there is no installer, Electron package, npm publishing or hosted deployment.
 
-## Milestones
+## Data, recovery and security
 
-- [x] PR 1: Project bootstrap
-- [x] PR 2: UI integration and routing
-- [x] PR 3: Backend and health API
-- [x] PR 4: PTY manager
-- [x] PR 5: xterm + WebSocket terminal
-- [x] PR 6: Agent registry
-- [x] PR 7: Multiple agent terminals
-- [x] PR 8: Agent workspace manager
-- [x] PR 9: Mailbox
-- [x] PR 10: Router
-- [x] PR 11: Fake agent
-- [x] PR 12: Task system
-- [x] PR 13: Persistent activity events and live dashboard
-- [x] PR 14: Safe AI CLI provider layer
-- [x] PR 15: Explicit real AI task execution
-- [x] PR 16: Goals, bounded orchestration and automated review
+Defaults store data in **`apps/server/.qelvra/`**: `agents.json`, `tasks.json`, `executions.json`, `orchestrations.json`, `events.jsonl`, and `hive/` workspaces/mailboxes/quarantine. Custom `DATA_DIR` changes that location. Stop the server before copying the **entire directory** for backup, and before restoring it. Keep provider credentials with the provider's own backup policy; Qelvra does not manage them.
 
-Activity is persisted in `DATA_DIR/events.jsonl` and available at `/api/activity` and
-`/ws/activity`. `/activity` and Dashboard Team Activity use this live stream.
-Run `npm run activity:smoke -w @qelvra/server` for a disposable fake-agent/task demo
-with restart and privacy verification. See [ADR 0013](docs/adr/0013-activity-events.md).
+Startup checks all snapshots and writable directories before recovery writes. Corrupt authoritative state fails with the subsystem and filename; it is not overwritten. Restore a known-good stopped-server backup or repair the named file/permissions. Do not delete state to clear an error. After a crash, runtimes become stopped, interrupted executions require explicit retry and active goals become paused for inspection/resume. Workspace edits are retained; a crash is not a transaction rollback.
 
-Provider discovery is available at `GET /api/providers`. The Create Agent wizard uses
-this API and submits a known provider ID; local shell remains the safe default.
-Unavailable CLIs, missing authentication and Ollama model configuration are reported
-honestly. No provider is installed or logged in automatically. See
-[ADR 0014](docs/adr/0014-ai-provider-layer.md) and the
-[provider verification report](docs/verification/pr14-ai-providers.md).
-Run `npm run provider:smoke -w @qelvra/server -- codex` for a local-only disposable
-interactive startup/cleanup check, without sending a model prompt.
+Qelvra assumes one trusted local user. Keep the default loopback binding. **There is no API authentication. Do not expose it to the internet or an untrusted LAN.** Configuring a non-local `HOST` requires trusting every caller. A workspace cwd is **not a full OS sandbox**. External providers may send your prompts/code to their services. Read [SECURITY.md](SECURITY.md) and [beta limitations](docs/limitations.md).
 
-Task Execute now runs a verified automation adapter in the assigned agent workspace.
-Codex and development fake support one-shot execution; other providers retain terminal
-sessions. Assignment alone starts nothing. Validated mailbox results move Working to
-Review, where a human completes or returns the task. Timeout/cancel/crash interruption
-leave work retryable. See [ADR 0015](docs/adr/0015-real-ai-execution.md) and the
-[PR 15 verification report](docs/verification/pr15-agent-execution.md).
-Run `npm run execution:smoke -w @qelvra/server -- fake` for a disposable deterministic
-demo, or omit `-- fake` for the local authenticated Codex hello.txt check. These use
-temporary data and leave existing agents untouched.
+## Tests and contributions
 
-Goals are available in Mission Control’s **Goals** view (`/tasks?view=goals`). Create a
-draft, choose an available automation agent as orchestrator, Generate Plan, inspect its
-task breakdown, then explicitly Run Plan. Worker tasks use the same task registry,
-execution service and mailbox transport. Approved results complete tasks; rework is
-limited to three attempts. Restarted runs pause until Resume. Cancel preserves tasks
-and workspaces. Each agent keeps its own workspace; summaries reference files without
-merging them. See [ADR 0016](docs/adr/0016-orchestrator.md) and the
-[PR 16 verification report](docs/verification/pr16-orchestrator.md).
+```sh
+npm run format:check
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npx playwright install chromium
+CI=1 npm run test:e2e -- --workers=1 --retries=0
+npm run test:design
+npm run test:release -- --workers=1 --retries=0
+npm run production:smoke
+npm run release:smoke
+```
 
-Run `npm run orchestration:smoke -w @qelvra/server -- fake` for a disposable complete
-fake goal, or omit `-- fake` for authenticated Codex planning/review/summary with fake
-workers. `npm run execution:bundle-smoke -w @qelvra/server` verifies shipped bundles
-including orchestration after a build. Server bounds are `ORCHESTRATION_MAX_TASKS`
-(default 20, maximum 20), `ORCHESTRATION_MAX_ATTEMPTS` (3, maximum 3),
-`ORCHESTRATION_MAX_CONCURRENT` (3, maximum 5) and `ORCHESTRATION_TIMEOUT_MS`
-(default one hour, range one second to 24 hours).
+Design parity uses the original Stitch exports and needs network access for their Tailwind CDN. All destructive test flows use disposable data. Paid/native-provider checks are local-only: `npm run execution:smoke -w @qelvra/server -- codex` and `npm run orchestration:smoke -w @qelvra/server`; these use the installed provider's account and may consume usage. A 30-minute fixture soak is available with `npm run release:soak -w @qelvra/server`.
+
+The React/Vite frontend talks to Fastify; shared Zod contracts validate API and persisted state. Filesystem registries, PTY/runtime managers, mailbox/router, execution and orchestration form the backend. See [architecture](docs/architecture.md), [CONTRIBUTING.md](CONTRIBUTING.md), [changelog](CHANGELOG.md) and [release notes](docs/release/v0.1.0-beta.1.md).
+
+The repository's license is awaiting its owner's decision. Public beta publication is blocked until that decision is recorded.

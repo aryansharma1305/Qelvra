@@ -38,11 +38,11 @@ export function FirstTeamStep() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-space-md p-space-sm rounded-xl bg-surface-container-low shadow-sm">
               <div className="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container text-tertiary font-code-sm text-code-sm">
                 <span className="material-symbols-outlined text-[14px]">memory</span>
-                <span>Est. RAM: 14.8 GB</span>
+                <span>Not measured</span>
               </div>
               <div className="flex items-center gap-space-xs px-space-sm py-1 rounded bg-surface-container text-secondary font-code-sm text-code-sm">
                 <span className="material-symbols-outlined text-[14px]">all_inclusive</span>
-                <span>Window: 512k tokens</span>
+                <span>Context: not measured</span>
               </div>
             </div>
           </header>
@@ -138,11 +138,21 @@ export function FirstTeamStep() {
               </div>
             </div>
             <div className="flex items-center gap-space-sm self-end md:self-center">
-              <button className="px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm hover:bg-surface-bright transition-colors flex items-center gap-1">
+              <button
+                disabled
+                title="Coming later — this control is not available in the beta"
+                aria-label="tune — coming later"
+                className="px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm hover:bg-surface-bright transition-colors flex items-center gap-1"
+              >
                 <span className="material-symbols-outlined text-[16px]">tune</span>
                 <span>Fine-tune weights</span>
               </button>
-              <button className="px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm hover:bg-surface-bright transition-colors flex items-center gap-1">
+              <button
+                disabled
+                title="Coming later — this control is not available in the beta"
+                aria-label="add — coming later"
+                className="px-space-md py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm hover:bg-surface-bright transition-colors flex items-center gap-1"
+              >
                 <span className="material-symbols-outlined text-[16px]">add</span>
                 <span>Add agent node</span>
               </button>

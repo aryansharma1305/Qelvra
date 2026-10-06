@@ -32,7 +32,7 @@ export const AGENT_TRANSITIONS: Readonly<Record<AgentStatus, readonly AgentStatu
 /** States that mean "no process"; anything else cannot survive a server restart. */
 const AT_REST: readonly AgentStatus[] = ["created", "stopped"];
 
-const StoreFileSchema = z.object({
+export const AgentStoreFileSchema = z.object({
   version: z.literal(1),
   agents: z.array(AgentSchema),
 });
@@ -224,7 +224,7 @@ export class AgentRegistry {
         { cause: error },
       );
     }
-    const parsed = StoreFileSchema.safeParse(data);
+    const parsed = AgentStoreFileSchema.safeParse(data);
     if (!parsed.success) {
       throw new AgentRegistryLoadError(
         `Agent registry ${this.options.file} is invalid (${parsed.error.issues[0]?.message ?? "schema"}); fix or move it before starting`,

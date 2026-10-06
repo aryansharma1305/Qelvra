@@ -233,10 +233,10 @@ export function MeshNodes() {
           <div className="bg-surface-container-low p-2 rounded-lg my-2 flex flex-col gap-1">
             <div className="flex items-center justify-between font-label-sm text-label-sm">
               <span className="text-outline">DAG PHASE</span>
-              <span className="text-secondary font-medium font-code-sm">SYNTHESIZING (78%)</span>
+              <span className="text-secondary font-medium font-code-sm">Not measured</span>
             </div>
             <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
-              <div className="h-full bg-secondary w-[78%]" />
+              <div className="h-full bg-secondary w-0" />
             </div>
           </div>
           <div className="flex items-center justify-between font-label-sm text-label-sm text-outline pt-1">
@@ -244,7 +244,7 @@ export function MeshNodes() {
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               o3-mini
             </span>
-            <span className="text-tertiary font-code-sm">5 Channels Active</span>
+            <span className="text-tertiary font-code-sm">Coming later</span>
           </div>
         </div>
       </div>{" "}
@@ -271,11 +271,11 @@ export function MeshNodes() {
           </div>
           <div className="bg-surface-container-low px-2 py-1 rounded my-1 text-on-surface-variant font-code-sm text-code-sm flex items-center justify-between">
             <span className="text-outline truncate max-w-[130px]">AST Mutation</span>
-            <span className="text-secondary font-medium">9.4k t/s</span>
+            <span className="text-secondary font-medium">Not measured</span>
           </div>
           <div className="flex items-center justify-between font-label-sm text-label-sm text-outline pt-0.5">
             <span>Gemini 2.5 Pro</span>
-            <span className="text-tertiary">0.8ms IPC</span>
+            <span className="text-tertiary">Not measured</span>
           </div>
         </div>
       </div>{" "}
@@ -304,7 +304,7 @@ export function MeshNodes() {
           </div>
           <div className="flex items-center justify-between font-label-sm text-label-sm text-outline pt-0.5">
             <span>GPT-4o</span>
-            <span className="text-on-surface-variant">1.4ms IPC</span>
+            <span className="text-on-surface-variant">Not measured</span>
           </div>
         </div>
       </div>{" "}
@@ -329,11 +329,11 @@ export function MeshNodes() {
           </div>
           <div className="bg-surface-container-low px-2 py-1 rounded my-1 text-on-surface-variant font-code-sm text-code-sm flex items-center justify-between">
             <span className="text-outline truncate max-w-[130px]">Playwright E2E</span>
-            <span className="text-tertiary font-medium">18/18 PASS</span>
+            <span className="text-tertiary font-medium">Not measured</span>
           </div>
           <div className="flex items-center justify-between font-label-sm text-label-sm text-outline pt-0.5">
             <span>Claude 3.5 Sonnet</span>
-            <span className="text-on-surface-variant">2.1ms IPC</span>
+            <span className="text-on-surface-variant">Not measured</span>
           </div>
         </div>
       </div>{" "}
@@ -364,7 +364,7 @@ export function MeshNodes() {
           </div>
           <div className="flex items-center justify-between font-label-sm text-label-sm text-outline pt-0.5">
             <span>Gemini 1.5 Pro</span>
-            <span className="text-on-surface-variant">0.9ms IPC</span>
+            <span className="text-on-surface-variant">Not measured</span>
           </div>
         </div>
       </div>{" "}
@@ -404,16 +404,18 @@ export function MeshNodes() {
             <span>PIPE #04: MICHAEL ↔ NOVA</span>
           </div>
           <span className="font-code-sm text-code-sm px-1.5 py-0.2 rounded bg-tertiary-container/30 text-tertiary font-medium">
-            0.8ms
+            Not measured
           </span>
         </div>
         <div className="text-body-sm font-body-sm text-on-surface bg-surface-container-lowest p-2 rounded mb-2 leading-relaxed">
-          <span className="text-secondary font-code-sm">@Nova</span>: “Ensure glowing status rings
-          use hardware CSS transforms for 60fps budget.”
+          <span className="text-secondary font-code-sm">@Nova</span>Not measured
         </div>
         <div className="flex items-center justify-between text-outline font-label-sm text-label-sm pt-1">
-          <span>142 msgs exchanged</span>
+          <span>Not measured</span>
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="chevron right — coming later"
             className="text-primary hover:text-primary-fixed-dim font-medium transition-colors flex items-center gap-0.5"
             type="button"
           >

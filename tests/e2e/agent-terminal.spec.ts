@@ -145,7 +145,7 @@ test("wizard-selected fake provider starts through the real registry and stops c
   expect(record.agent.providerId).toBe("fake");
   await page.goto(`/agents/${id}`);
   await expect(page.getByTestId("agent-provider")).toContainText("Available");
-  await page.getByRole("button", { name: /^play_arrow Start$/ }).click();
+  await page.getByRole("button", { name: "Start", exact: true }).click();
   await expect(page.getByTestId("agent-status")).toHaveText("RUNNING");
   await page.getByRole("button", { name: /Open Terminal/ }).click();
   const pid = await attached(page, id);
@@ -153,7 +153,7 @@ test("wizard-selected fake provider starts through the real registry and stops c
   await run(page, "STATUS");
   await expect(outputRow(page, `READY ${id}`).first()).toBeVisible();
   await page.goto(`/agents/${id}`);
-  await page.getByRole("button", { name: /^stop Stop$/ }).click();
+  await page.getByRole("button", { name: "Stop", exact: true }).click();
   await expect(page.getByTestId("agent-status")).toHaveText("STOPPED");
   await expect.poll(() => isAlive(pid)).toBe(false);
 });
@@ -170,9 +170,9 @@ test("create, start and open an agent's terminal from its profile", async ({ pag
 
   await page.goto(`/agents/${id}`);
   await expect(page.getByTestId("agent-status")).toHaveText("STOPPED");
-  await page.getByRole("button", { name: /^play_arrow Start$/ }).click();
+  await page.getByRole("button", { name: "Start", exact: true }).click();
   await expect(page.getByTestId("agent-status")).toHaveText("RUNNING");
-  await expect(page.getByRole("button", { name: /^stop Stop$/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Stop", exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: /Open Terminal/ }).click();
   await expect(page).toHaveURL(`/terminal?agent=${id}`);
@@ -316,10 +316,7 @@ test("the agents directory shows real runtime status", async ({ page, request })
   await expect(card).not.toContainText("Working");
 
   await card.click();
-  await page
-    .locator("#agent-drawer")
-    .getByRole("button", { name: /^stop Stop$/ })
-    .click();
+  await page.locator("#agent-drawer").getByRole("button", { name: "Stop", exact: true }).click();
   await expect(card).toContainText("Stopped");
 });
 

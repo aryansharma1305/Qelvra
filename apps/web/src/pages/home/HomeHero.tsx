@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import type { ConnectionState } from "../../features/activity/activity-client";
 import { useAgents } from "../../features/agents/agents-store";
 import { ACTIVE_STATUSES } from "../../features/agents/presentation";
@@ -5,6 +7,8 @@ import { ACTIVE_STATUSES } from "../../features/agents/presentation";
 
 export function HomeHero({ activityState }: { activityState: ConnectionState }) {
   const { agents } = useAgents();
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
   const active = agents.filter((agent) => ACTIVE_STATUSES.includes(agent.status)).length;
   return (
     <div className="flex flex-col gap-4 relative">
@@ -16,13 +20,13 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
             </span>
             <span className="inline-block w-1 h-1 rounded-full bg-outline-variant" />
             <span className="font-code-sm text-code-sm text-on-surface-variant">
-              NODE: US-WEST-LOCAL-01
+              LOCAL WORKSPACE
             </span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-semibold">
-            Good evening,{" "}
+            Welcome to{" "}
             <span className="bg-gradient-to-r from-on-surface via-primary to-secondary bg-clip-text text-transparent">
-              Aryan
+              Qelvra
             </span>
             .
           </h1>
@@ -63,6 +67,9 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
             <span className="material-symbols-outlined text-[18px]">neurology</span>
           </div>
           <textarea
+            aria-label="Goal draft"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
             className="w-full bg-transparent resize-none outline-none font-body-lg text-body-lg text-on-surface placeholder:text-outline font-normal py-1"
             placeholder={
               "What should your team work on? (e.g. Audit biometric passkey fallback & synthesize performance benchmarks)"
@@ -73,6 +80,9 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-3 mt-2 border-t border-outline-variant/20">
           <div className="flex flex-wrap items-center gap-2">
             <button
+              disabled
+              title="Coming later — this control is not available in the beta"
+              aria-label="attach file — coming later"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-body-sm font-body-sm transition-all duration-150"
               type="button"
             >
@@ -81,26 +91,26 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
               </span>
               <span>Attach context / files</span>
             </button>
-            <div className="relative group cursor-pointer">
+            <div className="relative group">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-all duration-150">
                 <span className="material-symbols-outlined text-[15px] text-secondary">bolt</span>
                 <span>
                   Project:{" "}
-                  <strong className="text-on-surface font-medium">Hyperion Core v2.4</strong>
+                  <strong className="text-on-surface font-medium">Isolated workspaces</strong>
                 </span>
                 <span className="material-symbols-outlined text-[14px] text-outline">
                   arrow_drop_down
                 </span>
               </div>
             </div>
-            <div className="relative group cursor-pointer">
+            <div className="relative group">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface transition-all duration-150">
                 <span className="material-symbols-outlined text-[15px] text-primary">
                   psychology
                 </span>
                 <span>
                   Orchestrator:{" "}
-                  <strong className="text-on-surface font-medium">Michael (o3-mini)</strong>
+                  <strong className="text-on-surface font-medium">Choose in Goals</strong>
                 </span>
                 <span className="material-symbols-outlined text-[14px] text-outline">
                   arrow_drop_down
@@ -110,6 +120,8 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
           </div>
           <div className="flex items-center gap-2.5 ml-auto">
             <button
+              disabled
+              title="Coming later — this control is not available in the beta"
               aria-label="Voice input"
               className="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-outline hover:text-primary transition-colors"
               type="button"
@@ -118,12 +130,14 @@ export function HomeHero({ activityState }: { activityState: ConnectionState }) 
               <span className="material-symbols-outlined text-[18px]">graphic_eq</span>{" "}
             </button>
             <button
+              aria-label="Create Goal"
+              onClick={() => navigate("/tasks?view=goals", { state: { draftGoal: description } })}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm font-semibold tracking-tight shadow-[0_0_16px_rgba(208,188,255,0.35)] transition-all duration-200"
               type="button"
             >
-              <span>Dispatch</span>
+              <span>Create Goal</span>
               <kbd className="font-label-sm text-label-sm bg-on-primary/20 px-1.5 py-0.5 rounded text-on-primary">
-                ⌘↵
+                →
               </kbd>
             </button>
           </div>

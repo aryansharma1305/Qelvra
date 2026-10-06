@@ -42,7 +42,7 @@ export function SwarmPage() {
                         to feature/agents-grid
                       </span>
                     </div>
-                    <span className="font-code-sm text-code-sm text-outline">2m ago</span>
+                    <span className="font-code-sm text-code-sm text-outline">Not measured</span>
                   </div>
                   <div className="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/20 text-body-sm font-body-sm">
                     <div className="flex items-center gap-2.5">
@@ -54,7 +54,7 @@ export function SwarmPage() {
                         <span className="text-on-surface font-semibold">#1049</span> against staging
                       </span>
                     </div>
-                    <span className="font-code-sm text-code-sm text-outline">4m ago</span>
+                    <span className="font-code-sm text-code-sm text-outline">Not measured</span>
                   </div>
                   <div className="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/20 text-body-sm font-body-sm">
                     <div className="flex items-center gap-2.5">
@@ -66,7 +66,7 @@ export function SwarmPage() {
                         <strong className="text-secondary">@Atlas</strong> (High Priority #12)
                       </span>
                     </div>
-                    <span className="font-code-sm text-code-sm text-outline">7m ago</span>
+                    <span className="font-code-sm text-code-sm text-outline">Not measured</span>
                   </div>
                 </div>
               </section>

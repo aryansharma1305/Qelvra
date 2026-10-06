@@ -12,3 +12,7 @@ playwright-report/
 # Server state (agents.json); per machine, never committed
 .qelvra/
 .qelvra-*/
+
+# Local generated logs and diagnostic artifacts
+*.log
+.impeccable/review/

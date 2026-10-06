@@ -21,7 +21,7 @@ function stepSummary(step: number, draft: AgentDraft): string {
     case 3:
       return `${draft.tools.size} Tools Enabled`;
     case 4:
-      return "Sandbox Mesh";
+      return "Agent workspace";
     default:
       return "System Prompt";
   }

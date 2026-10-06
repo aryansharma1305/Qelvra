@@ -10,7 +10,7 @@ export function IpcTimeline() {
             {"Swarm IPC Stream & Message Timeline"}
           </span>
           <span className="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-outline">
-            BUFFER: 250 / 1000
+            Not available yet
           </span>
         </div>
         <div className="flex items-center gap-space-md">
@@ -25,6 +25,9 @@ export function IpcTimeline() {
             </span>
           </div>
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="pause — coming later"
             className="flex items-center gap-1 font-label-sm text-label-sm text-outline hover:text-on-surface transition-colors"
             type="button"
           >
@@ -32,6 +35,9 @@ export function IpcTimeline() {
             <span>PAUSE</span>
           </button>
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="delete sweep — coming later"
             className="flex items-center gap-1 font-label-sm text-label-sm text-outline hover:text-on-surface transition-colors"
             type="button"
           >
@@ -54,7 +60,7 @@ export function IpcTimeline() {
           </thead>
           <tbody className="divide-y divide-transparent">
             <tr className="hover:bg-surface-container-high/60 transition-colors">
-              <td className="py-2 px-3 text-outline">16:42:08.104</td>
+              <td className="py-2 px-3 text-outline">Not measured</td>
               <td className="py-2 px-3 font-medium text-primary">Michael (OP-00)</td>
               <td className="py-2 px-3 text-secondary">Nova (OP-01)</td>
               <td className="py-2 px-3">
@@ -67,10 +73,10 @@ export function IpcTimeline() {
                 {" "}
                 "Commit AST transformation patch #442 for component AgentNetworkCanvas.vue"{" "}
               </td>
-              <td className="py-2 px-3 text-right text-tertiary">0.8 ms</td>
+              <td className="py-2 px-3 text-right text-tertiary">Not measured</td>
             </tr>
             <tr className="hover:bg-surface-container-high/60 transition-colors">
-              <td className="py-2 px-3 text-outline">16:42:07.892</td>
+              <td className="py-2 px-3 text-outline">Not measured</td>
               <td className="py-2 px-3 font-medium text-secondary">Nova (OP-01)</td>
               <td className="py-2 px-3 text-tertiary">Scout (OP-05)</td>
               <td className="py-2 px-3">
@@ -84,10 +90,10 @@ export function IpcTimeline() {
                 "Initiate visual regression diff check for [data-agent-ring=active] on 2x DPR
                 screens"{" "}
               </td>
-              <td className="py-2 px-3 text-right text-tertiary">1.1 ms</td>
+              <td className="py-2 px-3 text-right text-tertiary">Not measured</td>
             </tr>
             <tr className="hover:bg-surface-container-high/60 transition-colors">
-              <td className="py-2 px-3 text-outline">16:42:07.411</td>
+              <td className="py-2 px-3 text-outline">Not measured</td>
               <td className="py-2 px-3 font-medium text-primary">Michael (OP-00)</td>
               <td className="py-2 px-3 text-primary-fixed-dim">Atlas (OP-03)</td>
               <td className="py-2 px-3">
@@ -100,10 +106,10 @@ export function IpcTimeline() {
                 {" "}
                 "Lock Redis session pipeline lease for agent thread OP-01-T04"{" "}
               </td>
-              <td className="py-2 px-3 text-right text-tertiary">1.4 ms</td>
+              <td className="py-2 px-3 text-right text-tertiary">Not measured</td>
             </tr>
             <tr className="hover:bg-surface-container-high/60 transition-colors">
-              <td className="py-2 px-3 text-outline">16:42:06.940</td>
+              <td className="py-2 px-3 text-outline">Not measured</td>
               <td className="py-2 px-3 font-medium text-primary-container">Pixel (OP-04)</td>
               <td className="py-2 px-3 text-secondary">Nova (OP-01)</td>
               <td className="py-2 px-3">
@@ -116,7 +122,7 @@ export function IpcTimeline() {
                 {" "}
                 "Obsidian theme hex tokens synchronized: --surface-container: #201f22"{" "}
               </td>
-              <td className="py-2 px-3 text-right text-tertiary">0.9 ms</td>
+              <td className="py-2 px-3 text-right text-tertiary">Not measured</td>
             </tr>
           </tbody>
         </table>

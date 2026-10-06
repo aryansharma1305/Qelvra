@@ -179,10 +179,14 @@ export function toDirectoryCard(agent: Agent, now: number = Date.now()): Directo
     opId: agent.id,
     role: agent.role,
     model: agent.providerId ?? "No provider",
-    bio: "Provider, workspace and capabilities are not configured yet.",
+    bio: agent.providerId
+      ? "Workspace ready. Assign a task, then use Execute to run it. Capabilities are coming later."
+      : "Workspace ready. Choose a provider to run tasks; capabilities are coming later.",
     statusLabel: STATUS_LABEL[agent.status],
     statusMeta: hasProcess
-      ? "local shell"
+      ? agent.providerId && agent.providerId !== "shell"
+        ? "provider runtime"
+        : "local shell"
       : agent.status === "error"
         ? "check terminal"
         : "no process",
@@ -196,7 +200,11 @@ export function toDirectoryCard(agent: Agent, now: number = Date.now()): Directo
     contextPercent: "",
     skills: ["No capabilities configured"],
     runtimeIcon: hasProcess ? "terminal" : "power_settings_new",
-    runtime: hasProcess ? "Shell running" : "Runtime not started",
+    runtime: hasProcess
+      ? agent.providerId && agent.providerId !== "shell"
+        ? "Provider running"
+        : "Shell running"
+      : "Runtime not started",
     tone: TONES[group],
   };
 }

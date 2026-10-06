@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import {
   CreateOrchestrationRequestSchema,
   type Agent,
@@ -63,9 +63,11 @@ export function GoalPanel({
 }) {
   const { goals, error, loading, refresh } = useOrchestrations();
   const providers = useProviders();
-  const [creating, setCreating] = useState(false),
-    [title, setTitle] = useState(""),
-    [description, setDescription] = useState(""),
+  const location = useLocation();
+  const draftGoal = typeof location.state?.draftGoal === "string" ? location.state.draftGoal : null;
+  const [creating, setCreating] = useState(draftGoal !== null),
+    [title, setTitle] = useState((draftGoal ?? "").slice(0, 160)),
+    [description, setDescription] = useState(draftGoal ?? ""),
     [orchestrator, setOrchestrator] = useState("");
   const [busy, setBusy] = useState(false),
     [actionError, setActionError] = useState<string | null>(null);
@@ -234,11 +236,7 @@ export function GoalPanel({
             {providers.error && (
               <p role="alert" className="text-error">
                 {providers.error}
-                <button
-                  type="button"
-                  onClick={() => window.location.reload()}
-                  className="ml-2 underline"
-                >
+                <button type="button" onClick={providers.retry} className="ml-2 underline">
                   Reload providers
                 </button>
               </p>

@@ -172,7 +172,7 @@ export function IsometricScene({
           x="0"
           y="3"
         >
-          1.2ms • 48msg/s
+          Not measured
         </text>{" "}
       </g>{" "}
       <g className="cursor-pointer group" id="zoneOrchestration" {...zoneProps("michael")}>
@@ -397,7 +397,7 @@ export function IsometricScene({
             x="10"
             y="3"
           >
-            Nova: AST (72%)
+            Not measured
           </text>{" "}
         </g>{" "}
       </g>{" "}
@@ -549,7 +549,7 @@ export function IsometricScene({
             x="50"
             y="3"
           >
-            Scout: 184/186 Specs
+            Scout: not measured
           </text>{" "}
         </g>{" "}
       </g>{" "}

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { constants } from "node:fs";
-import { lstat, mkdir, open, realpath, rmdir, unlink } from "node:fs/promises";
+import { lstat, mkdir, open, readdir, realpath, rmdir, unlink } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { AgentIdSchema, type Agent } from "@qelvra/shared";
 import { syncDirectory } from "../lib/atomic-publish.js";
@@ -108,7 +108,19 @@ export class AgentWorkspaceManager {
   }
 
   /** Server-generated quarantine locations; never takes an original message filename. */
-  async createQuarantineDirectory(agentId: string): Promise<string> {
+  createQuarantineDirectory(agentId: string): Promise<string> {
+    const key = `quarantine:${agentId}`;
+    const previous = this.queues.get(key) ?? Promise.resolve();
+    const result = previous.then(() => this.createQuarantine(agentId));
+    const tail = result.catch(() => undefined);
+    this.queues.set(key, tail);
+    void tail.then(() => {
+      if (this.queues.get(key) === tail) this.queues.delete(key);
+    });
+    return result;
+  }
+
+  private async createQuarantine(agentId: string): Promise<string> {
     this.agentRoot(agentId); // Reuse the canonical agent-id/device-name checks.
     await this.check(this.hiveRoot, "directory");
     const root = join(this.hiveRoot, "quarantine");
@@ -121,6 +133,12 @@ export class AgentWorkspaceManager {
       }
       await this.check(path, "directory");
       await syncDirectory(path === root ? this.hiveRoot : root);
+    }
+    // Bound server-generated metadata; never delete evidence or the original outbox file.
+    if ((await readdir(sender)).length >= 1000) {
+      throw new Error(
+        "Mailbox quarantine is full (1000 entries per agent). Archive it while Qelvra is stopped before retrying.",
+      );
     }
     for (let attempt = 0; attempt < 3; attempt++) {
       const path = join(sender, randomUUID());

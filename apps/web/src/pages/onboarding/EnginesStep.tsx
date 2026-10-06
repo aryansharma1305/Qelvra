@@ -28,8 +28,7 @@ export function EnginesStep() {
                 Where should your agents think?
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                Select your compute topology. Keep your code 100% private or scale with cloud
-                reasoning.
+                Choose a provider installed on your machine. This topology is a visual preview.
               </p>
             </div>
             <div className="flex items-center gap-space-md self-start md:self-end">
@@ -64,7 +63,7 @@ export function EnginesStep() {
                       Run fully local with Ollama.
                     </span>
                     <span className="px-space-sm py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase">
-                      Zero Egress Verified
+                      Workspace per agent
                     </span>
                   </div>
                   <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl">
@@ -97,21 +96,27 @@ export function EnginesStep() {
               <div className="flex flex-col">
                 <div className="flex items-center gap-space-sm flex-wrap">
                   <span className="font-headline-sm text-headline-sm text-on-surface">
-                    Enforce Zero Data Egress
+                    Network policy — coming later
                   </span>
                   <span className="px-space-xs py-0.5 rounded bg-tertiary-container/30 text-tertiary font-label-sm text-label-sm uppercase">
-                    Air-gapped firewall
+                    Not available yet
                   </span>
                 </div>
                 <span className="font-body-sm text-body-sm text-on-surface-variant">
-                  Block outbound telemetry, diagnostic dumps, and model metric dispatch at kernel
-                  socket level.
+                  Provider permissions control network access. Qelvra does not enforce an air gap.
                 </span>
               </div>
             </div>
             <div className="flex items-center self-end sm:self-center shrink-0">
               <label className="relative inline-flex items-center cursor-pointer">
-                <input defaultChecked className="sr-only peer" id="egress-toggle" type="checkbox" />
+                <input
+                  disabled
+                  aria-label="Network policy — coming later"
+                  title="Coming later; Qelvra does not enforce an air gap"
+                  className="sr-only peer"
+                  id="egress-toggle"
+                  type="checkbox"
+                />
                 <div className="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-surface after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container" />
               </label>
             </div>

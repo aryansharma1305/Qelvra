@@ -19,7 +19,10 @@ export function originGuard(allowedOrigins: readonly string[]) {
   return async (request: FastifyRequest, reply: FastifyReply) => {
     const origin = request.headers.origin;
     if (!origin || !origins.has(origin)) {
-      request.log.warn({ origin }, "Rejected terminal WebSocket from disallowed origin");
+      request.log.warn(
+        { errorCode: "WS_ORIGIN_REJECTED" },
+        "Rejected WebSocket from disallowed origin",
+      );
       const body: ApiErrorResponse = {
         error: { code: API_ERROR_CODES.BAD_REQUEST, message: "Origin not allowed" },
       };

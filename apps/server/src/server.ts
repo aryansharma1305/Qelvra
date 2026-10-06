@@ -12,7 +12,12 @@ export async function startServer(config: ServerConfig): Promise<FastifyInstance
       "Binding to a non-loopback address exposes the API to the network; it has no authentication yet",
     );
   }
-  await app.listen({ host: config.host, port: config.port });
+  try {
+    await app.listen({ host: config.host, port: config.port });
+  } catch (error) {
+    await app.close().catch(() => undefined);
+    throw error;
+  }
   return app;
 }
 

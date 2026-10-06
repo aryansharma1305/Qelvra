@@ -1,3 +1,4 @@
+import { StartupValidationError } from "./release/startup-validation.js";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parseEnv } from "node:util";
@@ -23,7 +24,11 @@ async function main(): Promise<void> {
 main().catch((error: unknown) => {
   // The logger may not exist yet (e.g. invalid config), so report to stderr directly.
   const message =
-    error instanceof ConfigError || error instanceof AgentRegistryLoadError ? error.message : error;
+    error instanceof ConfigError ||
+    error instanceof AgentRegistryLoadError ||
+    error instanceof StartupValidationError
+      ? error.message
+      : error;
   console.error("Failed to start server:", message);
   process.exit(1);
 });

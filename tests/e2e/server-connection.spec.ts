@@ -6,7 +6,7 @@ const status = (page: Page) => page.locator("[data-connection]");
 test("sidebar reports Connected when the server is healthy", async ({ page }) => {
   await page.goto("/");
   await expect(status(page)).toHaveText("CONNECTED");
-  await expect(status(page)).toHaveAttribute("title", /Server v0\.1\.0 responded/);
+  await expect(status(page)).toHaveAttribute("title", /Server v0\.1\.0-beta\.1 responded/);
 });
 
 test.describe("when the server is unreachable", () => {

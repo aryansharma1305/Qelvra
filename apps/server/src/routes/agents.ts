@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { ProviderError } from "../providers/index.js";
 import { TaskError } from "../tasks/task-errors.js";
 import {
@@ -131,6 +132,12 @@ export function registerAgentRoutes(
       `/api/agents/:id/${action}`,
       async (request): Promise<AgentResponse> => {
         const id = parseAgentId(request.params.id);
+        if (!z.strictObject({}).safeParse(request.body ?? {}).success)
+          throw new AppError(
+            400,
+            "VALIDATION_ERROR",
+            "Agent lifecycle actions take no command, args, cwd or other fields",
+          );
         try {
           return { agent: await runtime[action](id) };
         } catch (error) {

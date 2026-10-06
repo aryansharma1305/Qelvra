@@ -20,7 +20,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "AI Studio",
     path: "/studio",
     icon: "view_in_ar",
-    badge: { label: "New", className: "bg-secondary/20 text-secondary rounded" },
+    badge: { label: "Preview", className: "bg-secondary/20 text-secondary rounded" },
   },
   {
     label: "Agents",
@@ -37,13 +37,13 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: "task_alt",
     badge: { label: "", className: "bg-surface-container-high text-on-surface-variant rounded" },
   },
-  { label: "Terminal", path: "/terminal", icon: "terminal", pulseDotClass: "bg-tertiary" },
+  { label: "Terminal", path: "/terminal", icon: "terminal" },
   {
     label: "Agent Network",
     path: "/network",
     icon: "hub",
     badge: {
-      label: "Live",
+      label: "Preview",
       className: "bg-tertiary-container/30 text-tertiary border border-tertiary/20 rounded",
     },
   },

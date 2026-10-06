@@ -3,7 +3,7 @@ import { z } from "zod";
 import { OrchestrationSchema, type Orchestration } from "@qelvra/shared";
 import { writeFileAtomic } from "../lib/atomic-write.js";
 import { OrchestrationError } from "./orchestration-errors.js";
-const schema = z.strictObject({
+export const OrchestrationStoreFileSchema = z.strictObject({
   version: z.literal(1),
   orchestrations: z.array(OrchestrationSchema),
 });
@@ -14,7 +14,7 @@ export class OrchestrationStore {
   static async open(file: string) {
     const store = new OrchestrationStore(file);
     try {
-      const parsed = schema.parse(JSON.parse(await readFile(file, "utf8")));
+      const parsed = OrchestrationStoreFileSchema.parse(JSON.parse(await readFile(file, "utf8")));
       const taskIds = new Set<string>();
       for (const record of parsed.orchestrations) {
         if (store.records.has(record.id)) throw new Error("Duplicate goal");

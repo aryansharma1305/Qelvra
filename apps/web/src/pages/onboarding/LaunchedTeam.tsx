@@ -9,7 +9,7 @@ export function LaunchedTeam() {
             <div className="flex items-center gap-space-xs">
               <span className="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_rgba(78,222,163,0.8)]" />
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-tertiary">
-                Active
+                Preview
               </span>
             </div>
             <span className="font-code-sm text-code-sm text-outline-variant bg-surface-container-lowest px-2 py-0.5 rounded">
@@ -33,12 +33,12 @@ export function LaunchedTeam() {
             <span className="text-tertiary mr-1.5">•</span>
             {"Online & Listening"}
           </div>
-          <p className="font-body-sm text-body-sm text-outline">Loaded reasoning matrix [100%]</p>
+          <p className="font-body-sm text-body-sm text-outline">Not measured</p>
         </div>
         <div className="mt-space-lg pt-space-md bg-surface-container-lowest/30">
           <div className="flex items-center justify-between font-code-sm text-code-sm mb-1.5">
             <span className="text-on-surface-variant">Cognitive Engine</span>
-            <span className="text-tertiary">100%</span>
+            <span className="text-tertiary">Not measured</span>
           </div>
           <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-primary to-tertiary w-full" />
@@ -51,7 +51,7 @@ export function LaunchedTeam() {
             <div className="flex items-center gap-space-xs">
               <span className="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_rgba(78,222,163,0.8)]" />
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-tertiary">
-                Active
+                Preview
               </span>
             </div>
             <span className="font-code-sm text-code-sm text-outline-variant bg-surface-container-lowest px-2 py-0.5 rounded">
@@ -73,14 +73,12 @@ export function LaunchedTeam() {
             <span className="text-tertiary mr-1.5">•</span>
             Vite / Tailwind PTY Ready
           </div>
-          <p className="font-body-sm text-body-sm text-outline">
-            Sub-pixel UI parser mounted [100%]
-          </p>
+          <p className="font-body-sm text-body-sm text-outline">Not measured</p>
         </div>
         <div className="mt-space-lg pt-space-md bg-surface-container-lowest/30">
           <div className="flex items-center justify-between font-code-sm text-code-sm mb-1.5">
             <span className="text-on-surface-variant">Virtual DOM Hook</span>
-            <span className="text-tertiary">100%</span>
+            <span className="text-tertiary">Not measured</span>
           </div>
           <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-secondary to-tertiary w-full" />
@@ -93,7 +91,7 @@ export function LaunchedTeam() {
             <div className="flex items-center gap-space-xs">
               <span className="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_rgba(78,222,163,0.8)]" />
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-tertiary">
-                Active
+                Preview
               </span>
             </div>
             <span className="font-code-sm text-code-sm text-outline-variant bg-surface-container-lowest px-2 py-0.5 rounded">
@@ -115,14 +113,12 @@ export function LaunchedTeam() {
             <span className="text-tertiary mr-1.5">•</span>
             IPC Sockets Bound
           </div>
-          <p className="font-body-sm text-body-sm text-outline">
-            Postgres schema inspector active [100%]
-          </p>
+          <p className="font-body-sm text-body-sm text-outline">Not measured</p>
         </div>
         <div className="mt-space-lg pt-space-md bg-surface-container-lowest/30">
           <div className="flex items-center justify-between font-code-sm text-code-sm mb-1.5">
             <span className="text-on-surface-variant">Schema Channel</span>
-            <span className="text-tertiary">100%</span>
+            <span className="text-tertiary">Not measured</span>
           </div>
           <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-primary to-tertiary w-full" />
@@ -135,7 +131,7 @@ export function LaunchedTeam() {
             <div className="flex items-center gap-space-xs">
               <span className="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_rgba(78,222,163,0.8)]" />
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-tertiary">
-                Active
+                Preview
               </span>
             </div>
             <span className="font-code-sm text-code-sm text-outline-variant bg-surface-container-lowest px-2 py-0.5 rounded">
@@ -157,14 +153,12 @@ export function LaunchedTeam() {
             <span className="text-tertiary mr-1.5">•</span>
             Playwright Headless Ready
           </div>
-          <p className="font-body-sm text-body-sm text-outline">
-            Synthetic test harness primed [100%]
-          </p>
+          <p className="font-body-sm text-body-sm text-outline">Not measured</p>
         </div>
         <div className="mt-space-lg pt-space-md bg-surface-container-lowest/30">
           <div className="flex items-center justify-between font-code-sm text-code-sm mb-1.5">
             <span className="text-on-surface-variant">Trace Integrity</span>
-            <span className="text-tertiary">100%</span>
+            <span className="text-tertiary">Not measured</span>
           </div>
           <div className="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-tertiary to-secondary w-full" />

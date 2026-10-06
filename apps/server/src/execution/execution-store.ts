@@ -6,7 +6,10 @@ import { ExecutionError } from "./execution-errors.js";
 
 export const isActiveExecution = (e: Execution) =>
   ["queued", "starting", "running", "awaiting_result"].includes(e.status);
-const schema = z.strictObject({ version: z.literal(1), executions: z.array(ExecutionSchema) });
+export const ExecutionStoreFileSchema = z.strictObject({
+  version: z.literal(1),
+  executions: z.array(ExecutionSchema),
+});
 export class ExecutionStore {
   private records = new Map<string, Execution>();
   private queue: Promise<unknown> = Promise.resolve();
@@ -14,7 +17,7 @@ export class ExecutionStore {
   static async open(file: string) {
     const store = new ExecutionStore(file);
     try {
-      const data = schema.parse(JSON.parse(await readFile(file, "utf8")));
+      const data = ExecutionStoreFileSchema.parse(JSON.parse(await readFile(file, "utf8")));
       for (const execution of data.executions) {
         if (store.records.has(execution.id)) throw new Error("Duplicate execution");
         store.records.set(execution.id, execution);

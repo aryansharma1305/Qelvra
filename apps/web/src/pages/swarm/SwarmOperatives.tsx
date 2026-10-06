@@ -12,7 +12,7 @@ export function SwarmOperatives() {
             Active Swarm Operatives
           </h2>
           <span className="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant">
-            Live Threads
+            Preview cards
           </span>
         </div>
         <span className="font-label-sm text-label-sm text-outline flex items-center gap-1">

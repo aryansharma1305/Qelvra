@@ -42,7 +42,7 @@ export function OnboardingHeader() {
         <div className="flex items-center gap-space-lg">
           <a
             className="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm flex items-center gap-space-xs transition-colors"
-            href="#"
+            href="https://github.com/aryansharma1305/Qelvra#quick-start"
           >
             <span className="material-symbols-outlined text-[16px]">help</span>
             <span>Assistance</span>

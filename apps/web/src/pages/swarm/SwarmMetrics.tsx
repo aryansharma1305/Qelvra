@@ -12,9 +12,10 @@ export function SwarmMetrics() {
         </div>
         <div className="my-2 flex items-baseline justify-between">
           <span className="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">
-            5 <span className="font-body-md text-body-md text-outline font-normal">/ 6 active</span>
+            Coming later{" "}
+            <span className="font-body-md text-body-md text-outline font-normal">Preview</span>
           </span>
-          <span className="font-code-sm text-code-sm text-tertiary">83% load</span>
+          <span className="font-code-sm text-code-sm text-tertiary">Not measured</span>
         </div>
         <div className="flex items-center gap-1.5 pt-1">
           <svg className="w-full h-4 text-tertiary" fill="none" viewBox="0 0 100 16">
@@ -34,17 +35,17 @@ export function SwarmMetrics() {
           <span className="font-label-sm text-label-sm uppercase tracking-wider">
             Sprint Velocity
           </span>
-          <span className="font-code-sm text-code-sm text-primary">v2.4.0</span>
+          <span className="font-code-sm text-code-sm text-primary">Coming later</span>
         </div>
         <div className="my-2 flex items-baseline justify-between">
           <span className="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">
-            68%
+            Not measured
           </span>
-          <span className="font-code-sm text-code-sm text-outline">14 / 20 tasks</span>
+          <span className="font-code-sm text-code-sm text-outline">Coming later</span>
         </div>
         <div className="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
-          <div className="h-full bg-primary" style={{ width: "50%" }} />
-          <div className="h-full bg-secondary" style={{ width: "18%" }} />
+          <div className="h-full bg-primary" style={{ width: "0%" }} />
+          <div className="h-full bg-secondary" style={{ width: "0%" }} />
         </div>
       </div>
       <div className="p-3.5 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-all">
@@ -54,14 +55,14 @@ export function SwarmMetrics() {
         </div>
         <div className="my-2 flex items-baseline justify-between">
           <span className="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">
-            1.42M{" "}
+            Not measured{" "}
             <span className="font-label-sm text-label-sm font-normal text-outline">tok/hr</span>
           </span>
-          <span className="font-code-sm text-code-sm text-secondary font-medium">~$3.12/hr</span>
+          <span className="font-code-sm text-code-sm text-secondary font-medium">Not measured</span>
         </div>
         <div className="flex items-center justify-between font-label-sm text-label-sm text-outline">
-          <span>Cache hit: 94.2%</span>
-          <span className="text-tertiary">Optimal</span>
+          <span>Not measured</span>
+          <span className="text-tertiary">Not measured</span>
         </div>
       </div>
       <div className="p-3.5 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col justify-between hover:border-primary/40 transition-all">
@@ -71,14 +72,14 @@ export function SwarmMetrics() {
         </div>
         <div className="my-2 flex items-baseline justify-between">
           <span className="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">
-            4.8{" "}
+            Not measured{" "}
             <span className="font-body-md text-body-md text-outline font-normal">PRs / day</span>
           </span>
-          <span className="font-code-sm text-code-sm text-tertiary font-medium">+24% vs avg</span>
+          <span className="font-code-sm text-code-sm text-tertiary font-medium">Not measured</span>
         </div>
         <div className="flex items-center justify-between font-label-sm text-label-sm text-outline">
-          <span>Fails: 0</span>
-          <span>Diff: +1.8k / -640</span>
+          <span>Not measured</span>
+          <span>Not measured</span>
         </div>
       </div>
     </section>

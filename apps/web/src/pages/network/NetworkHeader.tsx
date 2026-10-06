@@ -13,24 +13,33 @@ export function NetworkHeader() {
         </div>
         <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
           <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping" />
-          <span className="font-medium tracking-wide">IPC ACTIVE (48 MSGS/MIN)</span>
+          <span className="font-medium tracking-wide">Not available yet</span>
         </div>
         <div className="h-3.5 w-px bg-surface-container-highest hidden sm:block" />
         <div className="flex items-center p-0.5 rounded-lg bg-surface-container-low">
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
             className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-semibold transition-all"
             type="button"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-tertiary" />
-            LIVE
+            PREVIEW
           </button>
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
             className="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors"
             type="button"
           >
             5 MIN
           </button>
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
             className="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors"
             type="button"
           >
@@ -49,7 +58,9 @@ export function NetworkHeader() {
             <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
               Messages Today
             </span>
-            <span className="font-code-md text-code-md font-semibold text-on-surface">1,428</span>
+            <span className="font-code-md text-code-md font-semibold text-on-surface">
+              Not measured
+            </span>
           </div>
           <div className="h-6 w-px bg-surface-container-highest" />
           <div className="flex flex-col">
@@ -57,7 +68,7 @@ export function NetworkHeader() {
               Active Channels
             </span>
             <span className="font-code-md text-code-md font-semibold text-secondary">
-              5 / 5 <span className="font-label-sm text-label-sm text-outline">FULL</span>
+              Not measured <span className="font-label-sm text-label-sm text-outline">FULL</span>
             </span>
           </div>
           <div className="h-6 w-px bg-surface-container-highest" />
@@ -65,26 +76,34 @@ export function NetworkHeader() {
             <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
               Throughput
             </span>
-            <span className="font-code-md text-code-md font-semibold text-tertiary">14.2 KB/s</span>
+            <span className="font-code-md text-code-md font-semibold text-tertiary">
+              Not measured
+            </span>
           </div>
           <div className="h-6 w-px bg-surface-container-highest" />
           <div className="flex flex-col">
             <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
               Mesh RTT
             </span>
-            <span className="font-code-md text-code-md font-semibold text-primary">1.2 ms</span>
+            <span className="font-code-md text-code-md font-semibold text-primary">
+              Not measured
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg">
           <button
+            disabled
+            aria-label="remove — coming later"
             className="w-6 h-6 flex items-center justify-center rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
             title="Zoom Out"
             type="button"
           >
             <span className="material-symbols-outlined text-[15px]">remove</span>
           </button>
-          <span className="font-code-sm text-code-sm px-1 text-outline">100%</span>
+          <span className="font-code-sm text-code-sm px-1 text-outline">Not measured</span>
           <button
+            disabled
+            aria-label="add — coming later"
             className="w-6 h-6 flex items-center justify-center rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
             title="Zoom In"
             type="button"
@@ -93,6 +112,8 @@ export function NetworkHeader() {
           </button>
           <div className="h-3.5 w-px bg-surface-container-highest mx-0.5" />
           <button
+            disabled
+            aria-label="center focus strong — coming later"
             className="w-6 h-6 flex items-center justify-center rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
             title="Reset Graph"
             type="button"
@@ -100,6 +121,8 @@ export function NetworkHeader() {
             <span className="material-symbols-outlined text-[15px]">center_focus_strong</span>
           </button>
           <button
+            disabled
+            aria-label="scatter plot — coming later"
             className="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-secondary font-label-sm text-label-sm"
             title="Toggle Physics Layout"
             type="button"

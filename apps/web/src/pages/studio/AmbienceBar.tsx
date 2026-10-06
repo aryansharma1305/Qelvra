@@ -5,6 +5,8 @@ export function AmbienceBar() {
     <div className="h-12 bg-surface-container-lowest px-6 flex flex-wrap items-center justify-between gap-4 font-code-sm text-code-sm">
       <div className="flex items-center gap-3">
         <button
+          disabled
+          aria-label="play arrow — coming later"
           className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-container-high hover:bg-surface-container-highest text-secondary transition-colors"
           id="playAudioBtn"
           title="Play Studio Lo-Fi"
@@ -33,7 +35,7 @@ export function AmbienceBar() {
         <div className="flex items-center gap-1.5">
           <span className="material-symbols-outlined text-[15px] text-tertiary">thermostat</span>
           <span>
-            Studio Env: <strong className="text-on-surface">21°C</strong>
+            Studio Env: <strong className="text-on-surface">Not measured</strong>
           </span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -45,7 +47,8 @@ export function AmbienceBar() {
         <div className="hidden sm:flex items-center gap-1.5">
           <span className="material-symbols-outlined text-[15px] text-primary">savings</span>
           <span>
-            Run Cost: <strong className="text-primary-fixed">$0.00</strong> (RTX 4090 Sovereign)
+            Run Cost: <strong className="text-primary-fixed">Not measured</strong> (Hardware not
+            measured)
           </span>
         </div>
       </div>

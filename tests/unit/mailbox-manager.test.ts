@@ -298,6 +298,26 @@ describe("MailboxManager", () => {
     await mailbox.acknowledgeMessage("nova", "outbox", message.id);
     expect(await Promise.all(files.map((file) => fs.readFile(file)))).toEqual(before);
   });
+  it("reads a published message while its temporary hard link is removed", async () => {
+    const message = await mailbox.writeOutboxMessage("nova", input);
+    const final = join(boxPath(), `${message.id}.json`);
+    const temporary = join(boxPath(), ".tmp-publication");
+    await fs.link(final, temporary);
+    const original = fs.open;
+    vi.spyOn(fs, "open").mockImplementation(async (...args) => {
+      const handle = await original(...args);
+      if (String(args[0]).endsWith(`${message.id}.json`)) {
+        const read = handle.read.bind(handle);
+        vi.spyOn(handle, "read").mockImplementationOnce(async (...readArgs) => {
+          await fs.unlink(temporary);
+          return read(...readArgs);
+        });
+      }
+      return handle;
+    });
+    await expect(mailbox.readMessage("nova", "outbox", message.id)).resolves.toEqual(message);
+    expect((await fs.stat(final)).nlink).toBe(1);
+  });
   it("bounds reads even when a file grows after stat", async () => {
     const message = await mailbox.writeOutboxMessage("nova", input);
     const original = fs.open;

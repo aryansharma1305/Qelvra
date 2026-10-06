@@ -11,9 +11,9 @@ export function SwarmHeader() {
         <span className="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant flex items-center gap-1.5">
           <span className="text-secondary font-medium">NEURAL SWARM SYNCHRONIZED</span>
           <span className="text-outline">/</span>
-          <span>6 AGENTS DEPLOYED</span>
+          <span>Coming later</span>
           <span className="text-outline">/</span>
-          <span className="text-tertiary">LATENCY 14ms OPTIMAL</span>
+          <span className="text-tertiary">Not measured</span>
         </span>
       </div>
       <div className="flex flex-col gap-1">
@@ -47,6 +47,8 @@ export function SwarmHeader() {
               <span>Claude 3.5 • O3-Mini</span>
             </div>
             <button
+              disabled
+              aria-label="attachment — coming later"
               className="p-1.5 text-outline hover:text-on-surface hover:bg-surface-container-high rounded transition-colors"
               title="Attach Context File"
               type="button"
@@ -55,6 +57,8 @@ export function SwarmHeader() {
               <span className="material-symbols-outlined text-[18px]">attachment</span>{" "}
             </button>
             <button
+              disabled
+              aria-label="mic — coming later"
               className="p-1.5 text-outline hover:text-on-surface hover:bg-surface-container-high rounded transition-colors"
               title="Voice Input"
               type="button"
@@ -63,6 +67,9 @@ export function SwarmHeader() {
               <span className="material-symbols-outlined text-[18px]">mic</span>{" "}
             </button>
             <button
+              disabled
+              title="Coming later — this control is not available in the beta"
+              aria-label="Coming later — coming later"
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-on-primary font-headline-sm text-headline-sm font-semibold tracking-tight transition-all shadow-[0_0_16px_rgba(208,188,255,0.25)] active:scale-95"
               type="button"
             >
@@ -76,25 +83,55 @@ export function SwarmHeader() {
       </div>
       <div className="flex items-center justify-between pt-1 flex-wrap gap-2">
         <div className="flex items-center gap-1.5">
-          <button className="px-2.5 py-1 rounded bg-surface-container-high text-primary font-code-sm text-code-sm font-medium border border-primary/30">
+          <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
+            className="px-2.5 py-1 rounded bg-surface-container-high text-primary font-code-sm text-code-sm font-medium border border-primary/30"
+          >
             All Agents (6)
           </button>
-          <button className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors">
+          <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
+            className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors"
+          >
             {"Frontend & UI (2)"}
           </button>
-          <button className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors">
+          <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
+            className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors"
+          >
             {"Backend & Infra (1)"}
           </button>
-          <button className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors">
+          <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
+            className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors"
+          >
             {"QA & Sec (1)"}
           </button>
-          <button className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors">
+          <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="Coming later — coming later"
+            className="px-2.5 py-1 rounded bg-surface-container-lowest text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low font-code-sm text-code-sm transition-colors"
+          >
             Orchestration (2)
           </button>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-label-sm text-label-sm text-outline">SORT:</span>
-          <button className="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-low text-on-surface font-code-sm text-code-sm hover:bg-surface-container-high">
+          <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="unfold more — coming later"
+            className="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-low text-on-surface font-code-sm text-code-sm hover:bg-surface-container-high"
+          >
             <span>Recent Activity</span>
             <span className="material-symbols-outlined text-[14px]">unfold_more</span>
           </button>

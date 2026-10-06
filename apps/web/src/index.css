@@ -56,3 +56,56 @@
     flex-basis: auto;
   }
 }
+
+/* Beta keyboard/accessibility defaults; incumbent desktop geometry is preserved. */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #d0bcff);
+  outline-offset: 3px;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+input,
+textarea {
+  caret-color: var(--color-primary, #d0bcff);
+}
+@media (max-width: 1023px) {
+  .terminal-workspace {
+    overflow-x: auto;
+  }
+  .terminal-workspace .grid {
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
+@media (max-width: 767px) {
+  header.fixed {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+  header.fixed > div {
+    gap: 8px;
+    min-width: 0;
+  }
+  header.fixed .font-label-sm.uppercase,
+  header.fixed > div:last-child > button:disabled,
+  header.fixed > div:last-child > div:last-child,
+  header.fixed .w-px {
+    display: none;
+  }
+  header.fixed .rounded-full .font-code-sm {
+    white-space: nowrap;
+  }
+  .agent-card > div,
+  .agent-card .truncate {
+    min-width: 0;
+  }
+}

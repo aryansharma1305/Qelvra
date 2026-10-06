@@ -19,13 +19,13 @@ export function BuildTeamStep() {
             <div className="hidden sm:flex items-center gap-space-lg text-on-surface-variant font-code-sm text-code-sm">
               <span className="flex items-center gap-space-xs">
                 <span className="text-tertiary material-symbols-outlined text-[14px]">bolt</span>
-                <span>Sub-12ms Local IPC</span>
+                <span>Not measured</span>
               </span>
               <span className="flex items-center gap-space-xs">
                 <span className="text-secondary material-symbols-outlined text-[14px]">
                   verified_user
                 </span>
-                <span>Zero Data Egress</span>
+                <span>Provider-owned permissions</span>
               </span>
             </div>
           </div>
@@ -60,7 +60,7 @@ export function BuildTeamStep() {
                 </Link>
                 <a
                   className="flex items-center gap-space-xs px-space-md py-space-md rounded-xl bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-body-md text-body-md"
-                  href="#"
+                  href="/terminal"
                 >
                   <span className="material-symbols-outlined text-[18px]">terminal</span>
                   <span>Explore interactive sandbox</span>
@@ -71,25 +71,25 @@ export function BuildTeamStep() {
                   <span className="font-code-sm text-code-sm text-on-surface-variant">
                     ISOLATION
                   </span>
-                  <span className="font-headline-sm text-headline-sm text-tertiary">Sandboxed</span>
-                  <span className="font-body-sm text-body-sm text-outline">
-                    Per-agent kernel jails
+                  <span className="font-headline-sm text-headline-sm text-tertiary">
+                    Workspace per agent
                   </span>
+                  <span className="font-body-sm text-body-sm text-outline">Not an OS sandbox</span>
                 </div>
                 <div className="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
                   <span className="font-code-sm text-code-sm text-on-surface-variant">MEMORY</span>
                   <span className="font-headline-sm text-headline-sm text-secondary">
-                    RAG Vector
+                    Coming later
                   </span>
-                  <span className="font-body-sm text-body-sm text-outline">
-                    Zero shared state leak
-                  </span>
+                  <span className="font-body-sm text-body-sm text-outline">Not available yet</span>
                 </div>
                 <div className="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
                   <span className="font-code-sm text-code-sm text-on-surface-variant">
                     THROUGHPUT
                   </span>
-                  <span className="font-headline-sm text-headline-sm text-primary">48.2k</span>
+                  <span className="font-headline-sm text-headline-sm text-primary">
+                    Not measured
+                  </span>
                   <span className="font-body-sm text-body-sm text-outline">
                     Tokens / sec routed
                   </span>
@@ -105,24 +105,24 @@ export function BuildTeamStep() {
               </span>
               <div className="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-0.5 rounded text-on-surface font-code-sm text-code-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-tertiary" />
-                <span>Docker Daemon: OK</span>
+                <span>Docker: not detected</span>
               </div>
               <div className="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-0.5 rounded text-on-surface font-code-sm text-code-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
-                <span>Qdrant Store: Connected</span>
+                <span>Vector store: coming later</span>
               </div>
             </div>
             <div className="flex items-center gap-space-md">
               <a
                 className="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors"
-                href="#"
+                href="/files"
               >
                 Import existing repository
               </a>
               <span className="text-outline">•</span>
               <a
                 className="text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors"
-                href="#"
+                href="https://github.com/aryansharma1305/Qelvra/blob/main/docs/architecture.md"
               >
                 Read Architectural Whitepaper
               </a>

@@ -66,12 +66,12 @@ export function ComputeSelector({ selected, onSelect }: ComputeSelectorProps) {
             <div className="flex items-center justify-between">
               <span className="font-label-sm text-label-sm text-outline">Detected Hardware</span>
               <span className="font-code-sm text-code-sm text-tertiary flex items-center gap-1">
-                <span>Active</span>
+                <span>Preview</span>
                 <span className="material-symbols-outlined text-[14px]">verified</span>
               </span>
             </div>
             <span className="font-code-sm text-code-sm text-on-surface font-medium truncate">
-              NVIDIA GeForce RTX 4090 (24GB VRAM) detected ✓
+              Not measured
             </span>
           </div>
           <div className="relative w-full h-36 rounded-lg bg-surface-container-lowest overflow-hidden flex flex-col justify-end p-space-md">
@@ -98,7 +98,7 @@ export function ComputeSelector({ selected, onSelect }: ComputeSelectorProps) {
                 Throughput Cap
               </span>
               <span className="font-code-sm text-code-sm text-secondary font-semibold">
-                124.6 tok/s
+                Not measured
               </span>
             </div>
           </div>
@@ -109,7 +109,7 @@ export function ComputeSelector({ selected, onSelect }: ComputeSelectorProps) {
               Operating Cost
             </span>
             <span className="font-code-md text-code-md text-tertiary font-medium">
-              $0.00 / month
+              Not measured
             </span>
           </div>
           <span className="px-space-sm py-1 rounded bg-surface-container-highest text-on-surface font-code-sm text-code-sm">
@@ -158,15 +158,15 @@ export function ComputeSelector({ selected, onSelect }: ComputeSelectorProps) {
                 Context Envelope
               </span>
               <span className="font-code-sm text-code-sm text-primary font-medium">
-                Up to 2,000,000 tokens
+                Not measured
               </span>
             </div>
             <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
-              <div className="bg-primary h-full rounded-full" style={{ width: "88%" }} />
+              <div className="bg-primary h-full rounded-full" style={{ width: "0%" }} />
             </div>
             <div className="flex justify-between items-center text-on-surface-variant">
               <span className="font-code-sm text-[10px]">Zero Persistence Enforced</span>
-              <span className="font-code-sm text-[10px] text-tertiary">TLS 1.3 Strict</span>
+              <span className="font-code-sm text-[10px] text-tertiary">Coming later</span>
             </div>
           </div>
         </div>
@@ -229,7 +229,7 @@ export function ComputeSelector({ selected, onSelect }: ComputeSelectorProps) {
             <div className="text-on-surface-variant space-y-1">
               <div className="truncate text-secondary">{"> CONNECT vpc-ai-gateway:8443"}</div>
               <div className="truncate text-outline">{"> AUTH: Bearer hive_sk_****"}</div>
-              <div className="truncate text-tertiary">{"> STATUS 200 OK (latency 12ms)"}</div>
+              <div className="truncate text-tertiary">{"Not measured"}</div>
             </div>
             <div className="flex items-center justify-between pt-1">
               <span className="text-outline">Failover Nodes: 2</span>

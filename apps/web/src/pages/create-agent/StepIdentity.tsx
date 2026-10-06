@@ -87,6 +87,9 @@ export function StepIdentity({ active }: { active: boolean }) {
               Neural Operative Signature Avatar
             </label>
             <button
+              disabled
+              title="Coming later — this control is not available in the beta"
+              aria-label="auto awesome — coming later"
               className="flex items-center gap-1.5 font-code-sm text-code-sm text-primary hover:text-primary-fixed transition-colors"
               type="button"
             >

@@ -43,17 +43,17 @@ export const HOME_OPERATIVES: readonly HomeOperativeMock[] = [
       progressBlock: "mt-4",
       progressLabel: "text-on-surface-variant",
       progressValue: "text-secondary",
-      progressBar: "bg-secondary w-[68%]",
+      progressBar: "bg-secondary w-0",
     },
     icon: "web",
     name: "Nova",
     subtitle: "Frontend Architect • Claude 3.5 Sonnet",
-    statusLabel: "Working",
+    statusLabel: "Coming later",
     task: "Implement authentication flow & Passkey WebAuthn prompt components",
     progressLabel: "Component Suite",
-    progress: "68%",
-    lastEvent: "Pushed 4 React components to feature/auth",
-    lastEventAt: "4m ago",
+    progress: "Not measured",
+    lastEvent: "Sample event — no live work",
+    lastEventAt: "Not measured",
   },
   {
     id: "atlas",
@@ -64,17 +64,17 @@ export const HOME_OPERATIVES: readonly HomeOperativeMock[] = [
       progressBlock: "mt-4",
       progressLabel: "text-on-surface-variant",
       progressValue: "text-primary",
-      progressBar: "bg-primary w-[82%]",
+      progressBar: "bg-primary w-0",
     },
     icon: "dns",
     name: "Atlas",
     subtitle: "Systems & Backend • GPT-4o",
-    statusLabel: "Working",
+    statusLabel: "Coming later",
     task: "Draft Redis session store & asymmetric token rotation handlers",
     progressLabel: "Store Logic",
-    progress: "82%",
-    lastEvent: "Completed /api/v2/auth/verify",
-    lastEventAt: "8m ago",
+    progress: "Not measured",
+    lastEvent: "Sample event — no live work",
+    lastEventAt: "Not measured",
   },
   {
     id: "pixel",
@@ -85,21 +85,21 @@ export const HOME_OPERATIVES: readonly HomeOperativeMock[] = [
       progressBlock: "mt-4",
       progressLabel: "text-on-surface-variant",
       progressValue: "text-tertiary",
-      progressBar: "bg-tertiary w-[95%]",
+      progressBar: "bg-tertiary w-0",
     },
     icon: "palette",
     name: "Pixel",
     subtitle: "UI/UX Systems • Gemini 1.5 Pro",
-    statusLabel: "Reviewing",
+    statusLabel: "Coming later",
     task: "Updated dashboard layout & mobile sheet responsive breakpoints",
     progressLabel: "Design Spec",
-    progress: "95%",
-    lastEvent: "Exported tokens to theme.json",
-    lastEventAt: "11m ago",
+    progress: "Not measured",
+    lastEvent: "Sample event — no live work",
+    lastEventAt: "Not measured",
   },
   {
     id: "scout",
-    alert: "2 failures in safari-webkit",
+    alert: "Sample alert — coming later",
     tone: {
       iconBox: "bg-secondary/15 text-secondary border-secondary/20",
       statusPill: "bg-secondary/10 text-secondary border-secondary/20",
@@ -107,17 +107,17 @@ export const HOME_OPERATIVES: readonly HomeOperativeMock[] = [
       progressBlock: "mt-3",
       progressLabel: "text-on-surface-variant",
       progressValue: "text-secondary",
-      progressBar: "bg-secondary w-[45%]",
+      progressBar: "bg-secondary w-0",
     },
     icon: "bug_report",
     name: "Scout",
     subtitle: "QA & Security • Claude 3.5 Sonnet",
-    statusLabel: "Testing",
+    statusLabel: "Coming later",
     task: "E2E Playwright coverage for biometric fallback matrix",
     progressLabel: "Test Suite",
-    progress: "45%",
-    lastEvent: "Logged fixture issue #104",
-    lastEventAt: "14m ago",
+    progress: "Not measured",
+    lastEvent: "Sample event — no live work",
+    lastEventAt: "Not measured",
   },
   {
     id: "echo",
@@ -128,17 +128,17 @@ export const HOME_OPERATIVES: readonly HomeOperativeMock[] = [
       progressBlock: "mt-4",
       progressLabel: "text-tertiary",
       progressValue: "text-tertiary",
-      progressBar: "bg-tertiary w-full",
+      progressBar: "bg-tertiary w-0",
     },
     icon: "manage_search",
     name: "Echo",
     subtitle: "Research & Docs • DeepSeek-R1",
-    statusLabel: "Standing By",
+    statusLabel: "Coming later",
     task: "Benchmarking WebAuthn specs across modern browser matrix",
-    progressLabel: "Completed Summary Ready",
-    progress: "100%",
-    lastEvent: "Generated RFC-8812 benchmark",
-    lastEventAt: "22m ago",
+    progressLabel: "Sample summary — coming later",
+    progress: "Not measured",
+    lastEvent: "Sample event — no live work",
+    lastEventAt: "Not measured",
   },
 ];
 
@@ -208,21 +208,21 @@ export const SWARM_OPERATIVES: readonly SwarmOperativeMock[] = [
         Paired with <strong className="text-on-surface">@Pixel</strong> for design tokens
       </span>
     ),
-    streamLabel: "stdout • pid 89412",
-    streamStatus: "0 errors",
+    streamLabel: "Not measured",
+    streamStatus: "Not measured",
     streamLine: (
       <div className="text-on-surface-variant truncate">
-        <span className="text-outline">[09:42:18]</span> compiled{" "}
-        <span className="text-secondary">AgentCard.tsx</span> in 142ms{" "}
+        <span className="text-outline">Not measured</span> compiled{" "}
+        <span className="text-secondary">AgentCard.tsx</span> Not measured{" "}
         <span className="text-tertiary">✓</span>
       </div>
     ),
     progress: {
-      label: "Step 4/5 • 84%",
-      detail: "3m 12s elapsed",
+      label: "Not measured",
+      detail: "Not measured",
       tone: {
         detail: "text-on-surface",
-        bar: "bg-gradient-to-r from-primary to-secondary w-[84%]",
+        bar: "bg-gradient-to-r from-primary to-secondary w-0",
       },
     },
   },
@@ -245,23 +245,22 @@ export const SWARM_OPERATIVES: readonly SwarmOperativeMock[] = [
     model: "GPT-4o",
     role: "Backend & Infra",
     statusLabel: "WORKING",
-    objectiveMeta: "VRAM: 4.2/8GB",
-    objective:
-      "Implementing WebSocket pub/sub multiplexing for sub-20ms real-time agent telemetry stream.",
+    objectiveMeta: "Not measured",
+    objective: "Not measured",
     contextIcon: "dns",
-    context: <span>Cluster: 4 Redis replicas healthy</span>,
-    streamLabel: "stdout • pid 89415",
+    context: <span>Not available yet</span>,
+    streamLabel: "Not measured",
     streamStatus: "active pipe",
     streamLine: (
       <div className="text-on-surface-variant truncate">
-        <span className="text-outline">[09:42:25]</span> redis cluster connected:{" "}
+        <span className="text-outline">Not measured</span> redis cluster connected:{" "}
         <span className="text-secondary">10.42.0.1:6379</span>
       </div>
     ),
     progress: {
-      label: "Step 3/5 • 62%",
-      detail: "1m 45s elapsed",
-      tone: { detail: "text-on-surface", bar: "bg-secondary w-[62%]" },
+      label: "Not measured",
+      detail: "Not measured",
+      tone: { detail: "text-on-surface", bar: "bg-secondary w-0" },
     },
   },
   {
@@ -287,19 +286,19 @@ export const SWARM_OPERATIVES: readonly SwarmOperativeMock[] = [
     objective:
       "Synthesizing test coverage reports and delegating regression fuzzing tasks to Scout.",
     contextIcon: "account_tree",
-    context: <span>12 sub-DAGs scheduled</span>,
+    context: <span>Not measured</span>,
     streamLabel: "reasoning_trace",
-    streamStatus: "1.2k t/s",
+    streamStatus: "Not measured",
     streamLine: (
       <div className="text-on-surface-variant truncate">
-        <span className="text-outline">[09:42:29]</span> analyzing graph:{" "}
-        <span className="text-primary-fixed">0 race conditions</span>
+        <span className="text-outline">Not measured</span> analyzing graph:{" "}
+        <span className="text-primary-fixed">Not measured</span>
       </div>
     ),
     progress: {
       label: "Generating Plan",
       detail: "CoT Active",
-      tone: { detail: "text-primary", bar: "bg-primary-container w-[45%] animate-pulse" },
+      tone: { detail: "text-primary", bar: "bg-primary-container w-0 animate-pulse" },
     },
   },
   {
@@ -325,19 +324,19 @@ export const SWARM_OPERATIVES: readonly SwarmOperativeMock[] = [
     objective:
       "Evaluating contrast ratios and micro-interaction easing curves across dark surfaces.",
     contextIcon: "check_circle",
-    context: <span>18 tokens exported to /src/tokens/</span>,
-    streamLabel: "stdout • pid 89419",
+    context: <span>Not measured</span>,
+    streamLabel: "Not measured",
     streamStatus: "idle",
     streamLine: (
       <div className="text-on-surface-variant truncate">
-        <span className="text-outline">[09:42:15]</span> sync:{" "}
+        <span className="text-outline">Not measured</span> sync:{" "}
         <span className="text-on-surface">design-system.json updated</span>
       </div>
     ),
     progress: {
-      label: "Step 4/4 • 95%",
+      label: "Not measured",
       detail: "Pending Review",
-      tone: { detail: "text-tertiary", bar: "bg-tertiary-container w-[95%]" },
+      tone: { detail: "text-tertiary", bar: "bg-tertiary-container w-0" },
     },
   },
   {
@@ -359,23 +358,23 @@ export const SWARM_OPERATIVES: readonly SwarmOperativeMock[] = [
     model: "Claude 3.5",
     role: "QA & Security",
     statusLabel: "WORKING",
-    objectiveMeta: "42/44 PASSED",
+    objectiveMeta: "Not measured",
     objective:
       "Running Playwright E2E browser tests and authentication fuzzing against canary node.",
     contextIcon: "verified_user",
     context: <span>Zero critical security leaks</span>,
-    streamLabel: "stdout • pid 89422",
+    streamLabel: "Not measured",
     streamStatus: "pass",
     streamLine: (
       <div className="text-on-surface-variant truncate">
-        <span className="text-outline">[09:42:28]</span> spec:{" "}
+        <span className="text-outline">Not measured</span> spec:{" "}
         <span className="text-tertiary">e2e/auth-flow.spec.ts (1.1s)</span>
       </div>
     ),
     progress: {
-      label: "Testing • 78%",
-      detail: "48s remaining",
-      tone: { detail: "text-on-surface", bar: "bg-tertiary w-[78%]" },
+      label: "Not measured",
+      detail: "Not measured",
+      tone: { detail: "text-on-surface", bar: "bg-tertiary w-0" },
     },
   },
   {
@@ -400,12 +399,12 @@ export const SWARM_OPERATIVES: readonly SwarmOperativeMock[] = [
     objectiveMeta: "WARMED",
     objective: "Awaiting next doc synthesis or deep architectural benchmark query from operator.",
     contextIcon: "cached",
-    context: <span>Memory cache warmed (18.2 MB)</span>,
+    context: <span>Not measured</span>,
     streamLabel: "status_hook",
     streamStatus: "ready",
     streamLine: (
       <div className="text-outline truncate">
-        <span className="text-outline">[09:38:00]</span> Standing by for swarm instruction
+        <span className="text-outline">Not measured</span> Standing by for swarm instruction
       </div>
     ),
   },

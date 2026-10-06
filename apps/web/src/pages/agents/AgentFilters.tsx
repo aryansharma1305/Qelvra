@@ -36,7 +36,7 @@ export function AgentFilters({ agents, filters, onChange, searchInputRef }: Agen
   return (
     <div className="flex flex-col gap-3 p-3 rounded-xl bg-surface-container-low shadow-sm">
       <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3">
-        <div className="relative flex-1 min-w-[280px]">
+        <div className="relative flex-1 min-w-0 sm:min-w-[280px]">
           <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[17px] text-outline">
             search
           </span>{" "}
@@ -74,6 +74,8 @@ export function AgentFilters({ agents, filters, onChange, searchInputRef }: Agen
         <div className="flex items-center gap-2">
           <div className="flex items-center bg-surface-container-lowest p-1 rounded-lg">
             <button
+              disabled
+              aria-label="grid view — coming later"
               className="p-1.5 rounded bg-surface-container-high text-on-surface shadow-xs"
               title="Grid View"
               type="button"
@@ -82,6 +84,8 @@ export function AgentFilters({ agents, filters, onChange, searchInputRef }: Agen
               <span className="material-symbols-outlined text-[16px]">grid_view</span>{" "}
             </button>
             <button
+              disabled
+              aria-label="table rows — coming later"
               className="p-1.5 rounded hover:bg-surface-container-high/50 text-outline hover:text-on-surface transition-colors"
               title="Table View"
               type="button"
@@ -90,6 +94,8 @@ export function AgentFilters({ agents, filters, onChange, searchInputRef }: Agen
               <span className="material-symbols-outlined text-[16px]">table_rows</span>{" "}
             </button>
             <button
+              disabled
+              aria-label="account tree — coming later"
               className="p-1.5 rounded hover:bg-surface-container-high/50 text-outline hover:text-on-surface transition-colors"
               title="Swarm Topology"
               type="button"
@@ -99,6 +105,9 @@ export function AgentFilters({ agents, filters, onChange, searchInputRef }: Agen
             </button>
           </div>
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="arrow downward — coming later"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors"
             type="button"
           >
@@ -113,7 +122,14 @@ export function AgentFilters({ agents, filters, onChange, searchInputRef }: Agen
           Capabilities:
         </span>
         {/* Agents have no capabilities until providers exist (PR 13); only "All" applies. */}
-        <button className={TAG_ACTIVE} type="button" aria-pressed="true">
+        <button
+          disabled
+          title="Coming later — this control is not available in the beta"
+          aria-label="Coming later — coming later"
+          className={TAG_ACTIVE}
+          type="button"
+          aria-pressed="true"
+        >
           All
         </button>
         {CAPABILITY_TAGS.map((tag) => (

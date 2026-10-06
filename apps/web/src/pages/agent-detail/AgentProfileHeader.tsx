@@ -174,7 +174,7 @@ export function AgentProfileHeader({
             type="button"
             className={SECONDARY_BUTTON}
             disabled
-            title="Messaging arrives with the mailbox"
+            title="Coming later — send messages through the mailbox API or workspace files"
           >
             <span className="material-symbols-outlined text-[16px]">chat</span>
             <span>Message</span>
@@ -183,6 +183,7 @@ export function AgentProfileHeader({
             type="button"
             className={SECONDARY_BUTTON}
             disabled={busy || (!canStart && !canStop)}
+            aria-label={toggle.label}
             onClick={() => onAction(toggle.action)}
           >
             <span className="material-symbols-outlined text-[16px]">{toggle.icon}</span>
@@ -192,6 +193,7 @@ export function AgentProfileHeader({
             type="button"
             className={SECONDARY_BUTTON}
             disabled={busy || (!canStart && !canStop)}
+            aria-label={pending === "restart" ? "Restarting…" : "Restart"}
             onClick={() => onAction("restart")}
           >
             <span className="material-symbols-outlined text-[16px]">restart_alt</span>

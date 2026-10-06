@@ -1,3 +1,4 @@
+import { PreviewNotice } from "../PreviewNotice";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { OnboardingFooter } from "./OnboardingFooter";
@@ -49,6 +50,7 @@ export function OnboardingShell() {
       <OnboardingHeader />
       <Outlet />
       <OnboardingFooter />
+      <PreviewNotice />
     </div>
   );
 }

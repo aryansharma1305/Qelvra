@@ -43,7 +43,10 @@ interface Options {
   /** Server-only persistence seam for meaningful failure tests. */
   persist?: typeof writeFileAtomic;
 }
-const StoreSchema = z.strictObject({ version: z.literal(1), tasks: z.array(TaskSchema) });
+export const TaskStoreFileSchema = z.strictObject({
+  version: z.literal(1),
+  tasks: z.array(TaskSchema),
+});
 const copy = (task: Task): Task => Object.freeze({ ...task });
 
 /** One queue protects both the task map and its single snapshot file. No process dependency. */
@@ -66,7 +69,7 @@ export class TaskRegistry {
       throw new TaskRegistryLoadError("Cannot read task registry", { cause: error });
     }
     try {
-      const data = StoreSchema.parse(JSON.parse(raw));
+      const data = TaskStoreFileSchema.parse(JSON.parse(raw));
       for (const task of data.tasks) {
         if (store.tasks.has(task.id)) throw new Error("Duplicate task id");
         store.tasks.set(task.id, copy(task));

@@ -1,3 +1,4 @@
+import { RouteError } from "./RouteError";
 import { createBrowserRouter } from "react-router";
 import { OnboardingShell } from "../components/onboarding/OnboardingShell";
 import { AppShell } from "../components/shell/AppShell";
@@ -41,6 +42,7 @@ const undesigned = [
 export const router = createBrowserRouter([
   {
     element: <AppShell />,
+    errorElement: <RouteError />,
     // Initial routes are lazy; render nothing until the page module resolves.
     HydrateFallback: () => null,
     children: [
@@ -114,6 +116,7 @@ export const router = createBrowserRouter([
   {
     path: "onboarding",
     element: <OnboardingShell />,
+    errorElement: <RouteError />,
     HydrateFallback: () => null,
     children: [
       {

@@ -78,6 +78,9 @@ export function TerminalPage() {
                   Split View (Dual)
                 </button>
                 <button
+                  disabled
+                  title="Coming later — this control is not available in the beta"
+                  aria-label="Coming later — coming later"
                   className="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-all"
                   type="button"
                 >
@@ -88,6 +91,8 @@ export function TerminalPage() {
               <div className="h-4 w-px bg-surface-container-highest" />
               <div className="flex items-center gap-1">
                 <button
+                  disabled
+                  aria-label="pause — coming later"
                   className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors"
                   title="Pause session execution"
                   type="button"
@@ -96,6 +101,8 @@ export function TerminalPage() {
                   <span>Pause All</span>
                 </button>
                 <button
+                  disabled
+                  aria-label="close — coming later"
                   className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-error font-label-sm text-label-sm transition-colors"
                   title="Send SIGTERM to active swarms"
                   type="button"
@@ -104,6 +111,8 @@ export function TerminalPage() {
                   <span>Kill</span>
                 </button>
                 <button
+                  disabled
+                  aria-label="backspace — coming later"
                   className="flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors"
                   id="btn-clear-buffer"
                   title="Clear terminal screen"
@@ -113,6 +122,8 @@ export function TerminalPage() {
                   <span>Clear (⌘K)</span>
                 </button>
                 <button
+                  disabled
+                  aria-label="open in new — coming later"
                   className="p-1 rounded bg-surface-container hover:bg-surface-container-high text-outline hover:text-on-surface transition-colors"
                   title="Pop out into separate window"
                   type="button"
@@ -167,7 +178,7 @@ export function TerminalPage() {
               <div className="h-3.5 w-px bg-surface-container-highest" />
               <div className="flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-label-sm text-label-sm">
                 <span className="material-symbols-outlined text-[12px]">verified_user</span>
-                <span>Zero-Egress Enclave</span>
+                <span>Workspace per agent</span>
               </div>
             </div>
           </div>

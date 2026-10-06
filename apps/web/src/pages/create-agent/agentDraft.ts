@@ -69,7 +69,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     id: "files",
     label: "File Access",
     shortLabel: "File I/O",
-    description: "Sandboxed I/O",
+    description: "Provider-owned I/O",
     icon: "folder_open",
     accent: "primary",
   },

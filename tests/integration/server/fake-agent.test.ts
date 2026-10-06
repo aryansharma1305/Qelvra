@@ -69,7 +69,7 @@ async function cleanMailboxes(ids: string[]) {
     }
     return app.router.status().inFlight === 0;
   });
-  expect(await readdir(join(dir, "hive"))).not.toContain("quarantine");
+  expect(await readdir(join(dir, "hive", "quarantine"))).toEqual([]);
 }
 
 beforeEach(async () => {

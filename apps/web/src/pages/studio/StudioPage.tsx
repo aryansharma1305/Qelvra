@@ -62,13 +62,16 @@ export function StudioPage() {
           </div>
           <div className="flex items-center gap-4 text-on-surface-variant font-label-md text-label-md">
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary" />4 Active Desks
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
+              Sample desks
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-tertiary" />1 Reasoning Pod
+              <span className="w-1.5 h-1.5 rounded-full bg-tertiary" />
+              Sample pod
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-outline" />1 Lounge Standby
+              <span className="w-1.5 h-1.5 rounded-full bg-outline" />
+              Sample lounge
             </span>
           </div>
         </div>

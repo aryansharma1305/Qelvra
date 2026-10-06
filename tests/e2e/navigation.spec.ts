@@ -7,7 +7,7 @@ const sidebar = (page: Page) => page.locator("aside nav");
 
 test("home renders inside the app shell", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: /Good evening/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Welcome to/ })).toBeVisible();
   await expect(sidebar(page).getByRole("link", { name: "Home" })).toHaveAttribute(
     "aria-current",
     "page",
@@ -56,10 +56,8 @@ test("header shortcuts navigate", async ({ page }) => {
     .getByRole("link")
     .filter({ hasText: /Agents/ })
     .click();
-  await expect(page).toHaveURL("/swarm");
-  await expect(
-    page.getByRole("heading", { name: /Your autonomous AI swarm is active/ }),
-  ).toBeVisible();
+  await expect(page).toHaveURL("/agents");
+  await expect(page.getByRole("heading", { name: "Your AI Team" })).toBeVisible();
   await page.getByRole("link", { name: "Qelvra Brand Mark" }).click();
   await expect(page).toHaveURL("/");
 });
@@ -82,18 +80,20 @@ test.describe(() => {
     allowedConsoleErrors: [/Failed to load resource: the server responded with a status of 404/],
   });
 
-  test("home and swarm operative cards link to agent profiles", async ({ page }) => {
+  test("preview cards open the real agent directory instead of missing sample profiles", async ({
+    page,
+  }) => {
     // Home and Swarm are still design dashboards; their cards link to /agents/:id, which
     // shows the real profile if that agent is registered and "Agent not found" otherwise.
     await page.goto("/");
     await page.getByRole("link", { name: /^grain Michael/ }).click();
-    await expect(page).toHaveURL("/agents/michael");
-    await expect(page.getByRole("heading", { name: "Agent not found" })).toBeVisible();
+    await expect(page).toHaveURL("/agents");
+    await expect(page.getByRole("heading", { name: "Your AI Team" })).toBeVisible();
 
     await page.goto("/swarm");
     await page.getByRole("link", { name: /^brush Nova/ }).focus();
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL("/agents/nova");
+    await expect(page).toHaveURL("/agents");
   });
 });
 

@@ -1,12 +1,13 @@
 import {
   useProviders,
   providerStatus,
+  providerGuidance,
   canLaunchProvider,
 } from "../../features/providers/useProviders";
 import { useAgentDraft } from "./agentDraftContext";
 export function StepIntelligence({ active }: { active: boolean }) {
   const { draft, update } = useAgentDraft();
-  const { providers, error, loading } = useProviders();
+  const { providers, error, loading, retry } = useProviders();
   return (
     <section
       className={`step-panel ${active ? "flex" : "hidden"} flex-col gap-6`}
@@ -28,6 +29,9 @@ export function StepIntelligence({ active }: { active: boolean }) {
         {error && (
           <p role="alert" className="text-error">
             {error}
+            <button type="button" onClick={retry} className="ml-2 underline">
+              Retry providers
+            </button>
           </p>
         )}
         <div
@@ -54,6 +58,9 @@ export function StepIntelligence({ active }: { active: boolean }) {
               </span>
               <span className="font-body-sm text-body-sm text-on-surface-variant">
                 {providerStatus(provider)}
+              </span>
+              <span className="font-body-sm text-body-sm text-on-surface-variant">
+                {providerGuidance(provider)}
               </span>
               <span className="font-code-sm text-code-sm text-on-surface-variant">
                 {provider.version

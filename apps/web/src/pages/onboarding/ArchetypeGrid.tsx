@@ -86,10 +86,10 @@ export function ArchetypeGrid({ selected, onSelect }: ArchetypeGridProps) {
               <span className="material-symbols-outlined text-[14px] text-tertiary">bolt</span>
               Est. Autonomous Velocity
             </span>
-            <span className="text-tertiary font-medium">9.4k LOC/cycle</span>
+            <span className="text-tertiary font-medium">Not measured</span>
           </div>
           <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-            <div className="bg-gradient-to-r from-primary to-secondary h-full rounded-full w-[88%]" />
+            <div className="bg-gradient-to-r from-primary to-secondary h-full rounded-full w-0" />
           </div>
           <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase">
             <span>Stack: Rust • TS • Py • Go</span>
@@ -137,14 +137,14 @@ export function ArchetypeGrid({ selected, onSelect }: ArchetypeGridProps) {
               <span className="material-symbols-outlined text-[14px] text-secondary">insights</span>
               Est. Autonomous Velocity
             </span>
-            <span className="text-secondary font-medium">140 Papers/hr</span>
+            <span className="text-secondary font-medium">Not measured</span>
           </div>
           <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-            <div className="bg-secondary h-full rounded-full w-[72%]" />
+            <div className="bg-secondary h-full rounded-full w-0" />
           </div>
           <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase">
             <span>Graph RAG • ArXiv Sync</span>
-            <span className="text-tertiary">Verified</span>
+            <span className="text-tertiary">Coming later</span>
           </div>
         </div>
       </div>
@@ -188,10 +188,10 @@ export function ArchetypeGrid({ selected, onSelect }: ArchetypeGridProps) {
               <span className="material-symbols-outlined text-[14px] text-tertiary">translate</span>
               Est. Autonomous Velocity
             </span>
-            <span className="text-tertiary font-medium">420 Pages/hr</span>
+            <span className="text-tertiary font-medium">Not measured</span>
           </div>
           <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-            <div className="bg-tertiary h-full rounded-full w-[80%]" />
+            <div className="bg-tertiary h-full rounded-full w-0" />
           </div>
           <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase">
             <span>Markdown • MDX • i18n</span>
@@ -239,14 +239,14 @@ export function ArchetypeGrid({ selected, onSelect }: ArchetypeGridProps) {
               <span className="material-symbols-outlined text-[14px] text-secondary">memory</span>
               Est. Autonomous Velocity
             </span>
-            <span className="text-secondary font-medium">1.2k Events/sec</span>
+            <span className="text-secondary font-medium">Not measured</span>
           </div>
           <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-            <div className="bg-secondary h-full rounded-full w-[94%]" />
+            <div className="bg-secondary h-full rounded-full w-0" />
           </div>
           <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase">
             <span>Daemon • Webhooks • K8s</span>
-            <span className="text-tertiary">Live Loop</span>
+            <span className="text-tertiary">Coming later</span>
           </div>
         </div>
       </div>
@@ -296,7 +296,7 @@ export function ArchetypeGrid({ selected, onSelect }: ArchetypeGridProps) {
             <span className="text-primary font-medium">User Tuned</span>
           </div>
           <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-            <div className="bg-primary h-full rounded-full w-[50%]" />
+            <div className="bg-primary h-full rounded-full w-0" />
           </div>
           <div className="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase">
             <span>Raw Protocol • Zero Defaults</span>

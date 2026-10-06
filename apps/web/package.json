@@ -1,6 +1,6 @@
 {
   "name": "@qelvra/web",
-  "version": "0.0.0",
+  "version": "0.1.0-beta.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@qelvra/shared": "^0.0.0",
+    "@qelvra/shared": "0.1.0-beta.1",
     "@xterm/addon-fit": "^0.11.0",
     "@xterm/xterm": "^6.0.0",
     "react": "^19.3.0",

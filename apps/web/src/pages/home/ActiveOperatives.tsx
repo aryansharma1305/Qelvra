@@ -2,24 +2,42 @@
 import { useLinkBehavior } from "../../hooks/useLinkBehavior";
 import { HOME_OPERATIVES } from "../../mocks/agents";
 import { OperativeCard } from "./OperativeCard";
-import { useNavigate } from "react-router";
+import { useAgents } from "../../features/agents/agents-store";
+import { Link, useNavigate } from "react-router";
 
 export function ActiveOperatives() {
   const navigate = useNavigate();
+  const { agents, status } = useAgents();
+  if (status === "ready" && !agents.length)
+    return (
+      <section className="rounded-2xl bg-surface-container-low p-6 flex flex-col gap-3">
+        <h2 className="font-headline-md text-headline-md">Create your first agent</h2>
+        <p>Choose a local provider, then create a task or goal. Your workspace starts empty.</p>
+        <Link
+          to="/agents/new"
+          className="self-start px-4 py-2 rounded-lg bg-primary text-on-primary"
+        >
+          Create Agent
+        </Link>
+      </section>
+    );
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <span className="material-symbols-outlined text-[20px] text-primary">hub</span>
           <h2 className="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
-            Operative Preview
+            Sample agent cards
           </h2>
           <span className="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant">
-            DESIGN PREVIEW
+            COMING LATER
           </span>
         </div>
         <div className="flex items-center gap-2">
           <button
+            disabled
+            title="Coming later — this control is not available in the beta"
+            aria-label="pause circle — coming later"
             className="px-3 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-body-sm text-body-sm transition-colors flex items-center gap-1.5"
             type="button"
           >
@@ -47,7 +65,7 @@ export function ActiveOperatives() {
 }
 
 export function OrchestratorCard() {
-  const link = useLinkBehavior("/agents/michael");
+  const link = useLinkBehavior("/agents");
   return (
     <div
       {...link}
@@ -80,9 +98,12 @@ export function OrchestratorCard() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-tertiary/10 border border-tertiary/20 text-tertiary font-code-sm text-code-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping" />
-              <span>Synthesizing sub-DAGs (Active)</span>
+              <span>Coming later</span>
             </span>
             <button
+              disabled
+              title="Coming later — this control is not available in the beta"
+              aria-label="more horiz — coming later"
               className="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container transition-colors"
               type="button"
             >
@@ -93,7 +114,7 @@ export function OrchestratorCard() {
         </div>
         <div className="mt-5 flex flex-col gap-2">
           <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
-            Primary Objective
+            Sample task — no live work
           </span>
           <p className="font-body-lg text-body-lg text-on-surface font-medium">
             {"Decomposing Auth0 + Biometric passkey pipeline & dispatching tasks to worker mesh"}
@@ -101,11 +122,11 @@ export function OrchestratorCard() {
         </div>
         <div className="mt-4 flex flex-col gap-2">
           <div className="flex justify-between items-center font-code-sm text-code-sm">
-            <span className="text-on-surface-variant">Pipeline Decomposition</span>
-            <span className="text-primary font-medium">74% Complete</span>
+            <span className="text-on-surface-variant">Sample workflow — no live work</span>
+            <span className="text-primary font-medium">Not measured</span>
           </div>
           <div className="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-primary to-secondary w-[74%] rounded-full transition-all duration-500" />
+            <div className="h-full bg-gradient-to-r from-primary to-secondary w-0 rounded-full transition-all duration-500" />
           </div>
           <div className="flex items-center justify-between text-outline font-label-sm text-label-sm pt-1">
             <span className="text-tertiary flex items-center gap-1">✓ Schema Validation</span>
@@ -117,9 +138,7 @@ export function OrchestratorCard() {
       </div>
       <div className="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <span className="font-label-sm text-label-sm text-outline uppercase">
-            Active Delegations:
-          </span>
+          <span className="font-label-sm text-label-sm text-outline uppercase">Sample roles:</span>
           <div className="flex items-center -space-x-1.5">
             <span className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface text-code-sm font-code-sm border border-outline-variant/30">
               Nova
@@ -135,8 +154,8 @@ export function OrchestratorCard() {
         <div className="flex items-center gap-1.5 font-code-sm text-code-sm text-outline">
           <span className="material-symbols-outlined text-[15px] text-tertiary">outgoing_mail</span>
           <span>
-            Dispatched JWT middleware schema to{" "}
-            <strong className="text-on-surface-variant font-medium">Atlas</strong> (2m ago)
+            Sample event — no live work{" "}
+            <strong className="text-on-surface-variant font-medium">Atlas</strong> Not measured
           </span>
         </div>
       </div>

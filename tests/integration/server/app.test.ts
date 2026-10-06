@@ -40,7 +40,7 @@ describe("GET /api/health", () => {
     expect(res.headers["content-type"]).toMatch(/^application\/json/);
     const body = HealthResponseSchema.parse(res.json());
     expect(body.status).toBe("ok");
-    expect(body.version).toBe("0.1.0");
+    expect(body.version).toBe("0.1.0-beta.1");
     const time = Date.parse(body.timestamp);
     expect(time).toBeGreaterThanOrEqual(before - 1000);
     expect(time).toBeLessThanOrEqual(Date.now() + 1000);

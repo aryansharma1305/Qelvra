@@ -1,0 +1,1715 @@
+[
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "72% Completed",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "1m ago",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "3m ago",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "8m ago",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "10:41:02",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "@Nova, ensure glowing status rings use hardware CSS transforms for 60fps budget.",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "10:41:18",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": ". Tested at 60fps on local headless.",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "10:42:04",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "38% Load • 46°C",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "4.8 / 24 GB",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "$0.00 Local Compute",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "74% Complete",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "(2m ago)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "w-[74%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "68%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "4m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "82%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "8m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "95%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "11m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "45%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "14m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "100%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "22m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "stdout • pid 89412",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "0 errors",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "[09:42:18]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "in 142ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Step 4/5 • 84%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "VRAM: 4.2/8GB",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Implementing WebSocket pub/sub multiplexing for sub-20ms real-time agent telemetry stream.",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "stdout • pid 89415",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "[09:42:25]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Step 3/5 • 62%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "12 sub-DAGs scheduled",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "1.2k t/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "[09:42:29]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "0 race conditions",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "18 tokens exported to /src/tokens/",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "stdout • pid 89419",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "[09:42:15]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Step 4/4 • 95%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "42/44 PASSED",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "stdout • pid 89422",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "[09:42:28]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Testing • 78%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Memory cache warmed (18.2 MB)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "[09:38:00]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[68%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[82%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[95%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[45%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[84%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[62%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "w-[78%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/AmbienceBar.tsx",
+    "from": "$0.00",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/IsometricScene.tsx",
+    "from": "1.2ms • 48msg/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/IsometricScene.tsx",
+    "from": "Nova: AST (72%)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "ACTIVE DESK",
+    "to": "PREVIEW DESK",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "PID: 90284",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "72%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "4.8 GB",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "38 ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "92 tokens/sec",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "Live Desk Activity Ticker",
+    "to": "Sample desk activity",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "Realtime",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "16:42:01",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "16:41:48",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "16:40:12",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "w-[72%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/StudioCanvas.tsx",
+    "from": "0.08ms latency",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/StudioPage.tsx",
+    "from": "4 Active Desks",
+    "to": "Sample desks",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/StudioPage.tsx",
+    "from": "1 Reasoning Pod",
+    "to": "Sample pod",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/StudioPage.tsx",
+    "from": "1 Lounge Standby",
+    "to": "Sample lounge",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "Claude 3.5 Sonnet • PID: 89412",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "34%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "3.1 / 8 GB",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "142.8k",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "($0.42)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "LIVE",
+    "to": "PREVIEW",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "09:41:04",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "09:41:42",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "Done. Tested at 60fps on M-series and Chromium headless. Pushing updates to origin\n              now.",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "w-[34%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/OperativeTelemetryPanel.tsx",
+    "from": "w-[38%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmHeader.tsx",
+    "from": "6 AGENTS DEPLOYED",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmHeader.tsx",
+    "from": "LATENCY 14ms OPTIMAL",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "83% load",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "v2.4.0",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "68%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "1.42M",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "~$3.12/hr",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "Cache hit: 94.2%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "4.8",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "+24% vs avg",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "Fails: 0",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "Diff: +1.8k / -640",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmOperatives.tsx",
+    "from": "Live Threads",
+    "to": "Preview cards",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmPage.tsx",
+    "from": "2m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmPage.tsx",
+    "from": "4m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmPage.tsx",
+    "from": "7m ago",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "BUFFER: 250 / 1000",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "16:42:08.104",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "0.8 ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "16:42:07.892",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "1.1 ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "16:42:07.411",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "1.4 ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "16:42:06.940",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/IpcTimeline.tsx",
+    "from": "0.9 ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "SYNTHESIZING (78%)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "5 Channels Active",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "0.8ms IPC",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "1.4ms IPC",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "18/18 PASS",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "2.1ms IPC",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "0.9ms IPC",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "0.8ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": ": “Ensure glowing status rings\n          use hardware CSS transforms for 60fps budget.”",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "142 msgs exchanged",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "w-[78%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "IPC ACTIVE (48 MSGS/MIN)",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "LIVE",
+    "to": "PREVIEW",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "1,428",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "5 / 5",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "14.2 KB/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "1.2 ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NetworkHeader.tsx",
+    "from": "100%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "128,490 / 1M",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "42.8 tok/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "1.8 MB Total (Last 10m)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "68 pkts/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "24 pkts/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "12 pkts/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "3 Locked",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "w-[82%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "w-[34%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/NodeTelemetryPanel.tsx",
+    "from": "w-[18%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/AgentRoster.tsx",
+    "from": "148 tps",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "140 Papers/hr",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "420 Pages/hr",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "w-[88%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "w-[72%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "w-[80%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "w-[94%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "w-[50%]",
+    "to": "w-0",
+    "kind": "class",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Sub-12ms Local IPC",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "Active",
+    "to": "Preview",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "NVIDIA GeForce RTX 4090 (24GB VRAM) detected ✓",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "124.6 tok/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "$0.00 / month",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "Up to 2,000,000 tokens",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "TLS 1.3 Strict",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ComputeSelector.tsx",
+    "from": "> STATUS 200 OK (latency 12ms)",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/EnginesStep.tsx",
+    "from": "Select your compute topology. Keep your code 100% private or scale with cloud\n                reasoning.",
+    "to": "Choose a provider installed on your machine. This topology is a visual preview.",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/EnginesStep.tsx",
+    "from": "Zero Egress Verified",
+    "to": "Workspace per agent",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/FirstTeamStep.tsx",
+    "from": "Est. RAM: 14.8 GB",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Active",
+    "to": "Preview",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Loaded reasoning matrix [100%]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "100%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Active",
+    "to": "Preview",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Sub-pixel UI parser mounted [100%]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "100%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Active",
+    "to": "Preview",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Postgres schema inspector active [100%]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "100%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Active",
+    "to": "Preview",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "Synthetic test harness primed [100%]",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/LaunchedTeam.tsx",
+    "from": "100%",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ReadyStep.tsx",
+    "from": "Sync State: Nominal",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ReadyStep.tsx",
+    "from": "4/4 SYNC",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ReadyStep.tsx",
+    "from": "Zero Egress Verified",
+    "to": "Workspace per agent",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ReadyStep.tsx",
+    "from": "14.8 GB allocated / 0 dropped frames",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/TeamPreview.tsx",
+    "from": "400ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/TeamPreview.tsx",
+    "from": "800ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/TeamPreview.tsx",
+    "from": "1200ms",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Sandboxed",
+    "to": "Workspace per agent",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Per-agent kernel jails",
+    "to": "Not an OS sandbox",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "RAG Vector",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Zero shared state leak",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "48.2k",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Docker Daemon: OK",
+    "to": "Docker: not detected",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Qdrant Store: Connected",
+    "to": "Vector store: coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ReadyStep.tsx",
+    "from": "Sync State: Nominal",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "NODE: US-WEST-LOCAL-01",
+    "to": "LOCAL WORKSPACE",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "Good evening,",
+    "to": "Welcome to",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "Aryan",
+    "to": "Qelvra",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "Hyperion Core v2.4",
+    "to": "Isolated workspaces",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "Michael (o3-mini)",
+    "to": "Choose in Goals",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "Dispatch",
+    "to": "Create Goal",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/HomeHero.tsx",
+    "from": "⌘↵",
+    "to": "→",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "DESIGN PREVIEW",
+    "to": "COMING LATER",
+    "scope": ""
+  },
+  {
+    "file": "pages/terminal/CommandBar.tsx",
+    "from": "Human Command & Steering Intervention",
+    "to": "Steering — coming later; type directly in the terminal above",
+    "scope": ".shadow-lg:has(#terminal-command-form)"
+  },
+  {
+    "file": "pages/terminal/CommandBar.tsx",
+    "from": "Nova (Frontend)",
+    "to": "Not available yet",
+    "scope": ".shadow-lg:has(#terminal-command-form)"
+  },
+  {
+    "file": "pages/terminal/CommandBar.tsx",
+    "from": "ESC to abort",
+    "to": "Coming later",
+    "scope": ".shadow-lg:has(#terminal-command-form)"
+  },
+  {
+    "file": "pages/terminal/CommandBar.tsx",
+    "from": "nova-agent:~$",
+    "to": "terminal:~$",
+    "scope": ".shadow-lg:has(#terminal-command-form)"
+  },
+  {
+    "file": "pages/terminal/CommandBar.tsx",
+    "from": "Type prompt, bash command, or ⌘K to pause and guide Nova...",
+    "to": "Steering is not available yet",
+    "scope": ".shadow-lg:has(#terminal-command-form)"
+  },
+  {
+    "file": "pages/terminal/CommandBar.tsx",
+    "from": "Autonomous Mode: Enabled",
+    "to": "Steering: Not available yet",
+    "scope": ".shadow-lg:has(#terminal-command-form)"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "Nova",
+    "to": "Preview",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "Principal Frontend Autonomous Agent",
+    "to": "Context panel — coming later",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/TerminalPage.tsx",
+    "from": "Zero-Egress Enclave",
+    "to": "Workspace per agent",
+    "scope": ""
+  },
+  {
+    "file": "components/shell/AppHeader.tsx",
+    "from": "V2.4 PRO",
+    "to": "v0.1.0-beta.1",
+    "scope": ""
+  },
+  {
+    "file": "components/shell/AppHeader.tsx",
+    "from": "v2.4 Pro",
+    "to": "v0.1.0-beta.1",
+    "scope": ""
+  },
+  {
+    "file": "components/shell/AppHeader.tsx",
+    "from": "Hyperion Labs / Main",
+    "to": "Local workspace",
+    "scope": ""
+  },
+  {
+    "file": "components/shell/AppHeader.tsx",
+    "from": "main: synced",
+    "to": "Git: not measured",
+    "scope": ""
+  },
+  {
+    "file": "components/shell/AppHeader.tsx",
+    "from": "Search telemetry, agents, or issue command...",
+    "to": "Search — coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "ETA: ~4m 10s",
+    "to": "ETA: not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "3 Verified",
+    "to": "Not available yet",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "Files Touched (3)",
+    "to": "Files — coming later",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "+114 / -19",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "+64 -18",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "+12 -4",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "+38 -0",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "CUDA 12.4",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "RTX 4090",
+    "to": "Not measured",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "3m 12s elapsed",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "1m 45s elapsed",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "48s remaining",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "Cluster: 4 Redis replicas healthy",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "from": "2 failures in safari-webkit",
+    "to": "Sample alert — coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/AmbienceBar.tsx",
+    "from": "21°C",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/AmbienceBar.tsx",
+    "from": "(RTX 4090 Sovereign)",
+    "to": "(Hardware not measured)",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/StudioCanvas.tsx",
+    "from": "COORDINATES: X: 42.8 Y: -19.4 Z: 104.2 • 60 FPS SYNCED",
+    "to": "Coordinates: not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/IsometricScene.tsx",
+    "from": "Scout: 184/186 Specs",
+    "to": "Scout: not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "Optimal / LoRA 0.4",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "Completed AST parse pass 1 (0 err, 14 warnings)",
+    "to": "Sample action — coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/studio/OperativeInspector.tsx",
+    "from": "Playwright fuzz test suite completed: 184 passing",
+    "to": "Test results — coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/network/MeshGraph.tsx",
+    "from": "9.4k t/s",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "9.4k LOC/cycle",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "1.2k Events/sec",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "Verified",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/ArchetypeGrid.tsx",
+    "from": "Live Loop",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/FirstTeamStep.tsx",
+    "from": "Window: 512k tokens",
+    "to": "Context: not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/BuildTeamStep.tsx",
+    "from": "Zero Data Egress",
+    "to": "Provider-owned permissions",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/EnginesStep.tsx",
+    "from": "Enforce Zero Data Egress",
+    "to": "Network policy — coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/EnginesStep.tsx",
+    "from": "Air-gapped firewall",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "pages/onboarding/EnginesStep.tsx",
+    "from": "Block outbound telemetry, diagnostic dumps, and model metric dispatch at kernel\n                  socket level.",
+    "to": "Provider permissions control network access. Qelvra does not enforce an air gap.",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "Workspace Mounting & Memory Isolation",
+    "to": "Agent workspace",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "Map filesystems, dedicated vector memory, and inter-agent communication channels.",
+    "to": "Qelvra creates a separate workspace for this agent. Memory settings and delegation controls are coming later.",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "/hyperion-core/distributed-mesh",
+    "to": "Created when you save this agent",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "Qdrant Local IPC (8 GB Cache)",
+    "to": "Not available yet",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "PERSISTENT",
+    "to": "COMING LATER",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "@kite (Hyperion Swarm IPC Bus)",
+    "to": "Agent mailbox (created on save)",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "BROADCAST",
+    "to": "MAILBOX",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "Sandbox Security Policy",
+    "to": "Workspace permissions",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "Enclave Tier 3 (Airgapped Read/Write)",
+    "to": "Provider-owned; not an OS sandbox",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepWorkspace.tsx",
+    "from": "Allow Kite to recruit sibling sub-agents for parallel unit testing.",
+    "to": "Coming later. Goals assign registered agents after you approve a plan.",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepCapabilities.tsx",
+    "from": "Authorize low-level host capabilities and synthetic tools for Kite's execution loop.",
+    "to": "Preview only — these selections do not change provider permissions or tools.",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepCapabilities.tsx",
+    "from": "MATRIX HEALTH:",
+    "to": "TOOL CONFIG:",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepCapabilities.tsx",
+    "from": "NOMINAL",
+    "to": "COMING LATER",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepCapabilities.tsx",
+    "from": "All activated capabilities run inside transient seccomp-bpf Linux namespaces.",
+    "to": "Provider-owned permissions; Qelvra does not enforce an OS sandbox.",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/StepCapabilities.tsx",
+    "from": "ENCLAVE_PIDS: MAX 32",
+    "to": "PREVIEW ONLY",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/CreateAgentPage.tsx",
+    "from": "Enclave-4",
+    "to": "Local beta",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/CreateAgentPage.tsx",
+    "from": "PROTOCOL: ISO-9042 SYNAPSE MATRIX",
+    "to": "Provider-owned permissions",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/WizardHeader.tsx",
+    "from": "Sandbox Mesh",
+    "to": "Agent workspace",
+    "scope": ""
+  },
+  {
+    "file": "pages/create-agent/agentDraft.ts",
+    "from": "Sandboxed I/O",
+    "to": "Provider-owned I/O",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "Synthesizing sub-DAGs (Active)",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "mocks/agents.tsx",
+    "kind": "class",
+    "from": "w-full",
+    "to": "w-0",
+    "scope": ".h-full.bg-tertiary.w-full"
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "@Nova, sub-pixel blur glitch detected on Safari WebKit > 20px blur radius. Patch queued.",
+    "to": "@Preview, sub-pixel blur glitch detected on Safari WebKit > 20px blur radius. Patch queued.",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "5",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "/ 6 active",
+    "to": "Preview",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "14 / 20 tasks",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/swarm/SwarmMetrics.tsx",
+    "from": "Optimal",
+    "to": "Not measured",
+    "scope": ""
+  },
+  {
+    "file": "pages/terminal/AgentContextPanel.tsx",
+    "from": "Nova (Frontend)",
+    "to": "Preview (Frontend)",
+    "scope": ".xl\\:col-span-4"
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "Operative Preview",
+    "to": "Sample agent cards",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "Primary Objective",
+    "to": "Sample task — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "Pipeline Decomposition",
+    "to": "Sample workflow — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "Active Delegations:",
+    "to": "Sample roles:",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/ActiveOperatives.tsx",
+    "from": "Dispatched JWT middleware schema to",
+    "to": "Sample event — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Task",
+    "to": "Sample task",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Working",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Working",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Reviewing",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Testing",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Standing By",
+    "to": "Coming later",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Pushed 4 React components to feature/auth",
+    "to": "Sample event — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Completed /api/v2/auth/verify",
+    "to": "Sample event — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Exported tokens to theme.json",
+    "to": "Sample event — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Logged fixture issue #104",
+    "to": "Sample event — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Generated RFC-8812 benchmark",
+    "to": "Sample event — no live work",
+    "scope": ""
+  },
+  {
+    "file": "pages/home/OperativeCard.tsx",
+    "from": "Completed Summary Ready",
+    "to": "Sample summary — coming later",
+    "scope": ""
+  }
+]

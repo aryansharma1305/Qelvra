@@ -1,3 +1,5 @@
+import { validateStartup } from "./release/startup-validation.js";
+import { registerLocalSecurity } from "./plugins/local-security.js";
 import {
   OrchestrationService,
   registerOrchestrationRoutes,
@@ -13,7 +15,7 @@ import { recordRouterActivity, observeActivity } from "./activity/domain-events.
 import { TaskRegistry, registerTaskRoutes } from "./tasks/index.js";
 import { MessageRouter } from "./router/index.js";
 import { MailboxManager } from "./mailbox/index.js";
-import Fastify, { type FastifyInstance } from "fastify";
+import Fastify, { LogController, type FastifyInstance } from "fastify";
 import type { ServerConfig } from "./config/env.js";
 import { AgentWorkspaceManager } from "./workspaces/agent-workspace-manager.js";
 import { ProviderRegistry } from "./providers/index.js";
@@ -71,9 +73,13 @@ export async function createApp(
   config: ServerConfig,
   options: CreateAppOptions = {},
 ): Promise<FastifyInstance> {
+  await validateStartup(config);
   const app = Fastify({
+    logController: new LogController({ disableRequestLogging: true }),
     logger: options.logger === false ? false : { level: config.logLevel },
   });
+
+  registerLocalSecurity(app, config);
 
   const agentRegistry =
     options.agentRegistry ??

@@ -96,6 +96,18 @@ export async function prepareHomeReference(page: Page, fixture: ActivityFixture)
     last.textContent = "System";
     required(required(filters[3]).parentElement).append(last);
     const rows = Array.from(required(feed.lastElementChild).children);
+    for (const [label, value] of [
+      ["Active Agents", fixture.summary.activeAgents],
+      ["Completed Today", fixture.summary.completedToday],
+      ["Working Tasks", fixture.summary.workingTasks],
+      ["Delivered Today", fixture.summary.recordedDeliveriesToday],
+    ] as const) {
+      const heading = Array.from(document.querySelectorAll("span")).find(
+        (el) => el.textContent?.trim() === label,
+      );
+      required(required(heading?.parentElement).querySelector(".font-headline-md")).textContent =
+        String(value);
+    }
     fixture.events.forEach((event, n) => {
       const row = required(rows[n]);
       row.setAttribute("data-activity-type", event.type);

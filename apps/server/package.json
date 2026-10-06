@@ -1,6 +1,6 @@
 {
   "name": "@qelvra/server",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -18,7 +18,10 @@
     "provider:smoke": "tsx scripts/provider-smoke.ts",
     "execution:smoke": "tsx scripts/execution-smoke.ts",
     "execution:bundle-smoke": "node scripts/execution-bundle-smoke.mjs",
-    "orchestration:smoke": "tsx scripts/orchestration-smoke.ts"
+    "orchestration:smoke": "tsx scripts/orchestration-smoke.ts",
+    "release:smoke": "tsx scripts/release-smoke.ts",
+    "release:soak": "tsx scripts/release-smoke.ts --soak",
+    "production:smoke": "node scripts/production-smoke.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.5",
@@ -28,7 +31,7 @@
   "dependencies": {
     "@fastify/cors": "^11.3.0",
     "@fastify/websocket": "^11.3.1",
-    "@qelvra/shared": "^0.0.0",
+    "@qelvra/shared": "0.1.0-beta.1",
     "chokidar": "^4.0.3",
     "fastify": "^5.12.5",
     "node-pty": "^1.1.0",

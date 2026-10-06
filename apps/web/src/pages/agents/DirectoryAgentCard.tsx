@@ -59,6 +59,8 @@ export function DirectoryAgentCard({ agent, onOpen, onInspect }: DirectoryAgentC
               <span>{agent.model}</span>
             </span>
             <button
+              disabled
+              aria-label="more vert — coming later"
               className="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-highest transition-colors"
               title="Options"
               type="button"
@@ -121,7 +123,7 @@ export function DirectoryAgentCard({ agent, onOpen, onInspect }: DirectoryAgentC
           ))}
         </div>
       </div>
-      <div className="relative flex items-center justify-between pt-4 mt-2">
+      <div className="relative flex flex-wrap sm:flex-nowrap gap-2 items-center justify-between pt-4 mt-2">
         <div className="flex items-center gap-1.5 text-outline font-label-sm text-label-sm">
           <span className={`material-symbols-outlined text-[14px] ${agent.tone.runtimeIcon}`}>
             {agent.runtimeIcon}

@@ -152,6 +152,9 @@ export function SwarmTelemetry({ latestEvent }: { latestEvent: string | undefine
           </div>
         </div>
         <button
+          disabled
+          title="Coming later — this control is not available in the beta"
+          aria-label="Coming later — coming later"
           className="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-bright text-on-surface font-body-sm text-body-sm font-medium border border-outline-variant/30 hover:border-primary/40 transition-colors"
           type="button"
         >

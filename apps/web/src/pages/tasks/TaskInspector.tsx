@@ -28,7 +28,7 @@ export function TaskInspector({
   const [agentId, setAgentId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const execution = useTaskExecution(task.id);
-  const { providers, error: providerError } = useProviders();
+  const { providers, error: providerError, retry: retryProviders } = useProviders();
   const agent = agents.find((a) => a.id === task.assignee);
   const provider = providers.find((p) => p.id === (agent?.providerId ?? "shell"));
   const providerName = provider?.name ?? execution.execution?.providerId ?? "Checking provider…";
@@ -142,7 +142,7 @@ export function TaskInspector({
         {executeEligible && providerError && (
           <p role="alert" className="font-body-sm text-body-sm text-error">
             {providerError}
-            <button onClick={() => window.location.reload()} className="ml-2 underline">
+            <button onClick={retryProviders} className="ml-2 underline">
               Reload providers
             </button>
           </p>

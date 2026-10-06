@@ -1,0 +1,31 @@
+name: Beta release
+
+on:
+  push:
+    tags: [v0.1.0-beta.1]
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    uses: ./.github/workflows/ci.yml
+  publish:
+    needs: validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Require owner license and completed release approval
+        run: node scripts/check-release.mjs
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+      - name: Publish source-run prerelease
+        run: gh release create "$RELEASE_TAG" --verify-tag --prerelease --title "Qelvra $RELEASE_TAG" --notes-file docs/release/v0.1.0-beta.1.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}

@@ -246,10 +246,12 @@ export class MailboxManager {
         }
         if (length > MAILBOX_FILE_MAX_BYTES) throw new MailboxError("MAILBOX_MESSAGE_TOO_LARGE");
         const after = await handle.stat();
+        // Exclusive publication removes its temporary hard link after visibility.
+        // That 2→1 transition changes ctime without changing the message bytes.
         if (
           after.size !== length ||
           after.mtimeMs !== stat.mtimeMs ||
-          after.ctimeMs !== stat.ctimeMs
+          (after.ctimeMs !== stat.ctimeMs && !(stat.nlink === 2 && after.nlink === 1))
         ) {
           throw new MailboxError("MAILBOX_READ_FAILED");
         }

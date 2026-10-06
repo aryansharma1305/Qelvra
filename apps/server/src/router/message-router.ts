@@ -1,10 +1,13 @@
-import { relative, sep } from "node:path";
+import { dirname, relative, sep } from "node:path";
 import { watch, type FSWatcher, type ChokidarOptions } from "chokidar";
 import { AgentIdSchema, MessageIdSchema } from "@qelvra/shared";
 import type { AgentRegistry } from "../agents/agent-registry.js";
 import { MailboxError, type MailboxErrorCode, type MailboxManager } from "../mailbox/index.js";
 import type { AgentWorkspaceManager } from "../workspaces/agent-workspace-manager.js";
 import { silentLogger, type ServiceLogger } from "../lib/logger.js";
+
+// Keep test watcher factories on the same dependency/version as the router.
+export { watch as createRouterWatcher };
 
 export type RouterEvent = {
   type:
@@ -122,8 +125,10 @@ export class MessageRouter {
         depth: this.options.controlMailbox ? 3 : 2,
         atomic: true,
         ignored: (path, stats) => {
+          if (path === this.options.workspaces.agentsRoot) return false;
           const parts = partsOf(path);
           if (!parts.length) return false;
+          if (!this.options.mailbox.hasRecipient(parts[0] ?? "")) return true;
           if (!AgentIdSchema.safeParse(parts[0]).success) return true;
           if (parts.length === 1) return stats ? !stats.isDirectory() : false;
           if (parts[1] !== "outbox") return true;
@@ -182,8 +187,8 @@ export class MessageRouter {
       this.subscription = this.options.registry.subscribe((event) => {
         if (event.type === "agent.created") this.track(this.refreshAgent(event.agent.id));
         if (event.type === "agent.deleted") {
-          // Keep the bounded tree watcher; preserved/recreated directories remain observable.
-          // Deleted owners are gated out before reads, publication and acknowledgement.
+          // Preserved workspaces must not keep filesystem watchers after their owner is deleted.
+          this.track(this.unwatchAgent(event.agent.id));
           for (const key of this.blocked) {
             if (JSON.parse(key)[0] === event.agent.id) this.blocked.delete(key);
           }
@@ -225,6 +230,11 @@ export class MessageRouter {
     this.maintenance.add(safe);
     void safe.finally(() => this.maintenance.delete(safe));
   }
+  private async unwatchAgent(agentId: string): Promise<void> {
+    const path = await this.options.workspaces.getMailboxPath(agentId, "outbox");
+    if (!this.options.mailbox.hasRecipient(agentId))
+      await this.watcher?.unwatch([path, dirname(path)]);
+  }
   private async refreshAgent(agentId: string): Promise<void> {
     // Registry creation precedes workspace initialization. No router-owned workspace creation.
     for (const delay of [0, 100, 300, 1000]) {
@@ -232,7 +242,8 @@ export class MessageRouter {
       if (!this.running || !this.options.mailbox.hasRecipient(agentId)) return;
       try {
         const path = await this.options.workspaces.getMailboxPath(agentId, "outbox");
-        this.watcher?.add(path);
+        // Both paths were explicitly unwatched on deletion; restore both on recreation.
+        this.watcher?.add([dirname(path), path]);
         await this.scanAgent(agentId);
         return;
       } catch {
