@@ -15,6 +15,7 @@ Instead of manually opening several AI coding sessions and coordinating them you
 - Persistent agents with isolated filesystem workspaces and real browser terminals backed by PTYs.
 - Local provider discovery and real automated execution through an installed, authenticated Codex CLI.
 - Persistent tasks: create, assign, execute, review and complete, with structured execution results.
+- The Files page browses and edits isolated agent workspaces (v0.2 development on `main`).
 - Filesystem mailbox messaging and automatic agent-to-agent routing.
 - A real-time Activity feed for agent, task, execution and goal events.
 - **Goal → Plan → Run → Review/Rework → Final Summary** orchestration with explicit plan approval.

@@ -76,7 +76,7 @@ describe("canonical activity schema", () => {
     expect(
       ActivityEventSchema.safeParse({ ...event, metadata: { agentName: "x".repeat(81) } }).success,
     ).toBe(false);
-    expect(ACTIVITY_TYPES).toHaveLength(36);
+    expect(ACTIVITY_TYPES).toHaveLength(40);
   });
   it("rejects mismatched entities and arbitrary message metadata", () => {
     expect(

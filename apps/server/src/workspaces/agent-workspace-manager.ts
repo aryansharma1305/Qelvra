@@ -2,7 +2,8 @@ import { randomUUID } from "node:crypto";
 import { constants } from "node:fs";
 import { lstat, mkdir, open, readdir, realpath, rmdir, unlink } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
-import { AgentIdSchema, type Agent } from "@qelvra/shared";
+import { WorkspaceDirectoryPathSchema, AgentIdSchema, type Agent } from "@qelvra/shared";
+import { AppError } from "../lib/errors.js";
 import { syncDirectory } from "../lib/atomic-publish.js";
 import { silentLogger, type ServiceLogger } from "../lib/logger.js";
 
@@ -95,6 +96,54 @@ export class AgentWorkspaceManager {
       await this.check(path, "directory");
     }
     return realpath(join(root, "workspace"));
+  }
+
+  /** Workspace-only relative paths; no symlink aliases or hard-linked file access. */
+  async resolveEntry(
+    agentId: string,
+    relativePath: string,
+    missingLeaf = false,
+    unsupportedLeaf = false,
+  ) {
+    if (!WorkspaceDirectoryPathSchema.safeParse(relativePath).success)
+      throw new AppError(400, "FILE_INVALID_PATH", "Invalid relative workspace path");
+    const root = await this.getWorkspacePath(agentId);
+    let path = root;
+    let info = await lstat(root);
+    const parts = relativePath ? relativePath.split("/") : [];
+    for (const [index, part] of parts.entries()) {
+      path = join(path, part);
+      if (!inside(root, path))
+        throw new AppError(400, "FILE_PATH_ESCAPE", "Path must remain inside this workspace");
+      try {
+        info = await lstat(path);
+      } catch (error) {
+        if (missingLeaf && index === parts.length - 1 && missing(error))
+          return { root, path, info: null };
+        throw error;
+      }
+      const leaf = index === parts.length - 1;
+      if (
+        leaf &&
+        unsupportedLeaf &&
+        (info.isSymbolicLink() || (!info.isDirectory() && (!info.isFile() || info.nlink !== 1)))
+      )
+        return { root, path, info };
+      if (info.isSymbolicLink())
+        throw new AppError(400, "FILE_SYMLINK_ESCAPE", "Symlinks cannot be accessed through Files");
+      if (!inside(root, await realpath(path)))
+        throw new AppError(400, "FILE_PATH_ESCAPE", "Path must remain inside this workspace");
+      if (
+        (!leaf && !info.isDirectory()) ||
+        (leaf && !info.isDirectory() && (!info.isFile() || info.nlink !== 1))
+      )
+        throw new AppError(
+          400,
+          "FILE_NOT_REGULAR",
+          "Only regular files and directories are supported",
+        );
+    }
+    return { root, path, info };
   }
 
   /** Fixed mailbox locations only; no message semantics or caller-supplied paths. */

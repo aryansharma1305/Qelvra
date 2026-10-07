@@ -34,7 +34,24 @@ export function formatActivityEvent(event: ActivityEvent) {
     "message.quarantined",
   ].includes(event.type);
   const tone =
-    COLORS[error ? "error" : /^(execution|orchestration)\./.test(event.type) ? "task" : kind];
+    COLORS[error ? "error" : /^(execution|orchestration|file)\./.test(event.type) ? "task" : kind];
+  if ("relativePath" in event.metadata) {
+    const action = {
+      "file.created": "created",
+      "file.updated": "saved",
+      "file.renamed": "renamed",
+      "file.deleted": "deleted",
+    }[event.type as "file.created"];
+    const params = new URLSearchParams({ agent: event.metadata.agentId });
+    if (event.type !== "file.deleted") params.set("file", event.metadata.relativePath);
+    return {
+      tone,
+      icon: "description",
+      title: `File ${action}`,
+      detail: `${event.metadata.agentId} · ${event.metadata.previousPath ? event.metadata.previousPath + " → " : ""}${event.metadata.relativePath}`,
+      href: `/files?${params}`,
+    };
+  }
   if ("goalId" in event.metadata) {
     const titles = {
       "orchestration.created": "Goal created",

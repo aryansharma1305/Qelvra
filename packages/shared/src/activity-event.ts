@@ -1,3 +1,4 @@
+import { WorkspacePathSchema } from "./files.js";
 import { z } from "zod";
 import { ProviderIdSchema } from "./provider.js";
 import { AgentIdSchema, AgentNameSchema } from "./agent.js";
@@ -50,7 +51,14 @@ export const ORCHESTRATION_ACTIVITY_TYPES = [
   "orchestration.paused",
   "orchestration.resumed",
 ] as const;
+export const FILE_ACTIVITY_TYPES = [
+  "file.created",
+  "file.updated",
+  "file.renamed",
+  "file.deleted",
+] as const;
 export const ACTIVITY_TYPES = [
+  ...FILE_ACTIVITY_TYPES,
   ...AGENT_ACTIVITY_TYPES,
   ...MESSAGE_ACTIVITY_TYPES,
   ...TASK_ACTIVITY_TYPES,
@@ -75,6 +83,16 @@ const actor = z
   .optional();
 // Strict allowlists: never accept bodies, descriptions, terminal data, env or arbitrary blobs.
 export const ActivityInputSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.enum(FILE_ACTIVITY_TYPES),
+    actor,
+    entity: z.strictObject({ type: z.literal("agent"), id: AgentIdSchema }),
+    metadata: z.strictObject({
+      agentId: AgentIdSchema,
+      relativePath: WorkspacePathSchema,
+      previousPath: WorkspacePathSchema.optional(),
+    }),
+  }),
   z.strictObject({
     type: z.enum(ORCHESTRATION_ACTIVITY_TYPES),
     actor,

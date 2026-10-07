@@ -1,3 +1,4 @@
+import { WorkspaceFileService, registerFileRoutes } from "./files/index.js";
 import { validateStartup } from "./release/startup-validation.js";
 import { registerLocalSecurity } from "./plugins/local-security.js";
 import {
@@ -44,6 +45,7 @@ declare module "fastify" {
     /** Agents' live shells (one PTY per running agent). */
     runtime: AgentRuntimeManager;
     workspaces: AgentWorkspaceManager;
+    files: WorkspaceFileService;
     mailbox: MailboxManager;
     router: MessageRouter;
     tasks: TaskRegistry;
@@ -127,6 +129,15 @@ export async function createApp(
     app.log,
   );
   app.decorate("activity", activity);
+  app.decorate(
+    "files",
+    new WorkspaceFileService(
+      agentRegistry,
+      workspaces,
+      activity,
+      app.log.child({ component: "files" }),
+    ),
+  );
   const subscriptions = observeActivity(activity, agentRegistry, tasks);
   let resultsReady = false;
 
@@ -256,6 +267,7 @@ export async function createApp(
   await registerCors(app, config.webOrigins);
   registerHealthRoutes(app, SERVER_VERSION);
   registerAgentRoutes(app, agentRegistry, runtime);
+  registerFileRoutes(app, app.files);
   registerTaskRoutes(app, tasks, execution);
   registerExecutionRoutes(app, execution);
   registerOrchestrationRoutes(app, orchestration);
