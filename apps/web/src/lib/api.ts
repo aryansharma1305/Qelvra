@@ -1,3 +1,9 @@
+import {
+  WorkspaceListingSchema,
+  WorkspaceFileResponseSchema,
+  WorkspaceEntryResponseSchema,
+  type WorkspaceWriteRequest,
+} from "@qelvra/shared";
 import { ProviderListResponseSchema, type Provider } from "@qelvra/shared";
 import { TaskExecutionResponseSchema } from "@qelvra/shared";
 import {
@@ -50,7 +56,7 @@ export class ApiError extends Error {
 }
 
 interface RequestOptions {
-  method?: "GET" | "POST" | "DELETE";
+  method?: "GET" | "POST" | "DELETE" | "PUT";
   /** Sent as JSON. */
   body?: unknown;
   signal?: AbortSignal;
@@ -312,3 +318,75 @@ export const runOrchestrationAction = async (
       { method: "POST", body: {}, timeoutMs: 25000, ...options },
     )
   ).orchestration;
+
+const filesPath = (id: string) => `/api/agents/${encodeURIComponent(id)}/files`;
+export const listWorkspaceFiles = (id: string, path = "", options?: CallOptions) =>
+  requestJson(`${filesPath(id)}?${new URLSearchParams({ path })}`, WorkspaceListingSchema, options);
+export const statWorkspaceEntry = async (id: string, path: string, options?: CallOptions) =>
+  (
+    await requestJson(
+      `${filesPath(id)}/entry?${new URLSearchParams({ path })}`,
+      WorkspaceEntryResponseSchema,
+      options,
+    )
+  ).entry;
+export const readWorkspaceFile = async (id: string, path: string, options?: CallOptions) =>
+  (
+    await requestJson(
+      `${filesPath(id)}/content?${new URLSearchParams({ path })}`,
+      WorkspaceFileResponseSchema,
+      options,
+    )
+  ).file;
+export const writeWorkspaceFile = async (
+  id: string,
+  body: WorkspaceWriteRequest,
+  options?: CallOptions,
+) =>
+  (
+    await requestJson(`${filesPath(id)}/content`, WorkspaceFileResponseSchema, {
+      ...options,
+      method: "PUT",
+      body,
+    })
+  ).file;
+export const createWorkspaceFile = async (id: string, path: string, options?: CallOptions) =>
+  (
+    await requestJson(`${filesPath(id)}/file`, WorkspaceEntryResponseSchema, {
+      ...options,
+      method: "POST",
+      body: { path },
+    })
+  ).entry;
+export const createWorkspaceDirectory = async (id: string, path: string, options?: CallOptions) =>
+  (
+    await requestJson(`${filesPath(id)}/directory`, WorkspaceEntryResponseSchema, {
+      ...options,
+      method: "POST",
+      body: { path },
+    })
+  ).entry;
+export const moveWorkspaceEntry = async (
+  id: string,
+  from: string,
+  to: string,
+  options?: CallOptions,
+) =>
+  (
+    await requestJson(`${filesPath(id)}/move`, WorkspaceEntryResponseSchema, {
+      ...options,
+      method: "POST",
+      body: { from, to },
+    })
+  ).entry;
+export const deleteWorkspaceEntry = (
+  id: string,
+  path: string,
+  recursive = false,
+  options?: CallOptions,
+) =>
+  requestJson<undefined>(filesPath(id), null, {
+    ...options,
+    method: "DELETE",
+    body: { path, recursive },
+  });
