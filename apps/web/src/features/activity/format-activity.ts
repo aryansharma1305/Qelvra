@@ -34,7 +34,17 @@ export function formatActivityEvent(event: ActivityEvent) {
     "message.quarantined",
   ].includes(event.type);
   const tone =
-    COLORS[error ? "error" : /^(execution|orchestration|file)\./.test(event.type) ? "task" : kind];
+    COLORS[
+      error ? "error" : /^(execution|orchestration|file|memory)\./.test(event.type) ? "task" : kind
+    ];
+  if (event.type === "memory.updated")
+    return {
+      tone,
+      icon: "psychology",
+      title: "Agent memory saved",
+      detail: `${event.metadata.agentId} · ${event.metadata.size} bytes`,
+      href: `/memory?agent=${encodeURIComponent(event.metadata.agentId)}`,
+    };
   if ("relativePath" in event.metadata) {
     const action = {
       "file.created": "created",

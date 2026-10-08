@@ -58,6 +58,7 @@ export const FILE_ACTIVITY_TYPES = [
   "file.deleted",
 ] as const;
 export const ACTIVITY_TYPES = [
+  "memory.updated",
   ...FILE_ACTIVITY_TYPES,
   ...AGENT_ACTIVITY_TYPES,
   ...MESSAGE_ACTIVITY_TYPES,
@@ -83,6 +84,19 @@ const actor = z
   .optional();
 // Strict allowlists: never accept bodies, descriptions, terminal data, env or arbitrary blobs.
 export const ActivityInputSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.literal("memory.updated"),
+    actor,
+    entity: z.strictObject({ type: z.literal("agent"), id: AgentIdSchema }),
+    metadata: z.strictObject({
+      agentId: AgentIdSchema,
+      size: z
+        .number()
+        .int()
+        .nonnegative()
+        .max(256 * 1024),
+    }),
+  }),
   z.strictObject({
     type: z.enum(FILE_ACTIVITY_TYPES),
     actor,

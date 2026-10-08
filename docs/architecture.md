@@ -42,3 +42,9 @@ Shutdown drains/stops orchestration, executions, router/watchers, runtimes/PTYs 
 editing is limited to 1 MiB of valid UTF-8; symlinks/hard links and binary files are
 not editable. Saves use atomic publication and revision conflicts. Folder deletion
 is explicitly confirmed and bounded. See [ADR 0018](adr/0018-agent-files.md).
+
+## Agent Memory (v0.2 development)
+
+`/memory` reads and edits each registered agent’s fixed `memory.md`. Valid UTF-8 is
+bounded to 256 KiB, atomic saves require a revision, and Activity stores metadata
+only. Memory is not added to AI prompts. See [ADR 0019](adr/0019-agent-memory.md).

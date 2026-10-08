@@ -1,3 +1,4 @@
+import { AgentMemoryService, registerMemoryRoutes } from "./memory/index.js";
 import { WorkspaceFileService, registerFileRoutes } from "./files/index.js";
 import { validateStartup } from "./release/startup-validation.js";
 import { registerLocalSecurity } from "./plugins/local-security.js";
@@ -46,6 +47,7 @@ declare module "fastify" {
     runtime: AgentRuntimeManager;
     workspaces: AgentWorkspaceManager;
     files: WorkspaceFileService;
+    memory: AgentMemoryService;
     mailbox: MailboxManager;
     router: MessageRouter;
     tasks: TaskRegistry;
@@ -136,6 +138,15 @@ export async function createApp(
       workspaces,
       activity,
       app.log.child({ component: "files" }),
+    ),
+  );
+  app.decorate(
+    "memory",
+    new AgentMemoryService(
+      agentRegistry,
+      workspaces,
+      activity,
+      app.log.child({ component: "memory" }),
     ),
   );
   const subscriptions = observeActivity(activity, agentRegistry, tasks);
@@ -268,6 +279,7 @@ export async function createApp(
   registerHealthRoutes(app, SERVER_VERSION);
   registerAgentRoutes(app, agentRegistry, runtime);
   registerFileRoutes(app, app.files);
+  registerMemoryRoutes(app, app.memory);
   registerTaskRoutes(app, tasks, execution);
   registerExecutionRoutes(app, execution);
   registerOrchestrationRoutes(app, orchestration);

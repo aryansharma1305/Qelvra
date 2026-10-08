@@ -110,24 +110,27 @@ describe("activity client and formatter", () => {
             : type.startsWith("router.")
               ? { type: "router", id: "router" }
               : { type: "agent", id: "nova" };
-      const metadata = type.startsWith("file.")
-        ? { agentId: "nova", relativePath: "src/file with spaces.ts" }
-        : type.startsWith("orchestration.")
-          ? { goalId: "goal-00000000-0000-4000-8000-000000000001" }
-          : type.startsWith("execution.")
-            ? {
-                executionId: "exec-00000000-0000-4000-8000-000000000001",
-                taskId: "task-00000000-0000-4000-8000-000000000001",
-                agentId: "nova",
-                providerId: "fake",
-              }
-            : type.startsWith("task.")
-              ? { taskTitle: "Login", assigneeId: "nova", assigneeName: "Nova" }
-              : type.startsWith("message.")
-                ? { from: "nova", to: "atlas", messageType: "message" }
-                : type.startsWith("router.")
-                  ? {}
-                  : { agentName: "Nova" };
+      const metadata =
+        type === "memory.updated"
+          ? { agentId: "nova", size: 42 }
+          : type.startsWith("file.")
+            ? { agentId: "nova", relativePath: "src/file with spaces.ts" }
+            : type.startsWith("orchestration.")
+              ? { goalId: "goal-00000000-0000-4000-8000-000000000001" }
+              : type.startsWith("execution.")
+                ? {
+                    executionId: "exec-00000000-0000-4000-8000-000000000001",
+                    taskId: "task-00000000-0000-4000-8000-000000000001",
+                    agentId: "nova",
+                    providerId: "fake",
+                  }
+                : type.startsWith("task.")
+                  ? { taskTitle: "Login", assigneeId: "nova", assigneeName: "Nova" }
+                  : type.startsWith("message.")
+                    ? { from: "nova", to: "atlas", messageType: "message" }
+                    : type.startsWith("router.")
+                      ? {}
+                      : { agentName: "Nova" };
       const display = formatActivityEvent(
         ActivityEventSchema.parse({ ...event(), type, entity, metadata }),
       );

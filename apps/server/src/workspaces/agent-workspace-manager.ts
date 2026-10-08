@@ -146,6 +146,18 @@ export class AgentWorkspaceManager {
     return { root, path, info };
   }
 
+  /** Fixed memory leaf only; browser input never selects a metadata filename. */
+  async getMemoryEntry(agentId: string, missingLeaf = false) {
+    await this.getWorkspacePath(agentId);
+    const path = join(this.agentRoot(agentId), "memory.md");
+    try {
+      return { path, info: await this.check(path, "file") };
+    } catch (error) {
+      if (missingLeaf && missing(error)) return { path, info: null };
+      throw error;
+    }
+  }
+
   /** Fixed mailbox locations only; no message semantics or caller-supplied paths. */
   async getMailboxPath(agentId: string, box: "inbox" | "outbox"): Promise<string> {
     if (box !== "inbox" && box !== "outbox") throw new Error("Invalid mailbox box");
