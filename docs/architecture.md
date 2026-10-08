@@ -56,3 +56,12 @@ ActivityStore snapshot. UTC `[from, to)` windows are bounded to 90 elapsed days;
 zero days, recording health, retention limits and overlapping agent involvement
 are explicit. No separate telemetry store, domain writes, private event payloads
 or external tracking are added. See [ADR 0020](adr/0020-real-analytics.md).
+
+## Settings (v0.2 development)
+
+GET `/api/settings` exposes selected effective startup/runtime values through a
+strict shared schema. Configuration stays read-only and requires a restart to
+change; there is no preferences store or environment editor. Provider status uses
+the existing discovery registry; POST `/api/providers/refresh` accepts no options
+and coalesces concurrent rediscovery. Storage paths, network binding, origin
+allowlist and absent API authentication remain explicit. See [ADR 0021](adr/0021-real-settings.md).

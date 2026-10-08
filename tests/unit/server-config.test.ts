@@ -13,6 +13,7 @@ describe("server configuration", () => {
       dataDir: `${process.cwd()}/.qelvra`,
       logLevel: "info",
       isProduction: false,
+      environment: "development",
     });
   });
 

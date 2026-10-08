@@ -48,6 +48,7 @@ export interface ServerConfig {
   dataDir: string;
   logLevel: z.infer<typeof EnvSchema>["LOG_LEVEL"];
   isProduction: boolean;
+  environment: z.infer<typeof EnvSchema>["NODE_ENV"];
   executionTimeoutMs: number;
   orchestration: {
     maxTasks: number;
@@ -93,6 +94,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
     dataDir: resolve(DATA_DIR ?? ".qelvra"),
     logLevel: LOG_LEVEL,
     isProduction: NODE_ENV === "production",
+    environment: NODE_ENV,
     executionTimeoutMs: EXECUTION_TIMEOUT_MS,
     orchestration: {
       maxTasks: ORCHESTRATION_MAX_TASKS,

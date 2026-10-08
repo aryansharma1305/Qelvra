@@ -11,3 +11,4 @@ export * from "./orchestration.js";
 export * from "./files.js";
 
 export * from "./analytics.js";
+export * from "./settings.js";

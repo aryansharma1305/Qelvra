@@ -13,12 +13,6 @@ const undesigned = [
     icon: "account_tree",
     description: "Scheduled and triggered agent workflows will live here.",
   },
-  {
-    path: "settings",
-    title: "Settings",
-    icon: "tune",
-    description: "Workspace, provider and security settings will live here.",
-  },
 ];
 
 export const router = createBrowserRouter([
@@ -88,6 +82,12 @@ export const router = createBrowserRouter([
         path: "analytics",
         lazy: async () => ({
           Component: (await import("../pages/analytics/AnalyticsPage")).AnalyticsPage,
+        }),
+      },
+      {
+        path: "settings",
+        lazy: async () => ({
+          Component: (await import("../pages/settings/SettingsPage")).SettingsPage,
         }),
       },
       {
