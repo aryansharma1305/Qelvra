@@ -1,3 +1,4 @@
+import { activityAgentIds } from "./activity-agent-ids.js";
 import { mkdir, open, stat } from "node:fs/promises";
 import { createReadStream } from "node:fs";
 import { createInterface } from "node:readline";
@@ -22,6 +23,7 @@ export class ActivityStore {
   private queue: Promise<void> = Promise.resolve();
   private closed = false;
   private bytes = 0;
+  private retentionTruncated = false;
   private needsNewline = false;
   integrityWarnings = 0;
   private constructor(
@@ -86,7 +88,34 @@ export class ActivityStore {
   }
   private remember(event: ActivityEvent) {
     this.events.push(event);
-    if (this.events.length > ACTIVITY_MEMORY_LIMIT) this.events.shift();
+    if (this.events.length > ACTIVITY_MEMORY_LIMIT) {
+      this.events.shift();
+      this.retentionTruncated = true;
+    }
+  }
+  /** Defensive, deduplicated copy of retained observations; no journal reads or writes. */
+  getSnapshot() {
+    const ids = new Set<string>();
+    const events = this.events.filter((event) => {
+      if (ids.has(event.id)) return false;
+      ids.add(event.id);
+      return true;
+    });
+    let oldestRetainedAt: string | null = null,
+      newestRetainedAt: string | null = null;
+    for (const event of events) {
+      if (!oldestRetainedAt || Date.parse(event.timestamp) < Date.parse(oldestRetainedAt))
+        oldestRetainedAt = event.timestamp;
+      if (!newestRetainedAt || Date.parse(event.timestamp) > Date.parse(newestRetainedAt))
+        newestRetainedAt = event.timestamp;
+    }
+    return {
+      events: structuredClone(events),
+      retainedEvents: events.length,
+      oldestRetainedAt,
+      newestRetainedAt,
+      retentionTruncated: this.retentionTruncated,
+    };
   }
   deliveredToday(day = new Date().toISOString().slice(0, 10)) {
     return this.events.filter(
@@ -158,13 +187,7 @@ export class ActivityStore {
         (!taskId ||
           (event.entity?.type === "task" && event.entity.id === taskId) ||
           ("taskId" in event.metadata && event.metadata.taskId === taskId)) &&
-        (!agentId ||
-          (event.entity?.type === "agent" && event.entity.id === agentId) ||
-          ("agentId" in event.metadata && event.metadata.agentId === agentId) ||
-          (event.actor?.type === "agent" && event.actor.id === agentId) ||
-          ("assigneeId" in event.metadata && event.metadata.assigneeId === agentId) ||
-          ("from" in event.metadata &&
-            (event.metadata.from === agentId || event.metadata.to === agentId))),
+        (!agentId || activityAgentIds(event).includes(agentId)),
     );
     const page = events.slice(0, Math.min(100, Math.max(1, limit)));
     return {

@@ -20,6 +20,7 @@ export const ApiErrorResponseSchema = z.object({
 export type ApiErrorResponse = z.infer<typeof ApiErrorResponseSchema>;
 
 export const API_ERROR_CODES = {
+  ANALYTICS_INVALID_QUERY: "ANALYTICS_INVALID_QUERY",
   MEMORY_INVALID_REQUEST: "MEMORY_INVALID_REQUEST",
   MEMORY_TOO_LARGE: "MEMORY_TOO_LARGE",
   MEMORY_INVALID_UTF8: "MEMORY_INVALID_UTF8",
