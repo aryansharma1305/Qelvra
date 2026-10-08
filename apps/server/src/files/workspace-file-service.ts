@@ -1,7 +1,11 @@
-import { createHash, randomUUID } from "node:crypto";
+import {
+  readBoundedText,
+  writeRevisionText,
+  type TextFilePolicy,
+} from "../lib/bounded-text-file.js";
 import { constants, type Stats } from "node:fs";
-import { access, open, readdir, lstat, mkdir, link, rename, rmdir, unlink } from "node:fs/promises";
-import { basename, dirname, join, posix } from "node:path";
+import { open, readdir, lstat, mkdir, link, rename, rmdir, unlink } from "node:fs/promises";
+import { basename, join, posix } from "node:path";
 import {
   WORKSPACE_TEXT_LIMIT,
   WORKSPACE_ENTRY_LIMIT,
@@ -16,13 +20,6 @@ import type { AgentRegistry } from "../agents/agent-registry.js";
 import type { AgentWorkspaceManager } from "../workspaces/agent-workspace-manager.js";
 import type { ActivityPublisher } from "../activity/activity-publisher.js";
 
-function hasBinaryControls(text: string) {
-  for (let i = 0; i < text.length; i++) {
-    const value = text.charCodeAt(i);
-    if (value === 127 || (value < 32 && ![9, 10, 12, 13].includes(value))) return true;
-  }
-  return false;
-}
 function entry(path: string, info: Stats): WorkspaceEntry {
   return {
     path,
@@ -37,11 +34,6 @@ function entry(path: string, info: Stats): WorkspaceEntry {
           : "file",
   };
 }
-const revision = (info: Stats, bytes: Buffer) =>
-  createHash("sha256")
-    .update(JSON.stringify([info.dev, info.ino, info.size, info.mtimeMs, info.ctimeMs, info.mode]))
-    .update(bytes)
-    .digest("hex");
 const code = (error: unknown) => (error as NodeJS.ErrnoException).code;
 
 /** Narrow workspace operations, serialized per agent. No provider writes or global paths. */
@@ -182,123 +174,38 @@ export class WorkspaceFileService {
       return entry(path, target.info);
     });
   }
-  private async read(agentId: string, path: string): Promise<WorkspaceFile> {
-    const target = await this.workspaces.resolveEntry(agentId, path);
-    if (!target.info?.isFile())
-      throw new AppError(400, "FILE_NOT_REGULAR", "Choose a regular text file");
-    if (target.info.size > WORKSPACE_TEXT_LIMIT)
-      throw new AppError(413, "FILE_TOO_LARGE", "File exceeds the 1 MiB editor limit");
-    const handle = await open(
-      target.path,
-      constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK,
-    );
-    try {
-      const info = await handle.stat();
-      if (!info.isFile() || info.nlink !== 1)
-        throw new AppError(400, "FILE_NOT_REGULAR", "Choose a regular text file");
-      if (info.size > WORKSPACE_TEXT_LIMIT)
-        throw new AppError(413, "FILE_TOO_LARGE", "File exceeds the 1 MiB editor limit");
-      const buffer = Buffer.alloc(WORKSPACE_TEXT_LIMIT + 1);
-      let length = 0;
-      while (length < buffer.length) {
-        const { bytesRead } = await handle.read(buffer, length, buffer.length - length, length);
-        if (!bytesRead) break;
-        length += bytesRead;
-      }
-      if (length > WORKSPACE_TEXT_LIMIT)
-        throw new AppError(413, "FILE_TOO_LARGE", "File exceeds the 1 MiB editor limit");
-      const after = await handle.stat();
-      if (
-        info.size !== after.size ||
-        info.mtimeMs !== after.mtimeMs ||
-        info.ctimeMs !== after.ctimeMs
-      )
-        throw new AppError(
-          409,
-          "FILE_CHANGED_ON_DISK",
-          "File changed while reading. Refresh and try again.",
-        );
-      const bytes = buffer.subarray(0, length);
-      let content: string;
-      try {
-        content = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
-      } catch {
-        throw new AppError(415, "FILE_BINARY", "Binary preview/editing is not supported yet");
-      }
-      if (hasBinaryControls(content))
-        throw new AppError(415, "FILE_BINARY", "Binary preview/editing is not supported yet");
-      await this.workspaces.resolveEntry(agentId, path);
-      return {
-        path,
-        size: length,
-        modifiedAt: info.mtime.toISOString(),
-        content,
-        encoding: "utf-8",
-        revision: revision(info, bytes),
-      };
-    } finally {
-      await handle.close();
-    }
+  private policy(agentId: string, path: string): TextFilePolicy {
+    const parent = posix.dirname(path) === "." ? "" : posix.dirname(path);
+    return {
+      limit: WORKSPACE_TEXT_LIMIT,
+      readBinaryMessage: "Binary preview/editing is not supported yet",
+      resolve: () => this.workspaces.resolveEntry(agentId, path),
+      validateParent: () => this.workspaces.resolveEntry(agentId, parent),
+      codes: {
+        large: "FILE_TOO_LARGE",
+        binary: "FILE_BINARY",
+        changed: "FILE_CHANGED_ON_DISK",
+        regular: "FILE_NOT_REGULAR",
+        write: "FILE_WRITE_FAILED",
+      },
+    };
   }
   readText(agentId: string, path: string) {
-    return this.run(agentId, "read", path, () => this.read(agentId, path));
+    return this.run(agentId, "read", path, async (): Promise<WorkspaceFile> => ({
+      ...(await readBoundedText(this.policy(agentId, path))),
+      path,
+      encoding: "utf-8",
+    }));
   }
   writeText(agentId: string, input: WorkspaceWriteRequest) {
-    return this.run(agentId, "write", input.path, async () => {
-      if (Buffer.byteLength(input.content, "utf8") > WORKSPACE_TEXT_LIMIT)
-        throw new AppError(413, "FILE_TOO_LARGE", "Text exceeds the 1 MiB editor limit");
-      if (
-        hasBinaryControls(input.content) ||
-        new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(
-          Buffer.from(input.content),
-        ) !== input.content
-      )
-        throw new AppError(415, "FILE_BINARY", "Only valid UTF-8 text can be saved");
-      const original = await this.read(agentId, input.path);
-      if (original.revision !== input.revision)
-        throw new AppError(
-          409,
-          "FILE_CHANGED_ON_DISK",
-          "File changed on disk. Reload before saving; your edits have been kept.",
-        );
-      const target = await this.workspaces.resolveEntry(agentId, input.path);
-      if (!target.info || !(target.info.mode & 0o222))
-        throw new AppError(403, "FILE_WRITE_FAILED", "File is read-only on the host filesystem");
-      await access(target.path, constants.W_OK);
-      const parent = posix.dirname(input.path) === "." ? "" : posix.dirname(input.path);
-      const temp = join(dirname(target.path), `.qelvra-files-tmp-${randomUUID()}`);
-      let ownsTemp = false;
-      try {
-        const handle = await open(
-          temp,
-          constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | constants.O_NOFOLLOW,
-          target.info.mode & 0o777,
-        );
-        ownsTemp = true;
-        try {
-          await handle.writeFile(input.content, "utf8");
-          await handle.sync();
-        } finally {
-          await handle.close();
-        }
-        await this.workspaces.resolveEntry(agentId, parent);
-        if ((await this.read(agentId, input.path)).revision !== input.revision)
-          throw new AppError(
-            409,
-            "FILE_CHANGED_ON_DISK",
-            "File changed on disk. Reload before saving; your edits have been kept.",
-          );
-        await rename(temp, target.path);
-        ownsTemp = false;
-      } finally {
-        if (ownsTemp) {
-          await this.workspaces.resolveEntry(agentId, parent);
-          await unlink(temp);
-        }
-      }
-      const file = await this.read(agentId, input.path);
+    return this.run(agentId, "write", input.path, async (): Promise<WorkspaceFile> => {
+      const file = await writeRevisionText(
+        this.policy(agentId, input.path),
+        input.content,
+        input.revision,
+      );
       await this.event(agentId, input.path, "file.updated");
-      return file;
+      return { ...file, path: input.path, encoding: "utf-8" };
     });
   }
   create(agentId: string, path: string, directory = false) {

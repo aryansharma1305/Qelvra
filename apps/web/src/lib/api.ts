@@ -1,3 +1,4 @@
+import { AgentMemoryResponseSchema } from "@qelvra/shared";
 import {
   WorkspaceListingSchema,
   WorkspaceFileResponseSchema,
@@ -390,3 +391,20 @@ export const deleteWorkspaceEntry = (
     method: "DELETE",
     body: { path, recursive },
   });
+
+const memoryPath = (id: string) => `/api/agents/${encodeURIComponent(id)}/memory`;
+export const getAgentMemory = async (id: string, options?: CallOptions) =>
+  (await requestJson(memoryPath(id), AgentMemoryResponseSchema, options)).memory;
+export const updateAgentMemory = async (
+  id: string,
+  content: string,
+  expectedRevision: string,
+  options?: CallOptions,
+) =>
+  (
+    await requestJson(memoryPath(id), AgentMemoryResponseSchema, {
+      ...options,
+      method: "PUT",
+      body: { content, expectedRevision },
+    })
+  ).memory;

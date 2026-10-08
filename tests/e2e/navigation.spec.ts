@@ -19,6 +19,7 @@ const designedRoutes = [
   { link: "Agents", path: "/agents", heading: "Your AI Team" },
   { link: "Activity", path: "/activity", heading: "Activity" },
   { link: "Files", path: "/files", heading: "Files" },
+  { link: "Memory", path: "/memory", heading: "Memory" },
   { link: "Tasks", path: "/tasks", heading: "Mission Control" },
   { link: "Terminal", path: "/terminal", text: "Swarm Console" },
   { link: "Agent Network", path: "/network", text: "Swarm Mesh Network" },
@@ -41,7 +42,7 @@ for (const route of designedRoutes) {
   });
 }
 
-for (const name of ["Memory", "Automations", "Analytics", "Settings"]) {
+for (const name of ["Automations", "Analytics", "Settings"]) {
   test(`${name} shows an explicit not-built-yet state`, async ({ page }) => {
     await page.goto("/");
     await sidebar(page).getByRole("link", { name }).click();

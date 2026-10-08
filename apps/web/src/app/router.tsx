@@ -8,12 +8,6 @@ import { EmptyStatePage } from "../pages/EmptyStatePage";
 // so navigation shows no loading flash.
 const undesigned = [
   {
-    path: "memory",
-    title: "Memory",
-    icon: "database",
-    description: "Inspect and edit agent memory files here.",
-  },
-  {
     path: "automations",
     title: "Automations",
     icon: "account_tree",
@@ -79,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: "files",
         lazy: async () => ({ Component: (await import("../pages/files/FilesPage")).FilesPage }),
+      },
+      {
+        path: "memory",
+        lazy: async () => ({ Component: (await import("../pages/memory/MemoryPage")).MemoryPage }),
       },
       {
         path: "terminal",
