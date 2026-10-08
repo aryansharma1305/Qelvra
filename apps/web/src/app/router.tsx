@@ -14,12 +14,6 @@ const undesigned = [
     description: "Scheduled and triggered agent workflows will live here.",
   },
   {
-    path: "analytics",
-    title: "Analytics",
-    icon: "query_stats",
-    description: "Usage and throughput analytics will appear here.",
-  },
-  {
     path: "settings",
     title: "Settings",
     icon: "tune",
@@ -88,6 +82,12 @@ export const router = createBrowserRouter([
         path: "network",
         lazy: async () => ({
           Component: (await import("../pages/network/NetworkPage")).NetworkPage,
+        }),
+      },
+      {
+        path: "analytics",
+        lazy: async () => ({
+          Component: (await import("../pages/analytics/AnalyticsPage")).AnalyticsPage,
         }),
       },
       {

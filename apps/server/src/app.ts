@@ -1,3 +1,4 @@
+import { AnalyticsService, registerAnalyticsRoutes } from "./analytics/index.js";
 import { AgentMemoryService, registerMemoryRoutes } from "./memory/index.js";
 import { WorkspaceFileService, registerFileRoutes } from "./files/index.js";
 import { validateStartup } from "./release/startup-validation.js";
@@ -48,6 +49,7 @@ declare module "fastify" {
     workspaces: AgentWorkspaceManager;
     files: WorkspaceFileService;
     memory: AgentMemoryService;
+    analytics: AnalyticsService;
     mailbox: MailboxManager;
     router: MessageRouter;
     tasks: TaskRegistry;
@@ -131,6 +133,7 @@ export async function createApp(
     app.log,
   );
   app.decorate("activity", activity);
+  app.decorate("analytics", new AnalyticsService(activity, agentRegistry));
   app.decorate(
     "files",
     new WorkspaceFileService(
@@ -284,6 +287,7 @@ export async function createApp(
   registerExecutionRoutes(app, execution);
   registerOrchestrationRoutes(app, orchestration);
   registerActivityRoutes(app, activity);
+  registerAnalyticsRoutes(app, app.analytics);
   await registerTerminalGateway(app, {
     pty: ptyManager,
     runtime,

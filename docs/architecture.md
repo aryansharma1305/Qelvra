@@ -48,3 +48,11 @@ is explicitly confirmed and bounded. See [ADR 0018](adr/0018-agent-files.md).
 `/memory` reads and edits each registered agent’s fixed `memory.md`. Valid UTF-8 is
 bounded to 256 KiB, atomic saves require a revision, and Activity stores metadata
 only. Memory is not added to AI prompts. See [ADR 0019](adr/0019-agent-memory.md).
+
+## Analytics (v0.2 development)
+
+GET `/api/analytics` aggregates the ActivityPublisher's flushed, retained
+ActivityStore snapshot. UTC `[from, to)` windows are bounded to 90 elapsed days;
+zero days, recording health, retention limits and overlapping agent involvement
+are explicit. No separate telemetry store, domain writes, private event payloads
+or external tracking are added. See [ADR 0020](adr/0020-real-analytics.md).

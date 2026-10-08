@@ -1,3 +1,4 @@
+import { AnalyticsResponseSchema, AnalyticsQuerySchema, type AnalyticsQuery } from "@qelvra/shared";
 import { AgentMemoryResponseSchema } from "@qelvra/shared";
 import {
   WorkspaceListingSchema,
@@ -408,3 +409,14 @@ export const updateAgentMemory = async (
       body: { content, expectedRevision },
     })
   ).memory;
+
+export function getAnalytics(params: AnalyticsQuery = {}, options: RequestOptions = {}) {
+  const query = AnalyticsQuerySchema.parse(params);
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) if (value !== undefined) search.set(key, value);
+  return requestJson(
+    "/api/analytics" + (search.size ? "?" + search.toString() : ""),
+    AnalyticsResponseSchema,
+    options,
+  );
+}
