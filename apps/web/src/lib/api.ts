@@ -1,3 +1,4 @@
+import { NetworkQuerySchema, NetworkResponseSchema, type NetworkQuery } from "@qelvra/shared";
 import { AnalyticsResponseSchema, AnalyticsQuerySchema, type AnalyticsQuery } from "@qelvra/shared";
 import { AgentMemoryResponseSchema } from "@qelvra/shared";
 import { SettingsResponseSchema } from "@qelvra/shared";
@@ -434,4 +435,9 @@ export function getAnalytics(params: AnalyticsQuery = {}, options: RequestOption
     AnalyticsResponseSchema,
     options,
   );
+}
+
+export async function getNetwork(query: NetworkQuery = {}, options: RequestOptions = {}) {
+  const parsed = NetworkQuerySchema.parse(query);
+  return requestJson(`/api/network?window=${parsed.window}`, NetworkResponseSchema, options);
 }

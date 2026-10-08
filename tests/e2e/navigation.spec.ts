@@ -24,7 +24,7 @@ const designedRoutes = [
   { link: "Settings", path: "/settings", heading: "Settings" },
   { link: "Tasks", path: "/tasks", heading: "Mission Control" },
   { link: "Terminal", path: "/terminal", text: "Swarm Console" },
-  { link: "Agent Network", path: "/network", text: "Swarm Mesh Network" },
+  { link: "Agent Network", path: "/network", text: "Agent Network" },
 ];
 
 for (const route of designedRoutes) {
