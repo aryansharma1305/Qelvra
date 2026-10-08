@@ -29,6 +29,7 @@ export class ProviderRegistry {
   private readonly ttl: number;
   private readonly logger: ServiceLogger;
   private active = 0;
+  private refreshing: Promise<Provider[]> | undefined;
   private readonly waiting: (() => void)[] = [];
   constructor(options: ProviderRegistryOptions = {}) {
     this.definitions = options.definitions ?? PROVIDER_DEFINITIONS;
@@ -74,10 +75,15 @@ export class ProviderRegistry {
   list(): Promise<Provider[]> {
     return Promise.all(this.definitions.map((def) => this.get(def.id)));
   }
-  /** Internal refresh; HTTP exposes only the read-only discovery endpoint. */
+  /** Coalesce explicit rediscovery without changing any agent/provider configuration. */
   refresh(): Promise<Provider[]> {
-    this.cache.clear();
-    return this.list();
+    if (!this.refreshing) {
+      this.cache.clear();
+      this.refreshing = this.list().finally(() => {
+        this.refreshing = undefined;
+      });
+    }
+    return this.refreshing.then((providers) => structuredClone(providers));
   }
   async resolve(agent: Agent, cwd: string, dataDir: string) {
     const id = agent.providerId ?? "shell";

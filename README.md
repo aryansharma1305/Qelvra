@@ -18,6 +18,7 @@ Instead of manually opening several AI coding sessions and coordinating them you
 - The Files page browses and edits isolated agent workspaces (v0.2 development on `main`).
 - The Memory page edits persistent per-agent Markdown notes (v0.2 development).
 - Analytics provides local read-only insights over retained Activity events (v0.2 development).
+- Settings shows effective runtime configuration and supports explicit local provider rediscovery (v0.2 development).
 - Filesystem mailbox messaging and automatic agent-to-agent routing.
 - A real-time Activity feed for agent, task, execution and goal events.
 - **Goal → Plan → Run → Review/Rework → Final Summary** orchestration with explicit plan approval.

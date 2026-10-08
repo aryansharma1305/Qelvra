@@ -34,6 +34,7 @@ import { registerErrorHandling } from "./plugins/errors.js";
 import { PtyManager } from "./pty/index.js";
 import { registerAgentRoutes } from "./routes/agents.js";
 import { registerHealthRoutes } from "./routes/health.js";
+import { registerSettingsRoutes } from "./routes/settings.js";
 import { SERVER_VERSION } from "./version.js";
 import { registerTerminalGateway } from "./websocket/terminal-gateway.js";
 
@@ -280,6 +281,7 @@ export async function createApp(
   registerErrorHandling(app);
   await registerCors(app, config.webOrigins);
   registerHealthRoutes(app, SERVER_VERSION);
+  registerSettingsRoutes(app, config, SERVER_VERSION);
   registerAgentRoutes(app, agentRegistry, runtime);
   registerFileRoutes(app, app.files);
   registerMemoryRoutes(app, app.memory);

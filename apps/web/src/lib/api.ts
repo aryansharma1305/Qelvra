@@ -1,5 +1,6 @@
 import { AnalyticsResponseSchema, AnalyticsQuerySchema, type AnalyticsQuery } from "@qelvra/shared";
 import { AgentMemoryResponseSchema } from "@qelvra/shared";
+import { SettingsResponseSchema } from "@qelvra/shared";
 import {
   WorkspaceListingSchema,
   WorkspaceFileResponseSchema,
@@ -271,6 +272,20 @@ export async function listProviders(options?: CallOptions): Promise<Provider[]> 
     await requestJson("/api/providers", ProviderListResponseSchema, {
       timeoutMs: 20000,
       ...options,
+    })
+  ).providers;
+}
+
+export const getSettings = (options?: CallOptions) =>
+  requestJson("/api/settings", SettingsResponseSchema, options);
+
+export async function refreshProviders(options?: CallOptions): Promise<Provider[]> {
+  return (
+    await requestJson("/api/providers/refresh", ProviderListResponseSchema, {
+      timeoutMs: 60000,
+      ...options,
+      method: "POST",
+      body: {},
     })
   ).providers;
 }
