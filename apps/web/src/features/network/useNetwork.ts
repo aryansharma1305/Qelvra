@@ -52,12 +52,15 @@ export function useNetwork(window: NetworkWindow) {
       }
     };
     const schedule = () => {
-      if (!visible()) return;
-      clearTimeout(debounce);
-      debounce = setTimeout(() => void load(), 150);
+      if (!visible() || debounce !== undefined) return;
+      debounce = setTimeout(() => {
+        debounce = undefined;
+        void load();
+      }, 150);
     };
     const stop = () => {
       clearTimeout(debounce);
+      debounce = undefined;
       clearInterval(fallback);
       stream?.dispose();
       stream = undefined;
@@ -74,7 +77,7 @@ export function useNetwork(window: NetworkWindow) {
           if (/^(agent|task|execution|orchestration|message)\./.test(event.type)) schedule();
         },
       });
-      fallback = setInterval(schedule, 10000);
+      fallback = setInterval(() => void load(), 10000);
       void load();
     };
     const visibility = () => {

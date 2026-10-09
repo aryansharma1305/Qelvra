@@ -94,9 +94,10 @@ mutate domain records.
 
 The hook keeps the last successful snapshot on failure, including its actual
 loaded interval, and offers Retry. Window changes abort obsolete requests.
-Existing Activity notifications invalidate the projection through a 150 ms
-trailing debounce; in-flight work coalesces to at most one queued refresh. A
-10-second visible-page fallback handles unrecorded changes and moving windows.
+Existing Activity notifications invalidate the projection through one pending
+150 ms timer, so sustained notifications cannot postpone refresh indefinitely.
+In-flight work coalesces to at most one queued refresh. An independent 10-second
+visible-page fallback handles unrecorded changes and moving windows.
 Hidden/unmounted pages stop timers, dispose the Activity subscription and abort
 requests; visibility return reloads. Notification connection state and recording
 health are separate and never described as live traffic.

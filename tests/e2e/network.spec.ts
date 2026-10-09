@@ -171,20 +171,17 @@ test("degraded source and all display limits are disclosed", async ({ page }) =>
 test("Activity invalidation coalesces requests; hidden pages pause fallback and resume", async ({
   page,
 }) => {
-  let calls = 0,
-    release!: () => void;
-  let hold = false;
-  let pending = Promise.resolve();
+  let calls = 0;
   const data = networkFixture();
   await page.route("**/api/network?*", async (r) => {
     calls++;
-    if (hold) await pending;
     try {
       await r.fulfill({ json: data });
     } catch {
       /* hidden/unmounted request aborted */
     }
   });
+  await page.clock.install();
   await page.goto("/network");
   await expect(page.getByTestId("network-range")).toBeVisible();
   await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
@@ -198,13 +195,8 @@ test("Activity invalidation coalesces requests; hidden pages pause fallback and 
   });
   await expect(page.locator("main")).toContainText("Refresh paused while page is hidden");
   const hiddenCalls = calls;
-  await page.clock.install();
   await page.clock.fastForward(30000);
   expect(calls).toBe(hiddenCalls);
-  hold = true;
-  pending = new Promise<void>((resolve) => {
-    release = resolve;
-  });
   await page.evaluate(() => {
     Object.defineProperty(document, "visibilityState", {
       configurable: true,
@@ -213,13 +205,11 @@ test("Activity invalidation coalesces requests; hidden pages pause fallback and 
     document.dispatchEvent(new Event("visibilitychange"));
   });
   await expect.poll(() => calls).toBeGreaterThan(hiddenCalls);
-  const fetchingCalls = calls;
-  await page.clock.fastForward(30000);
-  expect(calls).toBe(fetchingCalls);
-  hold = false;
-  release();
-  await page.clock.fastForward(200);
-  await expect(page.getByTestId("network-range")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
+  const resumedCalls = calls;
+  await page.clock.fastForward(10000);
+  await expect.poll(() => calls).toBeGreaterThan(resumedCalls);
+  await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
   await page.goto("/settings");
   const after = calls;
   await page.clock.fastForward(30000);
@@ -242,10 +232,10 @@ test("bursts of real Activity notifications trigger bounded projection refetches
     if (hold) await pending;
     await route.fulfill({ json: networkFixture() });
   });
+  await page.clock.install();
   await page.goto("/network");
   await expect(page.locator("main")).toContainText("Activity notifications connected.");
   await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
-  await page.clock.install();
   await page.clock.fastForward(500);
   await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
   const before = calls;
@@ -268,4 +258,29 @@ test("bursts of real Activity notifications trigger bounded projection refetches
   release();
   await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
   expect(calls).toBeLessThanOrEqual(before + 2);
+});
+
+test("sustained Activity notifications cannot starve Network refresh", async ({ page }) => {
+  let notify: ((message: string) => void) | undefined;
+  await page.routeWebSocket("**/ws/activity", (socket) => {
+    notify = (message) => socket.send(message);
+  });
+  let calls = 0;
+  await page.route("**/api/network?*", async (route) => {
+    calls++;
+    await route.fulfill({ json: networkFixture() });
+  });
+  await page.clock.install();
+  await page.goto("/network");
+  await expect(page.locator("main")).toContainText("Activity notifications connected.");
+  await expect(page.getByRole("button", { name: "Refresh", exact: true })).toBeEnabled();
+  await page.clock.runFor(500);
+  const before = calls;
+  for (let n = 0; n < 20; n++) {
+    if (!notify) throw new Error("Missing Activity socket");
+    notify(JSON.stringify({ type: "activity.event", event: observation(n + 1, "lead", "worker") }));
+    await page.clock.runFor(50);
+  }
+  expect(calls).toBeGreaterThanOrEqual(before + 2);
+  expect(calls).toBeLessThanOrEqual(before + 8);
 });

@@ -103,3 +103,18 @@ The implementation PR targets `main`. Completion additionally requires hosted
 `check` and `e2e` success at the submitted PR's exact head. The final delivery
 reports the immutable commit SHA, PR URL and CI run URL/results separately from
 this pre-submission local verification record.
+
+## Pre-merge review correction
+
+The independent standards and specification reviews both found the same refresh
+starvation defect: sustained Activity frames repeatedly reset the trailing timer,
+including fallback ticks. A new browser regression failed against the original
+hook. Notifications now share one bounded 150 ms pending timer, and the 10-second
+fallback calls the already coalesced loader independently. Hidden/unmount cleanup
+clears the pending timer reference. The corrected Network browser suite passed
+**10 tests with zero retries**; the sustained-frame regression was also rerun
+against the original hook and failed as expected. Timer-based tests install their
+clock before navigation and separately verify the visible fallback, hidden pause,
+unmount cleanup and in-flight coalescing. Formatting, lint, typecheck and build
+passed after the correction. Hosted CI must pass on the corrected exact head
+before merge. No other material review finding remained.
