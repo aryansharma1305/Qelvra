@@ -36,9 +36,7 @@ export async function prepareBetaReference(page: Page, route: string) {
             el.classList.remove(edit.from);
             el.classList.add(edit.to);
           }
-      if (
-        ["home", "swarm", "network", "studio", "onboarding", "terminal"].includes(section ?? "")
-      ) {
+      if (["home", "swarm", "studio", "onboarding", "terminal"].includes(section ?? "")) {
         for (const el of document.querySelectorAll<HTMLElement>("[style]"))
           if (el.style.width.endsWith("%") && el.style.width !== "0%") el.style.width = "0%";
       }
@@ -128,7 +126,7 @@ export async function prepareBetaReference(page: Page, route: string) {
           input.disabled = true;
         }
       }
-      if (["swarm", "network", "studio", "onboarding"].includes(section ?? "")) {
+      if (["swarm", "studio", "onboarding"].includes(section ?? "")) {
         const note = document.createElement("p");
         note.setAttribute("role", "note");
         note.className =

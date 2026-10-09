@@ -42,10 +42,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Agent Network",
     path: "/network",
     icon: "hub",
-    badge: {
-      label: "Preview",
-      className: "bg-tertiary-container/30 text-tertiary border border-tertiary/20 rounded",
-    },
   },
   { label: "Activity", path: "/activity", icon: "pulse_alert" },
   { label: "Files", path: "/files", icon: "folder_open" },

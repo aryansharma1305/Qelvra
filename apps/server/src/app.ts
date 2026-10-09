@@ -1,3 +1,5 @@
+import { NetworkService } from "./network/network-service.js";
+import { registerNetworkRoutes } from "./network/network-routes.js";
 import { AnalyticsService, registerAnalyticsRoutes } from "./analytics/index.js";
 import { AgentMemoryService, registerMemoryRoutes } from "./memory/index.js";
 import { WorkspaceFileService, registerFileRoutes } from "./files/index.js";
@@ -290,6 +292,10 @@ export async function createApp(
   registerOrchestrationRoutes(app, orchestration);
   registerActivityRoutes(app, activity);
   registerAnalyticsRoutes(app, app.analytics);
+  registerNetworkRoutes(
+    app,
+    new NetworkService(activity, agentRegistry, runtime, tasks, orchestration),
+  );
   await registerTerminalGateway(app, {
     pty: ptyManager,
     runtime,

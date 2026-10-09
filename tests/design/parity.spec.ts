@@ -198,7 +198,6 @@ const SCREENS: readonly { screen: string; route: string; shell: "app" | "onboard
   { screen: "agent_hive_create_agent_wizard", route: "/agents/new?step=3", shell: "app" },
   { screen: "agent_hive_mission_control", route: "/tasks", shell: "app" },
   { screen: "agent_hive_multi_agent_terminal_workspace", route: "/terminal", shell: "app" },
-  { screen: "agent_hive_agent_network", route: "/network", shell: "app" },
   { screen: "agent_hive_ai_studio", route: "/studio", shell: "app" },
   { screen: "agent_hive_onboarding_build_your_ai_team", route: "/onboarding", shell: "onboarding" },
   {

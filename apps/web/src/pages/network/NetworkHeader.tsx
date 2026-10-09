@@ -1,137 +1,59 @@
-// Ported from the Stitch export (agent_hive_agent_network/code.html). Keep visually identical to the design.
-
-export function NetworkHeader() {
+import type { NetworkResponse, NetworkWindow } from "@qelvra/shared";
+import { baseControl, control, utc } from "./presentation";
+export function NetworkHeader({
+  window,
+  onWindow,
+  refresh,
+  loading,
+  data,
+}: {
+  window: NetworkWindow;
+  onWindow: (value: NetworkWindow) => void;
+  refresh: () => void;
+  loading: boolean;
+  data: NetworkResponse | null;
+}) {
   return (
-    <header className="w-full bg-surface-container-lowest px-margin-md py-space-sm flex flex-col xl:flex-row xl:items-center justify-between gap-space-md shadow-sm">
-      <div className="flex flex-wrap items-center gap-space-md">
-        <div className="flex items-center gap-space-xs font-code-sm text-code-sm">
-          <span className="text-outline">Workspace</span>
-          <span className="text-outline-variant font-code-sm">/</span>
-          <span className="text-outline">Topology</span>
-          <span className="text-outline-variant font-code-sm">/</span>
-          <span className="text-primary font-semibold">Swarm Mesh Network</span>
-        </div>
-        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping" />
-          <span className="font-medium tracking-wide">Not available yet</span>
-        </div>
-        <div className="h-3.5 w-px bg-surface-container-highest hidden sm:block" />
-        <div className="flex items-center p-0.5 rounded-lg bg-surface-container-low">
-          <button
-            disabled
-            title="Coming later — this control is not available in the beta"
-            aria-label="Coming later — coming later"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-semibold transition-all"
-            type="button"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-tertiary" />
-            PREVIEW
-          </button>
-          <button
-            disabled
-            title="Coming later — this control is not available in the beta"
-            aria-label="Coming later — coming later"
-            className="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors"
-            type="button"
-          >
-            5 MIN
-          </button>
-          <button
-            disabled
-            title="Coming later — this control is not available in the beta"
-            aria-label="Coming later — coming later"
-            className="px-2.5 py-1 rounded text-outline hover:text-on-surface font-label-sm text-label-sm transition-colors"
-            type="button"
-          >
-            1 HOUR
-          </button>
-        </div>
-        <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container-low text-on-surface-variant font-code-sm text-code-sm cursor-pointer hover:bg-surface-container-high transition-colors">
-          <span className="material-symbols-outlined text-[14px] text-secondary">alt_route</span>
-          <span className="font-medium text-on-surface">#TSK-8924: Nav Redesign</span>
-          <span className="material-symbols-outlined text-[14px] text-outline">expand_more</span>
-        </div>
+    <header className="flex flex-col gap-5">
+      <div>
+        <h1 className="text-headline-lg font-semibold tracking-tight">Agent Network</h1>
+        <p className="mt-2 text-body-md text-on-surface-variant max-w-[75ch]">
+          Registered agents, recorded message activity and persisted orchestration participation.
+        </p>
       </div>
-      <div className="flex flex-wrap items-center gap-space-lg">
-        <div className="flex items-center gap-space-lg text-left">
-          <div className="flex flex-col">
-            <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
-              Messages Today
-            </span>
-            <span className="font-code-md text-code-md font-semibold text-on-surface">
-              Not measured
-            </span>
-          </div>
-          <div className="h-6 w-px bg-surface-container-highest" />
-          <div className="flex flex-col">
-            <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
-              Active Channels
-            </span>
-            <span className="font-code-md text-code-md font-semibold text-secondary">
-              Not measured <span className="font-label-sm text-label-sm text-outline">FULL</span>
-            </span>
-          </div>
-          <div className="h-6 w-px bg-surface-container-highest" />
-          <div className="flex flex-col">
-            <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
-              Throughput
-            </span>
-            <span className="font-code-md text-code-md font-semibold text-tertiary">
-              Not measured
-            </span>
-          </div>
-          <div className="h-6 w-px bg-surface-container-highest" />
-          <div className="flex flex-col">
-            <span className="font-label-sm text-label-sm text-outline uppercase tracking-wider">
-              Mesh RTT
-            </span>
-            <span className="font-code-md text-code-md font-semibold text-primary">
-              Not measured
-            </span>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg">
-          <button
-            disabled
-            aria-label="remove — coming later"
-            className="w-6 h-6 flex items-center justify-center rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-            title="Zoom Out"
-            type="button"
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="flex flex-col gap-2 text-body-sm">
+          Recent history window
+          <select
+            className={control}
+            value={window}
+            onChange={(e) => onWindow(e.target.value as NetworkWindow)}
           >
-            <span className="material-symbols-outlined text-[15px]">remove</span>
-          </button>
-          <span className="font-code-sm text-code-sm px-1 text-outline">Not measured</span>
-          <button
-            disabled
-            aria-label="add — coming later"
-            className="w-6 h-6 flex items-center justify-center rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-            title="Zoom In"
-            type="button"
-          >
-            <span className="material-symbols-outlined text-[15px]">add</span>
-          </button>
-          <div className="h-3.5 w-px bg-surface-container-highest mx-0.5" />
-          <button
-            disabled
-            aria-label="center focus strong — coming later"
-            className="w-6 h-6 flex items-center justify-center rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors"
-            title="Reset Graph"
-            type="button"
-          >
-            <span className="material-symbols-outlined text-[15px]">center_focus_strong</span>
-          </button>
-          <button
-            disabled
-            aria-label="scatter plot — coming later"
-            className="flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-secondary font-label-sm text-label-sm"
-            title="Toggle Physics Layout"
-            type="button"
-          >
-            <span className="material-symbols-outlined text-[13px]">scatter_plot</span>
-            <span>PHYSICS</span>
-          </button>
-        </div>
+            <option value="1h">Last hour</option>
+            <option value="24h">Last 24 hours</option>
+            <option value="7d">Last 7 days</option>
+          </select>
+        </label>
+        <button
+          className={`${baseControl} bg-primary text-on-primary hover:bg-primary-container`}
+          disabled={loading}
+          onClick={refresh}
+        >
+          {loading ? "Refreshing…" : "Refresh"}
+        </button>
+        {data && (
+          <p className="text-body-sm text-on-surface-variant py-2">
+            Agents: {data.totals.displayedNodes} shown / {data.totals.eligibleNodes} registered ·
+            Relationships: {data.totals.displayedEdges} shown / {data.totals.eligibleEdges} eligible
+          </p>
+        )}
       </div>
+      {data && (
+        <p className="text-body-sm text-on-surface-variant break-words" data-testid="network-range">
+          Loaded {utc(data.range.from)} to {utc(data.range.to)} (end excluded). Current tasks and
+          goals remain visible regardless of age; terminal history uses this interval.
+        </p>
+      )}
     </header>
   );
 }

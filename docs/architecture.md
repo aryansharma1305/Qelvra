@@ -65,3 +65,18 @@ change; there is no preferences store or environment editor. Provider status use
 the existing discovery registry; POST `/api/providers/refresh` accepts no options
 and coalesces concurrent rediscovery. Storage paths, network binding, origin
 allowlist and absent API authentication remain explicit. See [ADR 0021](adr/0021-real-settings.md).
+
+## Agent Network
+
+GET `/api/network` is a read-only, allowlisted projection of the registry, current
+PTY metadata, task assignments, materialized goal participation and retained
+router Activity observations. `window=1h|24h|7d` defaults to `24h` with UTC
+`[from,to)` semantics. Message arrows represent recorded lifecycle evidence;
+orchestration lines represent persisted membership, never live traffic. Tasks
+annotate nodes. No mailbox reads, provider probes, new persistence or domain
+mutations occur. Caps (100 nodes, 200 edges, 20 task/goal details and edge
+references, 50 timeline observations), eligible/displayed totals and recording
+coverage are explicit. Activity invalidation and visible-page fallback refresh
+reload the projection; hidden/unmounted pages stop subscriptions and timers.
+See [ADR 0022](adr/0022-real-agent-network.md) for identity reuse and retention
+limitations.

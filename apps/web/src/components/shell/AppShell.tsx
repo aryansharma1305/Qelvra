@@ -12,7 +12,7 @@ export function AppShell() {
     <div className="bg-surface font-body-md text-body-md text-on-surface select-none antialiased min-h-screen">
       <AppHeader />
       <AppSidebar />
-      {["/studio", "/swarm", "/network"].includes(pathname) && <PreviewNotice />}
+      {["/studio", "/swarm"].includes(pathname) && <PreviewNotice />}
       {connection.state === "disconnected" && (
         <p
           role="alert"

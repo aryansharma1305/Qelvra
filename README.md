@@ -230,7 +230,8 @@ An agent's workspace cwd is **not a full OS sandbox**. Provider processes can ha
 - Agents use **isolated workspaces**. Qelvra does not automatically merge edits into one shared project repository. Shared Projects / Git Worktree Collaboration is future work.
 - The beta assumes a trusted local machine and one user. It has **no API authentication** and is unsafe to expose directly to the public internet or an untrusted LAN.
 - Provider installation, authentication and account usage remain provider-owned. Detection alone does not mean a provider supports automation.
-- Studio, Network, Swarm and the older onboarding tour are visual previews. Some controls are informational or disabled; Attachments, Voice, Vector Memory, per-agent autonomous Delegation and Lo-Fi playback are not available in beta.
+- Agent Network (`/network`) inspects registered agents, retained message observations and persisted goal participation. It is read-only; history and display limits are disclosed, and mailbox contents are never inspected.
+- Studio, Swarm and the older onboarding tour are visual previews. Some controls are informational or disabled; Attachments, Voice, Vector Memory, per-agent autonomous Delegation and Lo-Fi playback are not available in beta.
 - Windows is not release-verified. The UI is desktop-first, and the release runs from source.
 - Persistence formats and retention limits are beta constraints; back up before upgrading. Recovery does not guarantee exactly-once messaging or transactional rollback of workspace edits.
 
