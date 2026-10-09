@@ -1,3 +1,4 @@
+import { AutomationStoreSchema } from "../automations/automation-store.js";
 import { randomUUID } from "node:crypto";
 import { constants } from "node:fs";
 import { access, lstat, mkdir, open, unlink } from "node:fs/promises";
@@ -68,6 +69,14 @@ export async function validateStartup(config: ServerConfig) {
   await directory(config.dataDir, "DATA_DIR", true);
   await directory(config.workspaceRoot, "workspace root", false);
   const snapshots = [
+    {
+      file: "automations.json",
+      subsystem: "automation store",
+      ids: (raw: unknown) => {
+        const data = AutomationStoreSchema.parse(raw);
+        return [...data.automations.map((a) => a.id), ...data.runs.map((r) => r.id)];
+      },
+    },
     {
       file: "agents.json",
       subsystem: "agent registry",

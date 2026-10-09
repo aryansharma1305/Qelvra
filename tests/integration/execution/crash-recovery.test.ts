@@ -26,7 +26,7 @@ afterEach(async () => {
   for (const pid of processes) await expect.poll(() => alive(pid), { timeout: 6000 }).toBe(false);
   if (directory) await rm(directory, { recursive: true, force: true });
 });
-it("hard server death closes IPC, stops provider descendants and recovers without a second launch", async () => {
+it("hard server death protects automation ownership, stops descendants and interrupts without relaunch", async () => {
   directory = await mkdtemp(join(tmpdir(), "qelvra-execution-crash-"));
   server = spawn(
     process.execPath,
@@ -67,11 +67,17 @@ it("hard server death closes IPC, stops provider descendants and recovers withou
     role: "Disposable",
     providerId: "fake",
   });
-  const { task } = (await post("/tasks", {
-    title: "[fixture:timeout] Crash work",
-    assignee: "crash-nova",
-  })) as { task: { id: string } };
-  await post(`/tasks/${task.id}/execute`, {});
+  const { automation } = (await post("/automations", {
+    title: "Crash automation",
+    taskTitle: "[fixture:timeout] Crash work",
+    description: "Private crash test",
+    agentId: "crash-nova",
+    schedule: { kind: "once", at: "2035-01-01T00:00:00.000Z" },
+  })) as { automation: { id: string } };
+  const { run } = (await post(`/automations/${automation.id}/run`, { revision: 0 })) as {
+    run: { taskId: string };
+  };
+  const task = { id: run.taskId };
   const file = join(directory, "hive/agents/crash-nova/workspace/fixture-process.json");
   await expect
     .poll(
@@ -108,6 +114,19 @@ it("hard server death closes IPC, stops provider descendants and recovers withou
       { timeout: 6000 },
     )
     .toBe(false);
+  await expect(
+    createApp(
+      loadConfig({
+        DATA_DIR: directory,
+        WORKSPACE_ROOT: directory,
+        NODE_ENV: "test",
+        LOG_LEVEL: "silent",
+      }),
+      { logger: false },
+    ),
+  ).rejects.toThrow("server ownership");
+  // All tracked processes are confirmed dead; operator releases a stale crash claim.
+  await rm(join(directory, ".server-owner"), { recursive: true });
   app = await createApp(
     loadConfig({
       DATA_DIR: directory,
@@ -118,6 +137,11 @@ it("hard server death closes IPC, stops provider descendants and recovers withou
     { logger: false },
   );
   await app.ready();
+  expect(app.automations.get(automation.id).automation).toMatchObject({
+    enabled: false,
+    needsAttention: true,
+  });
+  expect(app.automations.history(automation.id).runs[0]?.status).toBe("interrupted");
   expect(app.execution.get(task.id).execution).toMatchObject({
     status: "interrupted",
     errorCode: "EXECUTION_INTERRUPTED",

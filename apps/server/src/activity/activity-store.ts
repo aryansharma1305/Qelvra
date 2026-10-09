@@ -14,7 +14,7 @@ export interface ActivityQuery {
   type?: ActivityType | undefined;
   agentId?: string | undefined;
   taskId?: string | undefined;
-  entityType?: "agent" | "task" | "message" | "router" | "orchestration" | undefined;
+  entityType?: "agent" | "task" | "message" | "router" | "orchestration" | "automation" | undefined;
   entityId?: string;
 }
 /** A single process owns the append queue. No compaction or implicit repair. */

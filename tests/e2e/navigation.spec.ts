@@ -22,6 +22,7 @@ const designedRoutes = [
   { link: "Memory", path: "/memory", heading: "Memory" },
   { link: "Analytics", path: "/analytics", heading: "Analytics" },
   { link: "Settings", path: "/settings", heading: "Settings" },
+  { link: "Automations", path: "/automations", heading: "Automations" },
   { link: "Tasks", path: "/tasks", heading: "Mission Control" },
   { link: "Terminal", path: "/terminal", text: "Swarm Console" },
   { link: "Agent Network", path: "/network", text: "Agent Network" },
@@ -41,15 +42,6 @@ for (const route of designedRoutes) {
     } else if (route.text) {
       await expect(page.getByText(route.text).first()).toBeVisible();
     }
-  });
-}
-
-for (const name of ["Automations"]) {
-  test(`${name} shows an explicit not-built-yet state`, async ({ page }) => {
-    await page.goto("/");
-    await sidebar(page).getByRole("link", { name }).click();
-    await expect(page.getByRole("heading", { name })).toBeVisible();
-    await expect(page.getByText("Not built yet")).toBeVisible();
   });
 }
 

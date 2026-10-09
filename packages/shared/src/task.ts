@@ -43,7 +43,7 @@ export const TaskSchema = z
     description: TaskDescriptionSchema,
     status: TaskStatusSchema,
     assignee: AgentIdSchema.nullable(),
-    createdBy: z.literal("user"),
+    createdBy: z.enum(["user", "automation"]),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
   })

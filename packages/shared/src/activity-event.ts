@@ -1,3 +1,4 @@
+import { AutomationIdSchema, AutomationRunIdSchema } from "./automation.js";
 import { WorkspacePathSchema } from "./files.js";
 import { z } from "zod";
 import { ProviderIdSchema } from "./provider.js";
@@ -57,7 +58,18 @@ export const FILE_ACTIVITY_TYPES = [
   "file.renamed",
   "file.deleted",
 ] as const;
+export const AUTOMATION_ACTIVITY_TYPES = [
+  "automation.created",
+  "automation.updated",
+  "automation.enabled",
+  "automation.disabled",
+  "automation.deleted",
+  "automation.run_reserved",
+  "automation.run_finished",
+  "automation.run_skipped",
+] as const;
 export const ACTIVITY_TYPES = [
+  ...AUTOMATION_ACTIVITY_TYPES,
   "memory.updated",
   ...FILE_ACTIVITY_TYPES,
   ...AGENT_ACTIVITY_TYPES,
@@ -84,6 +96,21 @@ const actor = z
   .optional();
 // Strict allowlists: never accept bodies, descriptions, terminal data, env or arbitrary blobs.
 export const ActivityInputSchema = z.discriminatedUnion("type", [
+  z.strictObject({
+    type: z.enum(AUTOMATION_ACTIVITY_TYPES),
+    actor,
+    entity: z.strictObject({ type: z.literal("automation"), id: AutomationIdSchema }),
+    metadata: z.strictObject({
+      automationId: AutomationIdSchema,
+      runId: AutomationRunIdSchema.optional(),
+      taskId: TaskIdSchema.optional(),
+      status: z
+        .enum(["reserved", "running", "review", "failed", "interrupted", "skipped"])
+        .optional(),
+      errorCode: ErrorCode.optional(),
+      missedOccurrences: z.number().int().nonnegative().optional(),
+    }),
+  }),
   z.strictObject({
     type: z.literal("memory.updated"),
     actor,

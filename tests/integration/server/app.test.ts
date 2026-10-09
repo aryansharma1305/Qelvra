@@ -126,6 +126,7 @@ describe("shutdown", () => {
 
   it("terminates every PTY session when the app closes", async () => {
     const pty = createTestManager();
+    await app.close(); // Release exclusive DATA_DIR ownership before the replacement app.
     const closingApp = await createApp(loadConfig({ WEB_ORIGIN, DATA_DIR: TEST_DATA_DIR }), {
       logger: false,
       ptyManager: pty,
