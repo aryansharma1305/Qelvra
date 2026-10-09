@@ -1,3 +1,6 @@
+import { acquireDataDirectory } from "./release/data-directory-owner.js";
+import { AutomationService } from "./automations/automation-service.js";
+import { registerAutomationRoutes } from "./automations/automation-routes.js";
 import { NetworkService } from "./network/network-service.js";
 import { registerNetworkRoutes } from "./network/network-routes.js";
 import { AnalyticsService, registerAnalyticsRoutes } from "./analytics/index.js";
@@ -59,6 +62,7 @@ declare module "fastify" {
     activity: ActivityPublisher;
     execution: AgentExecutionService;
     orchestration: OrchestrationService;
+    automations: AutomationService;
   }
 }
 
@@ -81,6 +85,20 @@ export interface CreateAppOptions {
 export async function createApp(
   config: ServerConfig,
   options: CreateAppOptions = {},
+): Promise<FastifyInstance> {
+  const owner = await acquireDataDirectory(config.dataDir);
+  try {
+    return await createOwnedApp(config, options, owner);
+  } catch (error) {
+    await owner.release();
+    throw error;
+  }
+}
+
+async function createOwnedApp(
+  config: ServerConfig,
+  options: CreateAppOptions,
+  owner: Awaited<ReturnType<typeof acquireDataDirectory>>,
 ): Promise<FastifyInstance> {
   await validateStartup(config);
   const app = Fastify({
@@ -233,6 +251,15 @@ export async function createApp(
   });
   app.decorate("orchestration", orchestration);
   app.addHook("onReady", () => orchestration.recover());
+  const automations = await AutomationService.open({
+    dataDir: config.dataDir,
+    agents: agentRegistry,
+    tasks,
+    execution,
+    activity,
+  });
+  app.decorate("automations", automations);
+  app.addHook("onReady", () => automations.start());
   const runtime = new AgentRuntimeManager({
     providers,
     registry: agentRegistry,
@@ -259,9 +286,11 @@ export async function createApp(
     try {
       try {
         try {
+          await automations.stop();
           await orchestration.stopAll();
         } finally {
           await execution.stopAll();
+          await automations.finishShutdown();
         }
       } finally {
         await router.stop();
@@ -278,6 +307,7 @@ export async function createApp(
         }
       }
     }
+    await owner.release();
   });
 
   registerErrorHandling(app);
@@ -288,6 +318,7 @@ export async function createApp(
   registerFileRoutes(app, app.files);
   registerMemoryRoutes(app, app.memory);
   registerTaskRoutes(app, tasks, execution);
+  registerAutomationRoutes(app, automations);
   registerExecutionRoutes(app, execution);
   registerOrchestrationRoutes(app, orchestration);
   registerActivityRoutes(app, activity);

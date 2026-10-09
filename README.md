@@ -201,23 +201,43 @@ These commands run the built server and web assets locally. The beta is source-r
 
 Default location: **`apps/server/.qelvra/`**.
 
-| Path                                | Contents                            |
-| ----------------------------------- | ----------------------------------- |
-| `agents.json`                       | Saved agents and configuration      |
-| `tasks.json`                        | Tasks and lifecycle state           |
-| `executions.json`                   | Execution state and results         |
-| `orchestrations.json`               | Goals, plans, reviews and summaries |
-| `events.jsonl`                      | Retained Activity history           |
-| `hive/agents/<agent-id>/workspace/` | Each agent's files                  |
-| `hive/agents/<agent-id>/inbox/`     | Incoming mailbox messages           |
-| `hive/agents/<agent-id>/outbox/`    | Outgoing mailbox messages           |
-| `hive/system/`, `hive/quarantine/`  | Control and rejected messages       |
+| Path                                | Contents                                  |
+| ----------------------------------- | ----------------------------------------- |
+| `agents.json`                       | Saved agents and configuration            |
+| `tasks.json`                        | Tasks and lifecycle state                 |
+| `executions.json`                   | Execution state and results               |
+| `automations.json`                  | Scheduled task templates and bounded runs |
+| `.server-owner/`                    | Exclusive local server ownership claim    |
+| `orchestrations.json`               | Goals, plans, reviews and summaries       |
+| `events.jsonl`                      | Retained Activity history                 |
+| `hive/agents/<agent-id>/workspace/` | Each agent's files                        |
+| `hive/agents/<agent-id>/inbox/`     | Incoming mailbox messages                 |
+| `hive/agents/<agent-id>/outbox/`    | Outgoing mailbox messages                 |
+| `hive/system/`, `hive/quarantine/`  | Control and rejected messages             |
 
-Custom `DATA_DIR` changes this location; relative paths resolve from the server workspace. **Stop Qelvra and back up the entire data directory** before upgrading or restoring. Provider credentials remain managed separately by the provider.
+Custom `DATA_DIR` changes this location; relative paths resolve from the server workspace. **Stop Qelvra and back up the entire data directory** before upgrading or restoring. Provider credentials remain managed separately by the provider. After automated tasks are created, older builds may reject their new origin value; rollback requires a compatible build or a stopped-server backup restore.
 
 Startup checks snapshots and writable directories before recovery writes. Corrupt authoritative state fails with the subsystem and filename; it is not overwritten. Restore a known-good stopped-server backup or repair the named file/permissions. Do not delete state to clear an error.
 
+Current development servers exclusively claim DATA_DIR before recovery. After an unclean crash, an unreleased `.server-owner` claim deliberately blocks startup. **Verify every Qelvra server and provider descendant using this directory has stopped**, back up DATA_DIR, then move `.server-owner` aside. Never remove a live owner's claim. Use a local filesystem, not shared or cloud-synced storage. See [automation recovery](docs/adr/0023-real-automations.md#cross-process-ownership-and-shutdown).
+
 After a crash, runtimes become stopped, interrupted executions require explicit retry and active goals become paused for inspection/resume. Workspace edits are retained; a crash does not roll them back. Retries may repeat edits, and mailbox delivery is at least once. See [storage limits and recovery](docs/architecture.md#storage).
+
+## Scheduled agent tasks (v0.2 development)
+
+At `/automations`, save a task template assigned to a registered agent. New
+automations start disabled. Choose a one-time **UTC** schedule or a fixed interval
+of **5 minutes–30 days**, then explicitly enable it or use **Run now**. Each run
+creates a fresh task through the existing AI execution service. Successful work
+stops at **Review** for your approval; inspect results in the linked Tasks page.
+
+Scheduling runs only while your local server is on. Missed/busy slots are recorded
+and skipped, without catch-up bursts. One automation execution runs at a time.
+Failure disables scheduling; an interrupted run additionally requires explicit
+acknowledgement before new work. Disabling does not cancel active execution—use
+Tasks for cancellation. Up to 100 automations and up to 500 run records are
+retained; the UI discloses history limits. Scheduled goals, cron, event triggers,
+scripts and integrations are deferred. See [ADR 0023](docs/adr/0023-real-automations.md).
 
 ## Security
 

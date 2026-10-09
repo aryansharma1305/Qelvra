@@ -46,7 +46,7 @@ export function observeActivity(
         actor: { type: "user" },
         entity: { type: "task", id: event.task.id },
         metadata: {
-          taskTitle: event.task.title,
+          taskTitle: event.task.createdBy === "automation" ? "Automation task" : event.task.title,
           assigneeId: event.task.assignee,
           ...(name ? { assigneeName: name } : {}),
         },

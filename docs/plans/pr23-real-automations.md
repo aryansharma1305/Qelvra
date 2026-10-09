@@ -1,6 +1,6 @@
 # PR 23 — Real Automations: source audit and proposed scope
 
-Status: source audit complete; implementation not started.
+Status: source audit accepted; implementation follows ADR 0023 (scheduled agent tasks only).
 Branch: `codex/pr23-real-automations`.
 Baseline: `main` at `beb121d167452df463c7394d85d859739c0d46b1` (merged PR 22, including the pre-merge refresh correction).
 
@@ -45,9 +45,8 @@ never automatically approve a task or merge workspace changes.
 
 ## Decisions to pin before implementation
 
-The human has been asked whether PR 23 should target scheduled agent tasks,
-scheduled tasks and goals, or remain at audit/plan first. This document recommends
-tasks first; it does not invent approval for scheduled orchestration.
+The human explicitly selected scheduled agent tasks only. Scheduled goals, cron,
+event triggers and integrations remain deferred.
 
 Pin supported cadence limits, missed-run policy, overlap policy, bounded history,
 and crash recovery in ADR 0023 and shared schemas before exposing editable controls.

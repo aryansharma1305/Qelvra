@@ -13,3 +13,5 @@ export * from "./files.js";
 export * from "./analytics.js";
 export * from "./settings.js";
 export * from "./network.js";
+
+export * from "./automation.js";

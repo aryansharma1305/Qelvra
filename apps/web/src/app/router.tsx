@@ -6,15 +6,6 @@ import { EmptyStatePage } from "../pages/EmptyStatePage";
 
 // Pages are code-split per route; the data router resolves the module before rendering,
 // so navigation shows no loading flash.
-const undesigned = [
-  {
-    path: "automations",
-    title: "Automations",
-    icon: "account_tree",
-    description: "Scheduled and triggered agent workflows will live here.",
-  },
-];
-
 export const router = createBrowserRouter([
   {
     element: <AppShell />,
@@ -96,7 +87,12 @@ export const router = createBrowserRouter([
           Component: (await import("../pages/activity/ActivityPage")).ActivityPage,
         }),
       },
-      ...undesigned.map(({ path, ...props }) => ({ path, element: <EmptyStatePage {...props} /> })),
+      {
+        path: "automations",
+        lazy: async () => ({
+          Component: (await import("../pages/automations/AutomationsPage")).AutomationsPage,
+        }),
+      },
       {
         path: "*",
         element: (

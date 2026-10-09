@@ -131,6 +131,8 @@ it("hard server death pauses the goal, cleans descendants and preserves task ide
       { timeout: 6000 },
     )
     .toBe(false);
+  // The crashed server and all tracked descendants are confirmed dead.
+  await rm(join(directory, ".server-owner"), { recursive: true });
   app = await createApp(
     loadConfig({
       DATA_DIR: directory,

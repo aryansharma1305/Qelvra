@@ -120,7 +120,11 @@ export class TaskRegistry {
       },
     };
   }
-  create(input: CreateTaskRequest, reservedId?: string): Promise<Task> {
+  create(
+    input: CreateTaskRequest,
+    reservedId?: string,
+    createdBy: Task["createdBy"] = "user",
+  ): Promise<Task> {
     return this.enqueue(async () => {
       const parsed = CreateTaskRequestSchema.safeParse(input);
       if (!parsed.success) {
@@ -141,7 +145,8 @@ export class TaskRegistry {
         if (existing) {
           if (
             existing.title !== parsed.data.title ||
-            existing.description !== parsed.data.description
+            existing.description !== parsed.data.description ||
+            existing.createdBy !== createdBy
           )
             throw new TaskError("TASK_INVALID_TITLE", "Reserved task identity conflicts");
           return existing;
@@ -154,7 +159,7 @@ export class TaskRegistry {
         id: reservedId ?? `task-${randomUUID()}`,
         assignee,
         status: assignee ? "assigned" : "inbox",
-        createdBy: "user",
+        createdBy,
         createdAt: now,
         updatedAt: now,
       });

@@ -271,6 +271,7 @@ describe("real fake-agent execution loop", () => {
     expect((await app.mailbox.listMessages("atlas", "outbox")).messages).toEqual([]);
   });
   it("production rejects demo creation and launch without creating a process", async () => {
+    await app.close(); // Production replacement must own storage exclusively.
     const production = await createApp(
       { ...loadConfig({ DATA_DIR: dir, WORKSPACE_ROOT: dir }), isProduction: true },
       { logger: false },

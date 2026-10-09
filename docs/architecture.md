@@ -22,7 +22,7 @@ Shared Zod contracts validate inputs, outputs and snapshots. No database, accoun
 
 Server defaults resolve from `apps/server`, including `.qelvra/`. Each agent uses `hive/agents/<id>/workspace/`, with sibling `inbox/`, `outbox/`, `agent.md` and `memory.md`. Deleting an agent preserves these files. `hive/system/` is the server control mailbox, not an agent. `hive/quarantine/<agent-id>/<generated-id>/` retains rejected message evidence and bounded reason metadata.
 
-Authoritative snapshots: `agents.json`, `tasks.json`, `executions.json`, `orchestrations.json`. Observational history: `events.jsonl`. Snapshot formats retain their existing `version: 1`; there is no bulk rewrite or new migration framework. Backup the entire stopped-server DATA_DIR. Formats may change before stable release; unsupported/corrupt state is rejected rather than silently reset. Future format changes require an explicit migration or documented export/restore path.
+Authoritative snapshots: `agents.json`, `tasks.json`, `executions.json`, `orchestrations.json`, `automations.json`. Observational history: `events.jsonl`. Snapshot formats retain their existing `version: 1`; there is no bulk rewrite or new migration framework. Backup the entire stopped-server DATA_DIR. Formats may change before stable release; unsupported/corrupt state is rejected rather than silently reset. Future format changes require an explicit migration or documented export/restore path.
 
 Activity retains the newest 10,000 events in memory and caps its disk log at 32 MiB. At the disk cap, Activity reports degraded/capped and stops appending; primary task/agent work still proceeds. Corrupt lines are skipped with integrity warnings and preserved on disk. Stop Qelvra, archive the log securely, and remove the archived source from DATA_DIR before restarting to begin a new log; this is a deliberate history reset, not an automatic cleanup.
 
@@ -80,3 +80,21 @@ coverage are explicit. Activity invalidation and visible-page fallback refresh
 reload the projection; hidden/unmounted pages stop subscriptions and timers.
 See [ADR 0022](adr/0022-real-agent-network.md) for identity reuse and retention
 limitations.
+
+## Automations (v0.2 development)
+
+`AutomationService` serializes configuration mutations and clock-injected ticks.
+A version-1 atomic snapshot reserves run/task IDs and advances the next UTC slot
+before dispatching a fresh task through `AgentExecutionService`. One global
+automation admission, 5-minute–30-day intervals, bounded skipped summaries and
+explicit interrupted-run recovery prevent catch-up bursts and silent relaunch.
+Successful execution stays in Review. Templates/runs are authoritative;
+allowlisted Activity contains no prompt/output. A persisted task origin also
+redacts automation task titles from existing task events.
+
+All servers atomically claim `.server-owner` under DATA_DIR before preflight.
+Clean shutdown drains scheduling, execution and domain cleanup before releasing
+ownership. A second server or stale crash claim blocks startup. Operators must
+verify every server/descendant is stopped before moving a crash claim aside;
+there is no automatic ownership theft or exactly-once paid-execution guarantee.
+See [ADR 0023](adr/0023-real-automations.md) for boundaries and recovery.

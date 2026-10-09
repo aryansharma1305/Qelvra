@@ -35,8 +35,20 @@ export function formatActivityEvent(event: ActivityEvent) {
   ].includes(event.type);
   const tone =
     COLORS[
-      error ? "error" : /^(execution|orchestration|file|memory)\./.test(event.type) ? "task" : kind
+      error
+        ? "error"
+        : /^(execution|orchestration|file|memory|automation)\./.test(event.type)
+          ? "task"
+          : kind
     ];
+  if ("automationId" in event.metadata)
+    return {
+      tone,
+      icon: "schedule",
+      title: `Automation ${(event.type.split(".")[1] ?? "updated").replaceAll("_", " ")}`,
+      detail: [event.metadata.status, event.metadata.errorCode].filter(Boolean).join(" · "),
+      href: `/automations?automation=${encodeURIComponent(event.metadata.automationId)}`,
+    };
   if (event.type === "memory.updated")
     return {
       tone,

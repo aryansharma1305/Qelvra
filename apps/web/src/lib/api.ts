@@ -1,3 +1,11 @@
+import {
+  AutomationInputSchema,
+  AutomationListSchema,
+  AutomationResponseSchema,
+  AutomationHistorySchema,
+  AutomationRunResponseSchema,
+  type AutomationInput,
+} from "@qelvra/shared";
 import { NetworkQuerySchema, NetworkResponseSchema, type NetworkQuery } from "@qelvra/shared";
 import { AnalyticsResponseSchema, AnalyticsQuerySchema, type AnalyticsQuery } from "@qelvra/shared";
 import { AgentMemoryResponseSchema } from "@qelvra/shared";
@@ -255,7 +263,7 @@ export function listActivity(
     type?: ActivityType;
     agentId?: string;
     taskId?: string;
-    entityType?: "agent" | "task" | "message" | "router" | "orchestration";
+    entityType?: "agent" | "task" | "message" | "router" | "orchestration" | "automation";
   } = {},
   options?: CallOptions,
 ) {
@@ -441,3 +449,36 @@ export async function getNetwork(query: NetworkQuery = {}, options: RequestOptio
   const parsed = NetworkQuerySchema.parse(query);
   return requestJson(`/api/network?window=${parsed.window}`, NetworkResponseSchema, options);
 }
+
+const automationPath = (id: string) => `/api/automations/${encodeURIComponent(id)}`;
+export const listAutomations = (options?: CallOptions) =>
+  requestJson("/api/automations", AutomationListSchema, options);
+export const automationHistory = (id: string, options?: CallOptions) =>
+  requestJson(`${automationPath(id)}/runs`, AutomationHistorySchema, options);
+export const createAutomation = (input: AutomationInput) =>
+  requestJson("/api/automations", AutomationResponseSchema, {
+    method: "POST",
+    body: AutomationInputSchema.parse(input),
+  });
+export const updateAutomation = (id: string, revision: number, input: AutomationInput) =>
+  requestJson(automationPath(id), AutomationResponseSchema, {
+    method: "PUT",
+    body: { ...AutomationInputSchema.parse(input), revision },
+  });
+export const deleteAutomation = (id: string, revision: number) =>
+  requestJson(automationPath(id), null, { method: "DELETE", body: { revision } });
+export const automationAction = (
+  id: string,
+  revision: number,
+  action: "enable" | "disable" | "run",
+  acknowledgeInterruption = false,
+) =>
+  action === "run"
+    ? requestJson(`${automationPath(id)}/run`, AutomationRunResponseSchema, {
+        method: "POST",
+        body: { revision, acknowledgeInterruption },
+      })
+    : requestJson(`${automationPath(id)}/${action}`, AutomationResponseSchema, {
+        method: "POST",
+        body: { revision, acknowledgeInterruption },
+      });
