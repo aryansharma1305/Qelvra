@@ -11,6 +11,7 @@ Fastify
     ├ Provider Registry / local detection and fixed commands
     ├ Runtime / interactive agent PTYs
     ├ Execution / watchdog-owned provider processes and results
+    ├ Projects / persistent local registration and bounded read-only Git inspection
     ├ Files / workspace-only browser and UTF-8 editor (v0.2 development)
     ├ Mailbox / validated filesystem messages
     └ Router / outbox → recipient inbox, at-least-once delivery
@@ -22,7 +23,7 @@ Shared Zod contracts validate inputs, outputs and snapshots. No database, accoun
 
 Server defaults resolve from `apps/server`, including `.qelvra/`. Each agent uses `hive/agents/<id>/workspace/`, with sibling `inbox/`, `outbox/`, `agent.md` and `memory.md`. Deleting an agent preserves these files. `hive/system/` is the server control mailbox, not an agent. `hive/quarantine/<agent-id>/<generated-id>/` retains rejected message evidence and bounded reason metadata.
 
-Authoritative snapshots: `agents.json`, `tasks.json`, `executions.json`, `orchestrations.json`, `automations.json`. Observational history: `events.jsonl`. Snapshot formats retain their existing `version: 1`; there is no bulk rewrite or new migration framework. Backup the entire stopped-server DATA_DIR. Formats may change before stable release; unsupported/corrupt state is rejected rather than silently reset. Future format changes require an explicit migration or documented export/restore path.
+Authoritative snapshots: `agents.json`, `tasks.json`, `executions.json`, `orchestrations.json`, `automations.json`, `projects.json`. Observational history: `events.jsonl`. Snapshot formats retain their existing `version: 1`; there is no bulk rewrite or new migration framework. Backup the entire stopped-server DATA_DIR. Formats may change before stable release; unsupported/corrupt state is rejected rather than silently reset. Future format changes require an explicit migration or documented export/restore path.
 
 Activity retains the newest 10,000 events in memory and caps its disk log at 32 MiB. At the disk cap, Activity reports degraded/capped and stops appending; primary task/agent work still proceeds. Corrupt lines are skipped with integrity warnings and preserved on disk. Stop Qelvra, archive the log securely, and remove the archived source from DATA_DIR before restarting to begin a new log; this is a deliberate history reset, not an automatic cleanup.
 
@@ -98,3 +99,20 @@ ownership. A second server or stale crash claim blocks startup. Operators must
 verify every server/descendant is stopped before moving a crash claim aside;
 there is no automatic ownership theft or exactly-once paid-execution guarantee.
 See [ADR 0023](adr/0023-real-automations.md) for boundaries and recovery.
+
+## Shared Projects foundation
+
+ProjectRegistry is independent of execution and existing agent workspaces. It uses
+strict version-1 snapshots, at most 100 records/2 MiB, server-generated IDs and
+canonical path/.git identity. GET returns cached inspection; register/refresh use
+one bounded Git slot. No project cwd can reach providers, PTYs, tasks, goals or
+automations. A Projects link from Files leads to `/projects`.
+
+Inspection uses private bounded Git metadata and authored config, fixed argv and
+sterile environment; unsafe configs/layouts are rejected. Live object-store and
+tracked-path checks reject static redirection. This is local trust, not an OS
+sandbox against concurrent same-user filesystem changes. Repository files are not
+mutated; unavailable records persist until explicit refresh/unregister. Existing
+DATA_DIR ownership and startup validation cover the additive projects snapshot.
+See [ADR 0024](adr/0024-project-foundation.md) for supported layouts, exact process/
+filesystem bounds, privacy, operator recovery and future worktree exclusions.

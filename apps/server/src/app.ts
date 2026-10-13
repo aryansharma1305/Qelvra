@@ -1,3 +1,5 @@
+import { ProjectRegistry } from "./projects/project-registry.js";
+import { registerProjectRoutes } from "./projects/project-routes.js";
 import { acquireDataDirectory } from "./release/data-directory-owner.js";
 import { AutomationService } from "./automations/automation-service.js";
 import { registerAutomationRoutes } from "./automations/automation-routes.js";
@@ -63,6 +65,7 @@ declare module "fastify" {
     execution: AgentExecutionService;
     orchestration: OrchestrationService;
     automations: AutomationService;
+    projects: ProjectRegistry;
   }
 }
 
@@ -115,6 +118,8 @@ async function createOwnedApp(
       logger: app.log.child({ component: "agents" }),
     }));
   app.decorate("agents", agentRegistry);
+  const projects = await ProjectRegistry.open(config.dataDir);
+  app.decorate("projects", projects);
   const tasks = await TaskRegistry.open({
     file: join(config.dataDir, "tasks.json"),
     registry: agentRegistry,
@@ -286,7 +291,7 @@ async function createOwnedApp(
     try {
       try {
         try {
-          await automations.stop();
+          await Promise.all([projects.close(), automations.stop()]);
           await orchestration.stopAll();
         } finally {
           await execution.stopAll();
@@ -319,6 +324,7 @@ async function createOwnedApp(
   registerMemoryRoutes(app, app.memory);
   registerTaskRoutes(app, tasks, execution);
   registerAutomationRoutes(app, automations);
+  registerProjectRoutes(app, projects);
   registerExecutionRoutes(app, execution);
   registerOrchestrationRoutes(app, orchestration);
   registerActivityRoutes(app, activity);

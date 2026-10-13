@@ -1,4 +1,10 @@
 import {
+  RegisterProjectSchema,
+  ProjectListSchema,
+  ProjectResponseSchema,
+  type RegisterProject,
+} from "@qelvra/shared";
+import {
   AutomationInputSchema,
   AutomationListSchema,
   AutomationResponseSchema,
@@ -482,3 +488,21 @@ export const automationAction = (
         method: "POST",
         body: { revision, acknowledgeInterruption },
       });
+
+const projectPath = (id: string) => `/api/projects/${encodeURIComponent(id)}`;
+export const listProjects = (options?: CallOptions) =>
+  requestJson("/api/projects", ProjectListSchema, options);
+export const registerProject = (input: RegisterProject) =>
+  requestJson("/api/projects", ProjectResponseSchema, {
+    method: "POST",
+    body: RegisterProjectSchema.parse(input),
+    timeoutMs: 60000,
+  });
+export const refreshProject = (id: string) =>
+  requestJson(`${projectPath(id)}/refresh`, ProjectResponseSchema, {
+    method: "POST",
+    body: {},
+    timeoutMs: 60000,
+  });
+export const unregisterProject = (id: string) =>
+  requestJson(projectPath(id), null, { method: "DELETE" });

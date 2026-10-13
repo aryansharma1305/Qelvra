@@ -15,3 +15,5 @@ export * from "./settings.js";
 export * from "./network.js";
 
 export * from "./automation.js";
+
+export * from "./project.js";
