@@ -38,7 +38,7 @@ persisted inspection, labelled with its timestamp, and never launch Git.
 
 ## Supported paths and layouts
 
-Accept existing absolute local directories outside DATA_DIR, with a real `.git`
+Accept existing absolute local directories on macOS/Linux with Git 2.39+, outside DATA_DIR, with a real `.git`
 directory. Canonicalize parent aliases (including macOS /tmp and /var); reject a
 symlink selection leaf and symlink Git metadata. Reject overlap in either direction
 with DATA_DIR, nested repositories, bare repositories, `.git` files (linked worktrees
@@ -49,7 +49,9 @@ recursed into. Dirty tracked files, detached HEAD and an unborn branch are valid
 Revalidate root/.git fingerprints before and after each inspection. Copy only bounded
 regular, singly linked HEAD/index/packed-refs/local branch-ref metadata with no-follow
 reads into a fresh private Qelvra scratch Git directory. Reject unsafe metadata and
-limit branch traversal depth/count. Do not run Git discovery in the selected repository.
+limit branch traversal depth/count. Reject static object-store descendant symlinks and
+hardlinks with bounded traversal. Reject symlink ancestors of tracked paths before status;
+tracked symlink leaves remain links. Do not run Git discovery in the selected repository.
 Filesystem mutation by another local process can make an inspection inconsistent;
 identity checks and controlled errors detect supported changes, not an atomic filesystem
 snapshot. This is not a sandbox against a hostile same-user process or Git parser bugs.
@@ -78,7 +80,9 @@ branches. Untracked files and submodule worktrees are explicitly excluded; “tr
 files clean” must not claim the entire repository is clean. No path names or raw stderr
 leave the inspector. Bounds: 5-second command timeout, 2-MiB combined command output,
 8-MiB index, 1-MiB config/packed-ref inputs, 200 local loose refs, 16 levels of ref nesting
-and one global inspection at a time; excess is unavailable rather than an unbounded scan.
+512 aggregate ref entries/directories, 10,000 object-store entries/four levels/256 MiB per
+file, 20,000 tracked index entries, a 45-second cooperative deadline and one global
+inspection at a time; excess is unavailable rather than an unbounded scan.
 Temporary inspection metadata is deleted on completion; crash leftovers remain private
 and bounded admission refuses further inspection when 100 leftovers require operator
 cleanup. Shutdown drains the bounded admitted inspection before releasing DATA_DIR.

@@ -1,3 +1,4 @@
+import { ProjectStoreSchema } from "../projects/project-store.js";
 import { AutomationStoreSchema } from "../automations/automation-store.js";
 import { randomUUID } from "node:crypto";
 import { constants } from "node:fs";
@@ -40,7 +41,7 @@ async function directory(path: string, subsystem: string, create: boolean) {
     throw new StartupValidationError(subsystem, path, "is not a usable writable real directory");
   }
 }
-async function readOptional(path: string, subsystem: string) {
+async function readOptional(path: string, subsystem: string, limit = SNAPSHOT_LOAD_LIMIT) {
   try {
     const handle = await open(
       path,
@@ -48,8 +49,7 @@ async function readOptional(path: string, subsystem: string) {
     );
     try {
       const info = await handle.stat();
-      if (!info.isFile() || info.nlink !== 1 || info.size > SNAPSHOT_LOAD_LIMIT)
-        throw new Error("invalid file");
+      if (!info.isFile() || info.nlink !== 1 || info.size > limit) throw new Error("invalid file");
       await access(path, constants.R_OK | constants.W_OK);
       return await handle.readFile("utf8");
     } finally {
@@ -60,7 +60,7 @@ async function readOptional(path: string, subsystem: string) {
     throw new StartupValidationError(
       subsystem,
       path,
-      "cannot be read/written as a regular snapshot of at most 32 MiB",
+      `cannot be read/written as a regular snapshot of at most ${limit / 1024 / 1024} MiB`,
     );
   }
 }
@@ -69,6 +69,12 @@ export async function validateStartup(config: ServerConfig) {
   await directory(config.dataDir, "DATA_DIR", true);
   await directory(config.workspaceRoot, "workspace root", false);
   const snapshots = [
+    {
+      file: "projects.json",
+      limit: 2 * 1024 * 1024,
+      subsystem: "project registry",
+      ids: (raw: unknown) => ProjectStoreSchema.parse(raw).projects.map((p) => p.id),
+    },
     {
       file: "automations.json",
       subsystem: "automation store",
@@ -107,7 +113,11 @@ export async function validateStartup(config: ServerConfig) {
   ];
   for (const snapshot of snapshots) {
     const file = join(config.dataDir, snapshot.file);
-    const text = await readOptional(file, snapshot.subsystem);
+    const text = await readOptional(
+      file,
+      snapshot.subsystem,
+      "limit" in snapshot ? snapshot.limit : undefined,
+    );
     if (text === null) continue;
     try {
       const ids = snapshot.ids(JSON.parse(text));

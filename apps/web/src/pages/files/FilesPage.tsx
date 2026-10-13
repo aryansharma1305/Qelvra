@@ -278,6 +278,12 @@ export function FilesPage() {
         <p className="mt-2 text-body-md text-on-surface-variant">
           Browse and edit files in an agent’s isolated workspace.
         </p>
+        <Link
+          to="/projects"
+          className="inline-block mt-3 text-primary underline underline-offset-4 focus-visible:outline-primary"
+        >
+          Projects — inspect local repositories
+        </Link>
         <div className="mt-6 flex flex-wrap items-end gap-4">
           <label className="flex flex-col gap-2 min-w-0 w-full sm:w-80 text-body-sm text-on-surface-variant">
             Agent workspace

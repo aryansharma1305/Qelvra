@@ -15,6 +15,7 @@ Instead of manually opening several AI coding sessions and coordinating them you
 - Persistent agents with isolated filesystem workspaces and real browser terminals backed by PTYs.
 - Local provider discovery and real automated execution through an installed, authenticated Codex CLI.
 - Persistent tasks: create, assign, execute, review and complete, with structured execution results.
+- Projects registers existing local Git repositories and inspects recorded HEAD, tracked status and local branches (v0.2 foundation; agents remain isolated).
 - The Files page browses and edits isolated agent workspaces (v0.2 development on `main`).
 - The Memory page edits persistent per-agent Markdown notes (v0.2 development).
 - Analytics provides local read-only insights over retained Activity events (v0.2 development).
@@ -222,6 +223,26 @@ Startup checks snapshots and writable directories before recovery writes. Corrup
 Current development servers exclusively claim DATA_DIR before recovery. After an unclean crash, an unreleased `.server-owner` claim deliberately blocks startup. **Verify every Qelvra server and provider descendant using this directory has stopped**, back up DATA_DIR, then move `.server-owner` aside. Never remove a live owner's claim. Use a local filesystem, not shared or cloud-synced storage. See [automation recovery](docs/adr/0023-real-automations.md#cross-process-ownership-and-shutdown).
 
 After a crash, runtimes become stopped, interrupted executions require explicit retry and active goals become paused for inspection/resume. Workspace edits are retained; a crash does not roll them back. Retries may repeat edits, and mailbox delivery is at least once. See [storage limits and recovery](docs/architecture.md#storage).
+
+## Local project registration (v0.2 foundation)
+
+Open **Files → Projects** to register an existing absolute repository path on the
+server. Projects is also available at `/projects`. It stores a local display name,
+canonical path and the last explicit inspection. **Refresh inspection** updates
+HEAD, tracked staged/unstaged counts and up to 200 local branches; **Reload list**
+reads saved metadata. Untracked files and submodule worktrees are excluded.
+
+Registration/inspection do not edit repository files. Existing agents, tasks and
+providers keep their isolated workspaces. Shared execution, worktree allocation,
+checkout, commits, cloning and integration are not part of this foundation.
+
+Supported: macOS/Linux with trusted Git 2.39+, ordinary SHA-1 repositories outside
+DATA_DIR. Unsafe/helper-bearing Git configuration, bare/nested repositories,
+linked worktrees, submodule registrations and redirected/hardlinked object stores
+are rejected. Inspection is bounded and may reject larger layouts. Missing or
+replaced repositories show unavailable; unregister/re-register a relocated path.
+Unregister removes only Qelvra metadata. See [ADR 0024](docs/adr/0024-project-foundation.md)
+for exact limits, privacy, local trust and stopped-server recovery instructions.
 
 ## Scheduled agent tasks (v0.2 development)
 
