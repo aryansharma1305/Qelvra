@@ -45,9 +45,9 @@ All tests use disposable state; no paid provider execution is required.
 
 | Gate                             | Result                       |
 | -------------------------------- | ---------------------------- |
-| Focused project unit/integration | 35 tests / 2 files passed    |
+| Focused project unit/integration | 36 tests / 2 files passed    |
 | Format, lint, typecheck          | Passed                       |
-| Complete unit/integration        | 825 tests / 76 files passed  |
+| Complete unit/integration        | 826 tests / 76 files passed  |
 | Build                            | Passed                       |
 | Complete browser                 | 120 tests passed             |
 | Complete design                  | Pending final complete gate  |
@@ -64,7 +64,10 @@ utilities were replaced with defined body-size/weight utilities.
 
 Focused source security review identified missing aggregate ref-directory bounds
 and object-store descendant redirection checks. Both were corrected and regression
-tested; the reviewer verified those two fixes resolved. This is a scoped source
+tested; the reviewer verified those two fixes resolved. A final selected-path
+regression also checks physical parent traversal before canonicalization, including
+symlinked parents with `..`, trailing slashes and final-dot selection. Source review
+confirmed that correction as well. This is a scoped source
 review, not a whole-codebase penetration test or OS sandbox certification.
 
 ## Protected state and limitations

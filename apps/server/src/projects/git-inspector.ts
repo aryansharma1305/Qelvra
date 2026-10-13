@@ -11,7 +11,7 @@ import {
   rm,
 } from "node:fs/promises";
 import { spawn } from "node:child_process";
-import { delimiter, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { delimiter, dirname, isAbsolute, join, relative, sep } from "node:path";
 import type { ProjectIdentity, ProjectInspection, ProjectUnavailableCode } from "@qelvra/shared";
 import { AppError } from "../lib/errors.js";
 const MiB = 1024 * 1024;
@@ -168,7 +168,12 @@ export class GitInspector {
     try {
       if (process.platform === "win32") return fail("PROJECT_UNSUPPORTED");
       if (!isAbsolute(raw)) return fail("PROJECT_INVALID_PATH");
-      await realDirectory(resolve(raw));
+      const selected = raw.replace(/\/+$/, "") || "/";
+      if ([".", ".."].includes(selected.split("/").at(-1) ?? ""))
+        return fail("PROJECT_INVALID_PATH");
+      // Preserve kernel resolution through parent aliases; lexical normalization
+      // before lstat can validate a different leaf when a parent contains symlinks.
+      await realDirectory(selected);
       const path = await realpath(raw),
         data = await realpath(this.dataDir);
       if (inside(data, path) || inside(path, data)) return fail("PROJECT_UNSUPPORTED");

@@ -271,3 +271,20 @@ it.each(["fanout", "pack"])("rejects static object-store %s links", async (kind)
   else await symlink(join(root, "outside.pack"), join(repo, ".git/objects/pack/unsafe.pack"));
   await expect(inspector().inspect(repo)).rejects.toMatchObject({ code: "PROJECT_UNSUPPORTED" });
 });
+it("preserves physical parent traversal when rejecting selected symlink leaves", async () => {
+  await fixtureRepository(join(root, "selected"));
+  await mkdir(join(root, "physical", "deep"), { recursive: true });
+  await symlink(join(root, "physical", "deep"), join(root, "parent-alias"));
+  await symlink(repo, join(root, "physical", "selected"));
+  // Lexical resolution selects root/selected; kernel resolution selects the link.
+  await expect(inspector().inspect(`${root}/parent-alias/../selected`)).rejects.toMatchObject({
+    code: "PROJECT_UNSUPPORTED",
+  });
+  await symlink(repo, join(root, "selected-link"));
+  await expect(inspector().inspect(`${root}/selected-link/`)).rejects.toMatchObject({
+    code: "PROJECT_UNSUPPORTED",
+  });
+  await expect(inspector().inspect(`${root}/selected-link/.`)).rejects.toMatchObject({
+    code: "PROJECT_INVALID_PATH",
+  });
+});
